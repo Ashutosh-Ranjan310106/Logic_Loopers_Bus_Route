@@ -1,0 +1,24 @@
+
+Features of Our project 
+
+1. Routes & stops Planning
+2. Tells the schdedule of all the DTC buses
+3. Offers both online & offline tickets booking system
+4. In 3NF & no partial dependencies
+5. Pricing of tickets
+
+Tables & their relations
+
+Entities
+a. online_tickets
+b. buses
+c. Stops
+d. Routes
+e. Offline_tickets
+f. Drivers
+g. Bus_type description
+h. Bus_type
+i. schdedule
+j. Users
+k. Conductors
+l. Stops_in_routes
