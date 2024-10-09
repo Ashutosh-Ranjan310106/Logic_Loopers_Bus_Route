@@ -17,17 +17,17 @@ eatures of Our project
 
 4) Dynamic Route Management: The database facilitates dynamic handling of routes and stops, enabling real-time updates to schedules and routes.
 
-5) Reporting and Analysis: The structure allows for the generation of various reports, such as ticket sales, staff assignments, and bus schedules, aiding decision-making processes.
+5) Reporting and Analysis: The structure allows for the generation of various reports, such as ticket sales, staff assignments, and bus schedules, which help in decision-making processes.
 
 6) User Management: Detailed user records help in tracking customer demographics and preferences, which can inform marketing and operational strategies.
 
-Tables & their relations
+Tables & their links
 
 
-Entity:-
+Tables:-
 a. Buses: Represents all buses in the system, including their details.
-b. Bus_stop_reach_time: Records the time it takes for buses to reach various stops.
-c. Bus_Type_Description: Describes different types of buses available in the fleet.
+b. Bus_stop_reach_time: Records the time when  buses reach stops.
+c. Bus_Type_Description: Describes different types of buses available in the fleet split from bus_type for maintaining 3Nf.
 d. Bus_type: Categorizes buses into different types based on specifications.
 e. Conductors: Represents bus conductors, including their details and assignments.
 f. Drivers: Represents bus drivers and their related information.
@@ -35,17 +35,17 @@ g. Offline_Tickets: Records details of tickets purchased offline.
 h. Online_Tickets: Records details of tickets purchased online.
 i. Routes: Defines various bus routes available in the system.
 j. Schedule: Contains the schedules for bus departures and arrivals.
-k. Staff: Represents all staff members involved in operations.
+k. Staff: Represents all staff members involved in operations it is generalization of dirver and conductor table.
 l. Stops: Represents bus stops where passengers can board or alight.
 m. Stops_in_route: Links stops to specific routes.
-n. Tickets: General ticket information, including pricing and validity.
+n. Tickets: Generalization of online and offline ticket information, including pricing and validity.
 o. Users: Represents system users, including passengers and admin staff.
 
 
-Relationships:-
+links:-
 Bus_Type_Description is linked to Bus_type by category.
 Bus_type is linked to Buses by Bus_type_id.
-Users is linked to Online_Tickets and Offline_Tickets through User_id.
+Users is linked to Online_Tickets and through User_id.
 Stops_in_route is linked to Routes and Stops, establishing the connection between stops and routes.
 Schedule connects Buses, Conductors, and Drivers, coordinating the operational aspects of bus schedules.
 bus_stop_reach_time provides time tracking related to specific stops within a scheduled route.
