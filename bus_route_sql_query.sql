@@ -19,9 +19,25 @@ CREATE TABLE Bus_type (
 CREATE TABLE Users (
     User_id INT PRIMARY KEY,
     name VARCHAR(50),
-    email VARCHAR(100),
+    email VARCHAR(200),
     Gender ENUM('male', 'female') default 'male',
     phone_number VARCHAR(12) NOT NULL
+);
+CREATE TABLE access_level(
+	access_level_id int PRIMARY KEY,
+    discription TEXT NOT NULL
+);
+CREATE TABLE Employee(
+	emp_id INT PRIMARY KEY,
+    user_name VARCHAR(100),
+    first_name VARCHAR(100),
+    last_name VARCHAR(100),
+    official_email VARCHAR(200) unique,
+    Account_password VARCHAR(50),
+    phone_number VARCHAR(12) NOT NULL,
+    access_level_id int NOT NULL,
+    salary int,
+    FOREIGN KEY(access_level_id) REFERENCES access_level(access_level_id)    
 );
 CREATE TABLE Stops (
     Stop_id INT PRIMARY KEY,
@@ -84,7 +100,9 @@ CREATE TABLE Tickets (
     route ENUM('up', 'down'),
     gender ENUM('Male', 'Female'),
     date_of_tickets date,
-    ticket_type ENUM('online', 'offline') NOT NULL
+    category varchar(10),
+    ticket_type ENUM('online', 'offline') NOT NULL,
+	FOREIGN KEY (category) REFERENCES Bus_Type_Description(category)
 );
 
 
@@ -135,7 +153,13 @@ CREATE TABLE bus_stop_reach_time(
     unique (node_number, schedule_id),
     FOREIGN KEY (schedule_id) REFERENCES schedule(schedule_id) ON DELETE CASCADE
 );
-
+INSERT INTO Access_level(access_level_id, discription) VALUES 
+(1,'edit data'),
+(2, 'update data'),
+(3, 'only View');
+INSERT INTO Employee(emp_id, first_name, last_name, User_name, salary, official_email, account_password, phone_number, access_level_id) VALUE
+(1, 'Ashutosh', 'Ranjan', 'Ashutosh_ranjan_DBA', 100000,'ashu@gmail.com', '@819', '1234567891', 1),
+(2, 'Pankaj', '', 'Pankaj_DBA', 80000,'pankaj@gmail.com', '@1234', '9868952481', 2);
 INSERT INTO Bus_Type_Description (category, Base_fare, Discription) VALUES
 ('blue',10, 'AC'),
 ('red',10, 'AC'),
@@ -267,38 +291,38 @@ VALUES
 ('down', '13:54:00', 2, 8),
 ('down', '13:58:00', 1, 8);
 
-
-INSERT INTO Tickets (Ticket_id, price, route, gender, ticket_type, Date_of_tickets) VALUES
-(1, 20, 'up', 'Male', 'offline','2024-10-06'),
-(2, 15, 'up', 'Male', 'offline','2024-10-06'),
-(3, 15, 'up', 'Female', 'offline','2024-10-06'),
-(4, 20, 'up', 'Female', 'offline','2024-10-06'),
-(5, 20, 'down', 'Male', 'offline','2024-10-06'),
-(6, 20, 'down', 'Male', 'offline','2024-10-06'),
-(7, 25, 'up', 'Female', 'offline','2024-10-06'),
-(8, 10, 'up', 'Male', 'offline','2024-10-06'),
-(9, 15, 'down', 'Male', 'offline','2024-10-06'),
-(10, 15, 'down', 'Male', 'offline','2024-10-06'),
-(11, 20, 'up', 'Female', 'offline','2024-10-06'),
-(12, 25, 'up', 'Male', 'offline','2024-10-06'),
-(13, 15, 'down', 'Female', 'offline','2024-10-06'),
-(14, 25, 'down', 'Male', 'offline','2024-10-06'),
-(15, 15, 'up', 'Male', 'offline','2024-10-06'),
-(16, 15, 'up', 'Female', 'offline','2024-10-06'),
-(17, 25, 'down', 'Female', 'offline','2024-10-06'),
-(18, 25, 'up', 'Male', 'offline','2024-10-06'),
-(19, 25, 'down', 'Male', 'offline','2024-10-06'),
-(20, 15, 'down', 'Female', 'offline','2024-10-06'),
-(21, 20, 'up', 'Male', 'online','2024-10-06'),
-(22, 15, 'up', 'Female', 'online','2024-10-06'),
-(23, 20, 'up', 'Female', 'online','2024-10-06'),
-(24, 25, 'up', 'Female', 'online','2024-10-06'),
-(25, 15, 'up', 'Male', 'online','2024-10-06'),
-(26, 20, 'up', 'Female', 'online','2024-10-06'),
-(27, 15, 'up', 'Male', 'online','2024-10-06'),
-(28, 15, 'up', 'Male', 'online','2024-10-06'),
-(29, 25, 'up', 'Female', 'online','2024-10-06'),
-(30, 25, 'up', 'Female', 'online','2024-10-06');
+select * from schedule join buses on schedule.bus_id = buses.bus_id join bus_type on bus_type.bus_type_id = buses.bus_type_id;
+INSERT INTO Tickets (Ticket_id, price, route, gender, ticket_type, Date_of_tickets, category) VALUES
+(1, 20, 'up', 'Male', 'offline','2024-10-06', 'red'),
+(2, 15, 'up', 'Male', 'offline','2024-10-06', 'green'),
+(3, 15, 'up', 'Female', 'offline','2024-10-06',  'red'),
+(4, 20, 'up', 'Female', 'offline','2024-10-06',  'red'),
+(5, 20, 'down', 'Male', 'offline','2024-10-06', 'red'),
+(6, 20, 'down', 'Male', 'offline','2024-10-06', 'red'),
+(7, 25, 'up', 'Female', 'offline','2024-10-06', 'red'),
+(8, 10, 'up', 'Male', 'offline','2024-10-06', 'green'),
+(9, 15, 'down', 'Male', 'offline','2024-10-06', 'red'),
+(10, 15, 'down', 'Male', 'offline','2024-10-06', 'green'),
+(11, 20, 'up', 'Female', 'offline','2024-10-06', 'red'),
+(12, 25, 'up', 'Male', 'offline','2024-10-06', 'red'),
+(13, 15, 'down', 'Female', 'offline','2024-10-06', 'green'),
+(14, 25, 'down', 'Male', 'offline','2024-10-06', 'red'),
+(15, 15, 'up', 'Male', 'offline','2024-10-06', 'green'),
+(16, 15, 'up', 'Female', 'offline','2024-10-06', 'green'),
+(17, 25, 'down', 'Female', 'offline','2024-10-06', 'red'),
+(18, 25, 'up', 'Male', 'offline','2024-10-06', 'red'),
+(19, 25, 'down', 'Male', 'offline','2024-10-06', 'red'),
+(20, 15, 'down', 'Female', 'offline','2024-10-06', 'green'),
+(21, 20, 'up', 'Male', 'online','2024-10-06', 'red'),
+(22, 15, 'up', 'Female', 'online','2024-10-06', 'green'),
+(23, 20, 'up', 'Female', 'online','2024-10-06', 'red'),
+(24, 25, 'up', 'Female', 'online','2024-10-06', 'red'),
+(25, 15, 'up', 'Male', 'online','2024-10-06', 'green'),
+(26, 20, 'up', 'Female', 'online','2024-10-06', 'red'),
+(27, 15, 'up', 'Male', 'online','2024-10-06', 'green'),
+(28, 15, 'up', 'Male', 'online','2024-10-06', 'green'),
+(29, 25, 'up', 'Female', 'online','2024-10-06', 'red'),
+(30, 25, 'up', 'Female', 'online','2024-10-06', 'red');
 
 INSERT INTO Offline_Tickets (Offline_ticket_id, Ticket_id, route_id) VALUES
 (1, 1, 1),
@@ -344,6 +368,8 @@ INSERT INTO Online_Tickets (Online_ticket_id, Ticket_id, time_of_booking, starti
 show tables;
 SELECT * FROM Bus_type;
 SELECT * FROM Users;
+SELECT * FROM Access_level;
+SElECT * FROM Employee;
 SELECT * FROM Stops;
 SELECT * FROM Routes;
 SELECT * FROM Buses;
