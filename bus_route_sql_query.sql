@@ -21,7 +21,8 @@ CREATE TABLE Users (
     name VARCHAR(50),
     email VARCHAR(200),
     Gender ENUM('male', 'female') default 'male',
-    phone_number VARCHAR(12) NOT NULL
+    phone_number VARCHAR(12) NOT NULL,
+    password  VARCHAR(500) NOt NULL
 );
 CREATE TABLE access_level(
 	access_level_id int PRIMARY KEY,
@@ -174,11 +175,11 @@ INSERT INTO Bus_type (Bus_type_id, Capacity, category) VALUES
 (3, 40, 'red'),
 (4, 50, 'orange');
 
-INSERT INTO Users (User_id, name, email, Gender, phone_number) VALUES
-(1, 'Rahul Sharma', 'rahul.sharma@example.com', 'male', '9876543210'),
-(2, 'Anita Desai', 'anita.desai@example.com', 'female', '8765432109'),
-(3, 'Vikram Singh', 'vikram.singh@example.com', 'male', '7654321098'),
-(4, 'Priya Verma', 'priya.verma@example.com', 'female', '6543210987');
+INSERT INTO Users (User_id, name, email, Gender, phone_number, password) VALUES
+(1, 'Rahul Sharma', 'rahul.sharma@example.com', 'male', '9876543210',"passwordhash1"),
+(2, 'Anita Desai', 'anita.desai@example.com', 'female', '8765432109',"passwordhash2"),
+(3, 'Vikram Singh', 'vikram.singh@example.com', 'male', '7654321098',"passwordhash3"),
+(4, 'Priya Verma', 'priya.verma@example.com', 'female', '6543210987',"passwordhash4");
    
 
 
@@ -396,14 +397,19 @@ join Stops on Stops.stop_id = Stops_In_Route.stop_id
 join Routes on Routes.route_id = Stops_In_Route.route_id
 order by Route_id, route_stop_number;
 
+
 -- stop by bus number
 select * from 
 Stops_In_Route sir
 join Stops on Stops.stop_id = sir.stop_id
 join routes rt on sir.route_id = rt.route_id
-where rt.bus_no like '%456'
+where rt.bus_no like '%123'
 order by route_stop_number;
-
+            select * from 
+            Stops_In_Route sir
+            join Stops on Stops.stop_id = sir.stop_id
+            join routes rt on sir.route_id = rt.route_id
+            order by rt.route_id, route_stop_number;
 -- driver and Conductor  name for each schedule 
 select Schedule_id, route, Time, start_node_number, stop_node_number, Bus_id, dri.Driver_id, Stfd.name
 driver_name, stfd.Gender, stfd.Salary, cdr.conductor_id, stfc.name conductor_name, stfc.Gender, stfc.Salary
