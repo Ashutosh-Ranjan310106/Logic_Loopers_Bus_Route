@@ -87,12 +87,14 @@ CREATE TABLE Conductors (
 
 CREATE TABLE Stops_in_route (
     node_id INT PRIMARY KEY,
-    route_node_number INT,
+    route_stop_number INT,
     Fair_stage INT default 1,
     Route_id INT NOT NULL,
     Stop_id INT NOT NULL,
     FOREIGN KEY (Route_id) REFERENCES Routes(Route_id) ON DELETE CASCADE,
-    FOREIGN KEY (Stop_id) REFERENCES Stops(Stop_id) ON DELETE RESTRICT
+    FOREIGN KEY (Stop_id) REFERENCES Stops(Stop_id) ON DELETE RESTRICT,
+    unique(Route_id, Stop_id),
+    unique(Route_id, Stop_id, route_stop_number)
 );
 CREATE TABLE Tickets (
     Ticket_id INT PRIMARY KEY,
@@ -201,6 +203,9 @@ INSERT INTO Routes (Route_id, Bus_no, Avg_Duration, number_of_stops) VALUES
 (2, 'DTC-456', '00:45:00', 5),
 (3, 'DTC-789', '00:55:00', 5);
 
+INSERT INTO Routes (Route_id, Bus_no, Avg_Duration, number_of_stops) VALUES
+(4, 'DTC-145','2:00:00',7);
+
 
 INSERT INTO Buses (Bus_id, Status, Bus_type_id) VALUES
 (1, 'active', 1),
@@ -226,7 +231,7 @@ INSERT INTO Conductors (conductor_id, staff_id) VALUES
 (3, 6);
 
 
-INSERT INTO Stops_in_route (node_id, Stop_id, Fair_stage, Route_id, route_node_number) VALUES
+INSERT INTO Stops_in_route (node_id, Stop_id, Fair_stage, Route_id, route_stop_number) VALUES
 (1, 1, 1, 1, 1),
 (2, 2, 2, 1, 2),
 (3, 3, 2, 1, 3),
@@ -384,11 +389,12 @@ SELECT * FROM Offline_tickets;
 SELECT * FROM bus_stop_reach_time;
 
 
--- all stop conectivity
-select node_id, route_node_number, Fair_stage, Route_id, Stops_In_Route.Stop_id, Stop_Name, location_coordinate
+-- all stop connectivity
+select Routes.Route_id,bus_no ,node_id, route_stop_number, Fair_stage, Stops_In_Route.Stop_id, Stop_Name, location_coordinate
 from Stops_In_Route
 join Stops on Stops.stop_id = Stops_In_Route.stop_id
-order by Route_id, route_node_number;
+join Routes on Routes.route_id = Stops_In_Route.route_id
+order by Route_id, route_stop_number;
 
 -- stop by bus number
 select * from 
@@ -396,7 +402,7 @@ Stops_In_Route sir
 join Stops on Stops.stop_id = sir.stop_id
 join routes rt on sir.route_id = rt.route_id
 where rt.bus_no like '%456'
-order by route_node_number;
+order by route_stop_number;
 
 -- driver and Conductor  name for each schedule 
 select Schedule_id, route, Time, start_node_number, stop_node_number, Bus_id, dri.Driver_id, Stfd.name
@@ -427,7 +433,7 @@ SELECT sch.route_id, rt.bus_no, brt.route, sch.schedule_date , brt.time, brt.nod
  st.Stop_Name, st.location_coordinate
 FROM bus_stop_reach_time brt
 JOIN schedule sch ON brt.schedule_id = sch.Schedule_id
-JOIN stops_in_route sir ON brt.node_number = sir.route_node_number and sch.route_id = sir.route_id
+JOIN stops_in_route sir ON brt.node_number = sir.route_stop_number and sch.route_id = sir.route_id
 JOIN stops st ON sir.Stop_id = st.Stop_id
 JOIN routes rt ON sch.route_id = rt.route_id
 ORDER BY sch.schedule_date, sch.route_id, sch.schedule_id, brt.time;
@@ -435,11 +441,11 @@ ORDER BY sch.schedule_date, sch.route_id, sch.schedule_id, brt.time;
 -- first and last bus time on each stop
 SELECT st.stop_name, MIN(bsrt.time) first_bus_time, MAX(bsrt.time) last_bus_time
 FROM bus_stop_reach_time bsrt
-JOIN stops_in_route sir ON bsrt.node_number = sir.route_node_number
+JOIN stops_in_route sir ON bsrt.node_number = sir.route_stop_number
 JOIN stops st ON sir.stop_id = st.stop_id
 GROUP BY st.stop_name
 ORDER BY st.stop_name;
 
-
+select * from routes;
 
 
