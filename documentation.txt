@@ -8,7 +8,7 @@ This database structure captures various aspects of the bus system, including bu
 schedules, and staff, employee. The primary goal of this database is to facilitate effective management and tracking of bus operations.
 
 
-eatures of Our project 
+Features of Our project 
 1) Data Integrity: The database enforces data integrity through the use of primary keys, foreign keys, and unique constraints, ensuring that relationships between tables are maintained.
 
 2) Comprehensive Ticket Management: The system effectively manages both online and offline tickets, allowing for clear tracking of ticket sales and validity
@@ -42,7 +42,7 @@ l. Stops: Represents bus stops where passengers can board or alight.
 m. Stops_in_route: Links stops to specific routes.
 n. Tickets: Generalization of offline and  ticket information, including pricing and validity.
 o. Users: Represents system users, including passengers and admin staff.
-p. employee: it store employee data such as its salay password username etc.
+p. employee: it store employee data such as its salay password username etc who are working on database or software.
 q. access_level: it store how much employee have access to database. 
 
 
