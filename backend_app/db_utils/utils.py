@@ -15,4 +15,4 @@ if connection.is_connected():
     print("Successfully connected to the database")
 
 # Create a cursor object to execute queries
-cursor = connection.cursor()
+cursor = connection.cursor(dictionary=True)

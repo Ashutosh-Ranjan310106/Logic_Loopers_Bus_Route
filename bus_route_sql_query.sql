@@ -3,13 +3,13 @@ CREATE DATABASE Bus_Route;
 USE Bus_Route;
 CREATE TABLE Bus_Type_Description (
     category VARCHAR(10) PRIMARY KEY,
-    Base_fare INT NOT NULL,
-    Discription TEXT
+    base_fare INT NOT NULL,
+    discription TEXT
 );
 
 CREATE TABLE Bus_type (
-    Bus_type_id INT PRIMARY KEY,
-    Capacity INT,
+    bus_type_id INT PRIMARY KEY,
+    capacity INT,
     category VARCHAR(10),
     FOREIGN KEY (category) REFERENCES Bus_Type_Description(category)
 
@@ -17,10 +17,10 @@ CREATE TABLE Bus_type (
 );
 
 CREATE TABLE Users (
-    User_id INT PRIMARY KEY,
+    user_id INT PRIMARY KEY auto_increment,
     name VARCHAR(50),
     email VARCHAR(200),
-    Gender ENUM('male', 'female') default 'male',
+    gender ENUM('male', 'female') default 'male',
     phone_number VARCHAR(12) NOT NULL,
     password  VARCHAR(500) NOt NULL
 );
@@ -29,48 +29,50 @@ CREATE TABLE access_level(
     discription TEXT NOT NULL
 );
 CREATE TABLE Employee(
-	emp_id INT PRIMARY KEY,
+	emp_id INT PRIMARY KEY auto_increment,
     user_name VARCHAR(100),
     first_name VARCHAR(100),
     last_name VARCHAR(100),
     official_email VARCHAR(200) unique,
-    Account_password VARCHAR(50),
+    account_password VARCHAR(50),
     phone_number VARCHAR(12) NOT NULL,
     access_level_id int NOT NULL,
     salary int,
     FOREIGN KEY(access_level_id) REFERENCES access_level(access_level_id)    
 );
 CREATE TABLE Stops (
-    Stop_id INT PRIMARY KEY,
-    Stop_Name VARCHAR(50) NOT NULL unique,
+    stop_id INT PRIMARY KEY,
+    stop_name VARCHAR(50) NOT NULL unique,
     location_coordinate VARCHAR(50) NOT NULL
 );
 
 
 CREATE TABLE Routes (
-    Route_id INT PRIMARY KEY,
-    Bus_no VARCHAR(10) unique,
-    Avg_Duration TIME,
+    route_id INT PRIMARY KEY,
+    bus_no VARCHAR(10) unique,
+    avg_Duration TIME,
     number_of_stops INT NOT NULL
 );
 
 
 CREATE TABLE Buses (
-    Bus_id INT PRIMARY KEY,
-    Status ENUM('active', 'inactive') default 'inactive',
-    Bus_type_id INT,
+    bus_id INT PRIMARY KEY,
+    status ENUM('active', 'inactive') default 'inactive',
+    bus_type_id INT,
     FOREIGN KEY (Bus_type_id) REFERENCES Bus_type(Bus_type_id) ON DELETE CASCADE
 );
 
 
 
 CREATE TABLE Staff (
-    Staff_id INT PRIMARY KEY,
+    staff_id INT PRIMARY KEY,
     name VARCHAR(100),
     gender ENUM('male', 'female'),
     salary INT,
     role ENUM('driver', 'conductor') NOT NULL
 );
+
+/*
 CREATE TABLE Drivers (
     Driver_id INT PRIMARY KEY,
     Staff_id INT,
@@ -83,22 +85,22 @@ CREATE TABLE Conductors (
     FOREIGN KEY (Staff_id) REFERENCES Staff(Staff_id) ON DELETE CASCADE
 
 );
+*/
 
 
 
 CREATE TABLE Stops_in_route (
     node_id INT PRIMARY KEY,
     route_stop_number INT,
-    Fair_stage INT default 1,
+    Fare_stage INT default 1,
     Route_id INT NOT NULL,
-    Stop_id INT NOT NULL,
+    stop_id INT NOT NULL,
     FOREIGN KEY (Route_id) REFERENCES Routes(Route_id) ON DELETE CASCADE,
     FOREIGN KEY (Stop_id) REFERENCES Stops(Stop_id) ON DELETE RESTRICT,
-    unique(Route_id, Stop_id),
     unique(Route_id, Stop_id, route_stop_number)
 );
 CREATE TABLE Tickets (
-    Ticket_id INT PRIMARY KEY,
+    ticket_id INT PRIMARY KEY,
     price INT NOT NULL,
     route ENUM('up', 'down'),
     gender ENUM('Male', 'Female'),
@@ -110,17 +112,17 @@ CREATE TABLE Tickets (
 
 
 CREATE TABLE Offline_Tickets (
-    Offline_ticket_id INT PRIMARY KEY,
-    Ticket_id INT,
+    offline_ticket_id INT PRIMARY KEY,
+    ticket_id INT,
     route_id INT NOT NULL,
-    FOREIGN KEY (Ticket_id) REFERENCES Tickets(Ticket_id) ON DELETE CASCADE,
-	FOREIGN KEY (route_id) REFERENCES Routes(Route_id) ON DELETE CASCADE
+    FOREIGN KEY (ticket_id) REFERENCES Tickets(ticket_id) ON DELETE CASCADE,
+	FOREIGN KEY (route_id) REFERENCES Routes(route_id) ON DELETE CASCADE
 );
 
 
 CREATE TABLE Online_Tickets (
-    Online_ticket_id INT PRIMARY KEY,
-    Ticket_id INT,
+    online_ticket_id INT PRIMARY KEY,
+    ticket_id INT,
     time_of_booking TIME,
     starting_node_id INT NOT NULL,
     ending_node_id INT NOT NULL,
@@ -132,25 +134,25 @@ CREATE TABLE Online_Tickets (
 
 );
 CREATE TABLE Schedule (
-    Schedule_id INT PRIMARY KEY,
-    Schedule_date Date,
+    schedule_id INT PRIMARY KEY,
+    schedule_date Date,
     route ENUM('up', 'down') default 'up',
-	Time time,
+	time time,
     route_id int NOT NULL,
     start_node_number INT NOT NULL,
     stop_node_number INT NOT NULL,
-    Bus_id INT,
+    bus_id INT,
     conductor_id INT,
     driver_id INT,
     FOREIGN KEY (route_id) REFERENCES Routes(route_id) ON DELETE RESTRICT,
     FOREIGN KEY (Bus_id) REFERENCES Buses(Bus_id) ON DELETE RESTRICT,
-    FOREIGN KEY (conductor_id) REFERENCES Conductors(Conductor_id) ON DELETE RESTRICT,
-    FOREIGN KEY (driver_id) REFERENCES Drivers(Driver_id) ON DELETE RESTRICT
+    FOREIGN KEY (conductor_id) REFERENCES Staff(staff_id) ON DELETE RESTRICT,
+    FOREIGN KEY (driver_id) REFERENCES Staff(staff_id) ON DELETE RESTRICT
 );
 CREATE TABLE bus_stop_reach_time(
     reach_time_id INT PRIMARY KEY auto_increment,
     route ENUM('up', 'down') default 'up',
-	Time time,
+	time time,
     node_number INT NOT NULL,
     schedule_id int,
     unique (node_number, schedule_id),
@@ -160,9 +162,9 @@ INSERT INTO Access_level(access_level_id, discription) VALUES
 (1,'edit data'),
 (2, 'update data'),
 (3, 'only View');
-INSERT INTO Employee(emp_id, first_name, last_name, User_name, salary, official_email, account_password, phone_number, access_level_id) VALUE
-(1, 'Ashutosh', 'Ranjan', 'Ashutosh_ranjan_DBA', 100000,'ashu@gmail.com', '@819', '1234567891', 1),
-(2, 'Pankaj', '', 'Pankaj_DBA', 80000,'pankaj@gmail.com', '@1234', '9868952481', 2);
+INSERT INTO Employee(first_name, last_name, User_name, salary, official_email, account_password, phone_number, access_level_id) VALUE
+('Ashutosh', 'Ranjan', 'Ashutosh_ranjan_DBA', 100000,'ashu@gmail.com', '@819', '1234567891', 1),
+('Pankaj', '', 'Pankaj_DBA', 80000,'pankaj@gmail.com', '@1234', '9868952481', 2);
 INSERT INTO Bus_Type_Description (category, Base_fare, Discription) VALUES
 ('blue',10, 'AC'),
 ('red',10, 'AC'),
@@ -174,12 +176,11 @@ INSERT INTO Bus_type (Bus_type_id, Capacity, category) VALUES
 (2, 50, 'green'),
 (3, 40, 'red'),
 (4, 50, 'orange');
-
-INSERT INTO Users (User_id, name, email, Gender, phone_number, password) VALUES
-(1, 'Rahul Sharma', 'rahul.sharma@example.com', 'male', '9876543210',"passwordhash1"),
-(2, 'Anita Desai', 'anita.desai@example.com', 'female', '8765432109',"passwordhash2"),
-(3, 'Vikram Singh', 'vikram.singh@example.com', 'male', '7654321098',"passwordhash3"),
-(4, 'Priya Verma', 'priya.verma@example.com', 'female', '6543210987',"passwordhash4");
+INSERT INTO Users (name, email, Gender, phone_number, password) VALUES
+('Rahul Sharma', 'rahul.sharma@example.com', 'male', '9876543210',"passwordhash1"),
+('Anita Desai', 'anita.desai@example.com', 'female', '8765432109',"passwordhash2"),
+('Vikram Singh', 'vikram.singh@example.com', 'male', '7654321098',"passwordhash3"),
+('Priya Verma', 'priya.verma@example.com', 'female', '6543210987',"passwordhash4");
    
 
 
@@ -221,6 +222,7 @@ INSERT INTO Staff (staff_id, name, Gender, Salary, Role) VALUES
 (4, 'Vinay', 'male', 25000, 'Conductor'),
 (5, 'Sneha', 'female', 17000, 'Conductor'),
 (6, 'Ajay', 'male', 26000, 'Conductor');
+/*
 INSERT INTO Drivers (Driver_id, staff_id) VALUES
 (1, 1),
 (2, 2),
@@ -230,9 +232,9 @@ INSERT INTO Conductors (conductor_id, staff_id) VALUES
 (1, 4),
 (2, 5),
 (3, 6);
+*/
 
-
-INSERT INTO Stops_in_route (node_id, Stop_id, Fair_stage, Route_id, route_stop_number) VALUES
+INSERT INTO Stops_in_route (node_id, Stop_id, Fare_stage, Route_id, route_stop_number) VALUES
 (1, 1, 1, 1, 1),
 (2, 2, 2, 1, 2),
 (3, 3, 2, 1, 3),
@@ -250,16 +252,15 @@ INSERT INTO Stops_in_route (node_id, Stop_id, Fair_stage, Route_id, route_stop_n
 (15, 7, 3, 3, 4),
 (16, 6, 3, 3, 5);
 
-
 INSERT INTO Schedule (Schedule_id, Schedule_date, route, time, route_id, start_node_number, stop_node_number, Bus_id, conductor_id, driver_id) VALUES
-(1, '2024-10-06', 'up', '08:00:00', 1, 3, 6, 1, 1, 3),
-(2, '2024-10-06', 'down', '10:30:00', 1, 6, 3, 1, 1, 3),
-(3, '2024-10-06', 'up', '16:00:00', 1, 1, 6, 1, 1, 3),
-(4, '2024-10-06', 'down', '18:00:00', 1, 6, 1, 1, 1, 3),
-(5, '2024-10-06', 'up', '09:00:00', 2, 1, 3, 2, 2, 2),
-(6, '2024-10-06', 'down', '10:00:00', 2, 3, 1, 2, 2, 2),
-(7, '2024-10-06', 'up', '12:00:00', 3, 1, 3, 3, 3, 1),
-(8, '2024-10-06', 'down', '13:45:00', 3, 3, 1, 3, 3, 1);
+(1, '2024-10-06', 'up', '08:00:00', 1, 3, 6, 1, 4, 3),
+(2, '2024-10-06', 'down', '10:30:00', 1, 6, 3, 1, 4, 3),
+(3, '2024-10-06', 'up', '16:00:00', 1, 1, 6, 1, 4, 3),
+(4, '2024-10-06', 'down', '18:00:00', 1, 6, 1, 1, 4, 3),
+(5, '2024-10-06', 'up', '09:00:00', 2, 1, 3, 2, 5, 2),
+(6, '2024-10-06', 'down', '10:00:00', 2, 3, 1, 2, 5, 2),
+(7, '2024-10-06', 'up', '12:00:00', 3, 1, 3, 3, 6, 1),
+(8, '2024-10-06', 'down', '13:45:00', 3, 3, 1, 3, 6, 1);
 
 
 INSERT INTO bus_stop_reach_time (route, time, node_number, schedule_id) 
@@ -380,8 +381,10 @@ SELECT * FROM Stops;
 SELECT * FROM Routes;
 SELECT * FROM Buses;
 select * from Staff;
+/*
 SELECT * FROM Drivers;
 SELECT * FROM Conductors;
+*/
 SELECT * FROM Stops_in_route;
 SELECT * FROM Schedule;
 select * from Tickets;
@@ -391,7 +394,7 @@ SELECT * FROM bus_stop_reach_time;
 
 
 -- all stop connectivity
-select Routes.Route_id,bus_no ,node_id, route_stop_number, Fair_stage, Stops_In_Route.Stop_id, Stop_Name, location_coordinate
+select Routes.Route_id,bus_no ,node_id, route_stop_number, fare_stage, stops_In_route.stop_id, stop_Name, location_coordinate
 from Stops_In_Route
 join Stops on Stops.stop_id = Stops_In_Route.stop_id
 join Routes on Routes.route_id = Stops_In_Route.route_id
@@ -405,19 +408,21 @@ join Stops on Stops.stop_id = sir.stop_id
 join routes rt on sir.route_id = rt.route_id
 where rt.bus_no like '%123'
 order by route_stop_number;
-            select * from 
-            Stops_In_Route sir
-            join Stops on Stops.stop_id = sir.stop_id
-            join routes rt on sir.route_id = rt.route_id
-            order by rt.route_id, route_stop_number;
+
+
+select * from 
+Stops_In_Route sir
+join Stops on Stops.stop_id = sir.stop_id
+join routes rt on sir.route_id = rt.route_id
+order by rt.route_id, route_stop_number;
+
+
 -- driver and Conductor  name for each schedule 
-select Schedule_id, route, Time, start_node_number, stop_node_number, Bus_id, dri.Driver_id, Stfd.name
-driver_name, stfd.Gender, stfd.Salary, cdr.conductor_id, stfc.name conductor_name, stfc.Gender, stfc.Salary
+select Schedule_id, route, Time, start_node_number, stop_node_number, Bus_id, sch.driver_id, Stfd.name
+driver_name, stfd.Gender, stfd.Salary, sch.conductor_id , stfc.name conductor_name, stfc.Gender, stfc.Salary
 from schedule sch
-join Drivers dri on dri.driver_id = sch.driver_id
-join Conductors cdr on cdr.conductor_id = sch.conductor_id
-join Staff stfc ON stfc.staff_id = cdr.staff_id
-join Staff stfd ON stfd.staff_id = dri.staff_id 
+join Staff stfc ON stfc.staff_id = sch.driver_id
+join Staff stfd ON stfd.staff_id = sch.conductor_id 
 order by schedule_id;
 
 -- number of tickets and total fair
@@ -452,6 +457,16 @@ JOIN stops st ON sir.stop_id = st.stop_id
 GROUP BY st.stop_name
 ORDER BY st.stop_name;
 
+
+select * from 
+Stops_In_Route sir
+join Stops_In_Route sir2 on sir.stop_id = sir2.stop_id and sir.route_id != sir2.route_id
+order by sir.route_id;
+
+
 select * from routes;
 
 
+select sir.*, sir2.route_id other_route_id, sir2.route_stop_number other_route_stop_number from 
+Stops_In_Route sir
+join Stops_In_Route sir2 on sir.stop_id = sir2.stop_id;

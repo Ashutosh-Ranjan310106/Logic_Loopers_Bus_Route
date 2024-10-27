@@ -14,3 +14,73 @@ features:-
   book online tickets
   
 
+  Bus Route Database Documentation
+
+
+Overview
+
+The Bus Route Database is designed to manage the operations of a bus transportation system (mainly city local bus like DTC BUS).
+This database structure captures various aspects of the bus system, including bus types, users, stops, routes, tickets,
+schedules, and staff, employee. The primary goal of this database is to facilitate effective management and tracking of bus operations.
+
+
+Features of Our project 
+1) Data Integrity: The database enforces data integrity through the use of primary keys, foreign keys, and unique constraints, ensuring that relationships between tables are maintained.
+
+2) Comprehensive Ticket Management: The system effectively manages both online and offline tickets, allowing for clear tracking of ticket sales and validity
+
+3) Staff Management: Detailed information about staff roles (drivers and conductors) allows for efficient resource management within the transportation system.
+
+4) Dynamic Route Management: The database facilitates dynamic handling of routes and stops, enabling real-time updates to schedules and routes.
+
+5) Reporting and Analysis: The structure allows for the generation of various reports, such as ticket sales, staff assignments, and bus schedules, aiding decision-making processes.
+
+6) User Management: Detailed user records help in tracking customer demographics and preferences, which can inform marketing and operational strategies.
+
+7) Employee Management: employee records with there level of access to database and who can do what in database
+
+Tables & their relations
+
+
+Tables:-
+a. Buses: Represents all buses in the system, including their details.
+b. Bus_stop_reach_time: Records the when buses reach stops.
+c. Bus_Type_Description: Describes different types of buses available in the fleet.
+d. Bus_type: Categorizes buses into different types based on specifications.
+e. Conductors: child entity of staff Represents bus conductors, including their details and assignments.
+f. Drivers: child entity of staff Represents bus drivers and their related information.
+g. Offline_Tickets: clild entity of tickets Records details of tickets purchased offline.
+h. Online_Tickets: clild entity of tickets Records details of tickets purchased online.
+i. Routes: Defines various bus routes available in the system.
+j. Schedule: Contains the schedules for bus departures and arrivals.
+k. Staff: Represents all staff members involved in operations geralization of conductors and drivers tables.
+l. Stops: Represents bus stops where passengers can board or alight.
+m. Stops_in_route: Links stops to specific routes.
+n. Tickets: Generalization of offline and  ticket information, including pricing and validity.
+o. Users: Represents system users, including passengers and admin staff.
+p. employee: it store employee data such as its salay password username etc who are working on database or software.
+q. access_level: it store how much employee have access to database. 
+
+
+Relationships:-
+Bus_Type_Description is linked to Bus_type by category.
+Bus_type is linked to Buses by Bus_type_id.
+Users is linked to Online_Tickets and Offline_Tickets through User_id.
+Stops_in_route is linked to Routes and Stops, establishing the connection between stops and routes.
+Schedule connects Buses, Conductors, and Drivers, coordinating the operational aspects of bus schedules.
+bus_stop_reach_time provides time tracking related to specific stops within a scheduled route.
+tickets linked with category to provide detail for validity of ticket in buses
+employee linked with access_level prodived details about access of employee to database
+
+
+
+for testing we have taken following route map:-
+Route 1:
+[Stop a] -> [Stop b] -> [Stop c] -> [Stop d] -> [Stop e] -> [Stop f]
+
+Route 2:
+[Stop d] -> [Stop i] -> [Stop j] -> [Stop h] -> [Stop g]
+
+Route 3:
+[Stop c] -> [Stop i] -> [Stop k] -> [Stop g] -> [Stop f]
+

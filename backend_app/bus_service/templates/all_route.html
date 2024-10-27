@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Bus Routes Display</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #007bff;
+        }
+        .route-section {
+            margin-bottom: 50px;
+        }
+        .route-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-top: 20px;
+            overflow-x: auto;
+            padding: 20px;
+            position: relative;
+        }
+        .stop-board {
+            width: 150px;
+            border: 1px solid #007bff;
+            border-radius: 8px;
+            margin: 10px;
+            padding: 10px;
+            text-align: center;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .stop-board:hover {
+            transform: scale(1.05);
+        }
+        .stop-content {
+            display: none;
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+        .road-line {
+            height: 5px;
+            background-color: #007bff;
+            margin: 0 5px;
+            border-radius: 50px;
+            transition: width 0.3s;
+        }
+        .bus {
+            position: absolute;
+            width: 30px;
+            height: 20px;
+            background-color: red;
+            top: -25px;
+            left: 0;
+            border-radius: 5px;
+            transition: left 0.5s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+        @media (max-width: 768px) {
+            .route-container {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .road-line {
+                width: 60px;
+            }
+        }
+    </style>
+    <script>
+        function toggleStopContent(routeId, stopIndex, stopPosition) {
+            const content = document.getElementById(`stop-content-${routeId}-${stopIndex}`);
+            const allContents = document.querySelectorAll(`.stop-content[data-route="${routeId}"]`);
+            
+            // Hide all stops for the specific route
+            allContents.forEach(c => c.style.display = "none");
+
+            // Toggle display of selected stop
+            content.style.display = content.style.display === "none" ? "block" : "none";
+
+            // Move bus icon
+            const bus = document.getElementById(`bus-${routeId}`);
+            bus.style.left = stopPosition + "px";
+        }
+    </script>
+</head>
+<body>
+    <h1>All Bus Routes</h1>
+
+    <!-- Loop through all routes -->
+    {% for route in routes %}
+    <div class="route-section">
+        <h2>Bus Route {{ route.Bus_no }} (ID: {{ route.Route_id }})</h2>
+        <div class="route-container">
+            <div class="bus" id="bus-{{ route.Route_id }}"></div>
+            
+            {% for stop in route.stop_list %}
+                <!-- Stop board for each stop -->
+                <div class="stop-board" onclick="toggleStopContent('{{ route.Route_id }}', '{{ loop.index }}', {{ loop.index * 200 }})">
+                    <strong>Stop {{ stop.route_stop_number }}</strong>
+                    <p>{{ stop.Stop_Name }}</p>
+                    <div class="stop-content" id="stop-content-{{ route.Route_id }}-{{ loop.index }}" data-route="{{ route.Route_id }}">
+                        <p><strong>Fare Stage:</strong> {{ stop.Fair_stage }}</p>
+                        <p><strong>Coordinates:</strong> {{ stop.location_coordinate }}</p>
+                    </div>
+                </div>
+                {% if not loop.last %}
+                    <div class="road-line"></div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</body>
+</html>
