@@ -1,4 +1,4 @@
-python_executable = r"C:\Users\rrpra\OneDrive\Documents\GitHub\Logic_Loopers_Bus_Route\backend\venv\Scripts\python.exe"
+python_executable = r"C:\Users\rrpra\OneDrive\Documents\GitHub\Logic_Loopers_Bus_Route\backend_app\venv\Scripts\python.exe"
 
 import mysql.connector
 

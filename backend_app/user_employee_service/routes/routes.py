@@ -1,8 +1,12 @@
 from flask import Blueprint, render_template
 from user_employee_service.controller.user_controller import user_controller
 from user_employee_service.controller.employee_controller import employee_controller
-
+from bus_service.routes.routes import *
+from bus_service.routes.path_routes import *
 user_employee_route = Blueprint('user_employee_route', __name__)
+@user_employee_route.route('/')
+def home():
+    return user_controller.get_all_links()
 
 
 @user_employee_route.route('/users/create', methods=['POST'])

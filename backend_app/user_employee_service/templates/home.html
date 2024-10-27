@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Navigation</title>
+</head>
+<body>
+    <h1>Welcome to the Service Application</h1>
+    <ul>
+        <li><a href="{{ url_for('user_employee_route.create_user') }}">Create User</a></li>
+        <li><a href="{{ url_for('user_employee_route.login_user') }}">Login User</a></li>
+        <li><a href="{{ url_for('user_employee_route.create_employee') }}">Create Employee</a></li>
+        <li><a href="{{ url_for('user_employee_route.login_employee') }}">Login Employee</a></li>
+        <li><a href="{{ url_for('bus_route.get_all_bus') }}">View All Buses</a></li>
+        <li><a href="{{ url_for('bus_route.get_bus_routes', bus_number='DTC-123') }}">Get Bus Route (Example: DTC-123)</a></li>
+        <li><a href="{{ url_for('path_route.get_path_of_stop', stop1=1, stop2=2) }}">Get Path between Stops (Example: Stop 1 to Stop 2)</a></li>
+    </ul>
+</body>
+</html>

@@ -2,6 +2,8 @@ from user_employee_service.service.user_service import user_service
 from user_employee_service.view.view import view
 from flask import render_template, request, jsonify
 class user_controller:
+    def get_all_links():
+        return view.render_links()
     def create_user():
         data = request.get_json()
         name = data.get("name",'')
