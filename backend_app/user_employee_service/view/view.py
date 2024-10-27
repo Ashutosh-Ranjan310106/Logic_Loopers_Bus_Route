@@ -1,18 +1,23 @@
 from flask import render_template
 
-class view:
-    def render_error(msg, user_id = None):
-        temp = {'error':msg}
-        if user_id:
-            temp['user_id'] = user_id
-        return render_template('error.html', error_message=temp['error'])
-    def render_successful(msg, user_id = None):
-        temp = {'successful':msg}
-        if user_id:
-            temp['user_id'] = user_id
-        return temp
-    
+class View:
+    @staticmethod
+    def render_successful(message, user_id):
+        return {
+            "status": "success",
+            "message": message,
+            "user_id": user_id
+        }
 
+    @staticmethod
+    def render_error(message):
+        return {
+            "status": "error",
+            "message": message
+        }
+
+    
+    @staticmethod
     def render_links():
         links = {'create_user':'http://127.0.0.1:5002/users/create','login_user':'http://127.0.0.1:5002/users/login', 'create_employee':'http://127.0.0.1:5002/employee', 'login_employee':'http://127.0.0.1:5002/employee', 'bus route by bus number':'http://127.0.0.1:5001/buses/routes/<bus_number>', 'all bus route':'http://127.0.0.1:5001/buses', 'path between stops':'http://127.0.0.1:5001/buses/path/<int:stop1>/<int:stop2>'}
         return links

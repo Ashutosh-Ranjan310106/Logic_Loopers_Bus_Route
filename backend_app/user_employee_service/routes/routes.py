@@ -16,10 +16,10 @@ def create_user():
 @user_employee_route.route('/users/login', methods=['POST'])
 def login_user():
     return user_controller.login_user()
-@user_employee_route.route('/employee', methods=['POST'])
+@user_employee_route.route('/employee/create', methods=['POST'])
 def create_employee():
     return employee_controller.create_employee()
-@user_employee_route.route('/employee', methods=['get'])
+@user_employee_route.route('/employee/login', methods=['POST'])
 def login_employee():
     return employee_controller.login_employee()
 

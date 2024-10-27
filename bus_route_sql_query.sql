@@ -30,11 +30,11 @@ CREATE TABLE access_level(
 );
 CREATE TABLE Employee(
 	emp_id INT PRIMARY KEY auto_increment,
-    user_name VARCHAR(100),
+    user_name VARCHAR(100) unique,
     first_name VARCHAR(100),
     last_name VARCHAR(100),
     official_email VARCHAR(200) unique,
-    account_password VARCHAR(50),
+    password VARCHAR(200),
     phone_number VARCHAR(12) NOT NULL,
     access_level_id int NOT NULL,
     salary int,
@@ -162,7 +162,7 @@ INSERT INTO Access_level(access_level_id, discription) VALUES
 (1,'edit data'),
 (2, 'update data'),
 (3, 'only View');
-INSERT INTO Employee(first_name, last_name, User_name, salary, official_email, account_password, phone_number, access_level_id) VALUE
+INSERT INTO Employee(first_name, last_name, User_name, salary, official_email, password, phone_number, access_level_id) VALUE
 ('Ashutosh', 'Ranjan', 'Ashutosh_ranjan_DBA', 100000,'ashu@gmail.com', '@819', '1234567891', 1),
 ('Pankaj', '', 'Pankaj_DBA', 80000,'pankaj@gmail.com', '@1234', '9868952481', 2);
 INSERT INTO Bus_Type_Description (category, Base_fare, Discription) VALUES
