@@ -19,9 +19,9 @@ CREATE TABLE Bus_type (
 CREATE TABLE Users (
     user_id INT PRIMARY KEY auto_increment,
     name VARCHAR(50),
-    email VARCHAR(200),
+    email VARCHAR(200) unique,
     gender ENUM('male', 'female') default 'male',
-    phone_number VARCHAR(12) NOT NULL,
+    phone_number VARCHAR(12)  unique,
     password  VARCHAR(500) NOt NULL
 );
 CREATE TABLE access_level(
@@ -465,8 +465,11 @@ order by sir.route_id;
 
 
 select * from routes;
-
-
+select * from users;
+INSERT INTO Users ( name, email, Gender, phone_number, password) 
+                VALUES (null, 'sadsad', null, '9868952481', 'QWEQWEqwrewr');
+INSERT INTO Users (email, phone_number, password) 
+                VALUES ('sadsad','9868952481', 'QWEQWEqwrewr');
 select sir.*, sir2.route_id other_route_id, sir2.route_stop_number other_route_stop_number from 
 Stops_In_Route sir
 join Stops_In_Route sir2 on sir.stop_id = sir2.stop_id;

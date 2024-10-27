@@ -8,13 +8,19 @@ Team Members:-
   Pankaj
   Aryan
   Tejasvi
-features:-
-  to get dtc stop and its connectivity data
-  get which bus have which route
-  book online tickets
   
 
-  Bus Route Database Documentation
+
+Installation Steps
+clone repository
+Run "bus_route_sql_query.sql" to create database
+to start server create virtual environment and activate it 
+Installation requirment.txt
+using where python get virtual python.exe link and replace it in db_utils/utils.py  in variable python_executable
+run start_server.py using python
+
+
+Bus Route Database Documentation
 
 
 Overview
