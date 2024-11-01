@@ -11,7 +11,6 @@ class bus_view:
         return route_view
     def render_all_routes(routes):
         all_routes=[]
-        print(routes)
         for route_id in routes:
             all_routes.append(bus_view.render_route(routes[route_id], template=False))
         return render_template('all_route.html', routes=all_routes)

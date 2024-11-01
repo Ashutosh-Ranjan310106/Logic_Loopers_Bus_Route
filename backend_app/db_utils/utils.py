@@ -2,17 +2,22 @@ python_executable = r"C:\Users\rrpra\OneDrive\Documents\GitHub\Logic_Loopers_Bus
 
 import mysql.connector
 
-# Establish a connection to the database
-connection = mysql.connector.connect(
-    host="localhost",        # Your host, e.g., "localhost"
-    user="root",     # Your MySQL username
-    password="password", # Your MySQL password
-    database="bus_route"  # The name of the database you want to connect to
-)
+db_config = {'host':"localhost",
+    'user':"root",     
+    'password':"password", 
+    'database':"bus_route" }
+connection = mysql.connector.connect(**db_config)
 
-# Check if the connection is successful
+
 if connection.is_connected():
     print("Successfully connected to the database")
+    cursor = connection.cursor(dictionary=True)
+else:
+    print("data base connection failed")
 
-# Create a cursor object to execute queries
-cursor = connection.cursor(dictionary=True)
+
+def get_connection():
+    return connection
+
+def get_cursor():
+    return cursor

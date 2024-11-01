@@ -17,24 +17,30 @@ class employee_controller:
         salary = data.get("salary")
         user_id = EmployeeService.create_employee(user_name, official_email, password, phone_number, access_level_id,  first_name, last_name, salary)
         if user_id:
-            return View.render_successful("create successfull", user_id)
+            return View.render_success("create successfull", user_id)
         return View.render_error("faild")
 
     def login_employee():
         data = request.get_json()
         official_email = data.get("official_email")
         password = data.get("password")
-        
-        # Validate the input
         if not official_email or not password:
             return View.render_error("Email and password are required"), 400
 
-        # Call the EmployeeService's login_user method
-        result = EmployeeService.login_employee(official_email, password)
+        session_id = EmployeeService.login_employee(official_email, password)
 
-        # Check if login was successful
-        if result:
-            # Here, you can return a success response or redirect the user as needed
-            return View.render_successful("login succesfull", result["emp_id"]), 200
-        else:
-            return View.render_error("password wrong"), 401
+        if session_id == -1:
+            return View.render_error("email not found")
+        elif session_id == -2:
+            return View.render_error("wrong password"), 401
+        elif session_id == -3:
+            return View.render_error("Already logged in. Only one active session allowed."), 409
+
+        return View.render_success("login succesfull", session_id), 200
+    def logout_employee():
+        data = request.get_json()
+        session_id = data.get("session_id")
+
+        session_id = EmployeeService.logout_employee(session_id)
+        return View.render_success("logout succesfull", session_id), 200
+        

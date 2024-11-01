@@ -1,5 +1,6 @@
-from db_utils.utils import cursor  
-
+from db_utils.utils import get_cursor, get_connection 
+cursor = get_cursor()
+connection = get_connection()
 
 class bus_service: 
     def get_all_stops():

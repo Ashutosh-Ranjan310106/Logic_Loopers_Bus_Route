@@ -1,7 +1,18 @@
-from db_utils.utils import cursor, connection  
+from db_utils.utils import get_cursor, get_connection  
 from werkzeug.security import generate_password_hash, check_password_hash
+import hashlib
+import time
+from datetime import datetime
+import pytz
+cursor = get_cursor()
+connection = get_connection()
+ist = pytz.timezone('Asia/Kolkata')
 
+def generate_unique_key(user_id):
+    hash_object = hashlib.sha256(f'{user_id}{time.time()}'.encode())
+    return hash_object.hexdigest()
 class EmployeeService:
+    @staticmethod
     def create_employee(user_name, official_email, password, phone_number, access_level_id,  first_name = None, last_name = None, salary = None):
         hashed_password = generate_password_hash(password)
         coulmn =''
@@ -35,14 +46,37 @@ class EmployeeService:
     @staticmethod
     def login_employee(official_email, password):
         query = "SELECT emp_id, password FROM Employee WHERE official_email = %s"
-        try:
-            cursor.execute(query, (official_email,))
-            emp = cursor.fetchone()
+        cursor.execute(query, [official_email])
+        emp = cursor.fetchone()
+        if emp and check_password_hash(emp["password"], password):
+            session_id = generate_unique_key(emp["emp_id"])
+            query = "SELECT session_id FROM Emp_session WHERE emp_id = %s AND status = 1"
+            cursor.execute(query, [emp["emp_id"]])
+            active_session = cursor.fetchone()
 
-            if emp and check_password_hash(emp["password"], password):
-                return emp
-            else:
+            if active_session:
+                return -3 
+
+            query = '''
+                    INSERT INTO Emp_session(session_id, emp_id, session_at) Values
+                    (%s, %s, %s)
+                    '''
+            try:
+                cursor.execute(query, (session_id, emp["emp_id"], datetime.now(ist)))
+                connection.commit()
+                return session_id
+            except Exception as e:
+                print(f"Error: {e}")
+                return -4
+        else:
+            if not emp:
                 return -1
-        except Exception as e:
-            print(f"Error: {e}")
-            return "An error occurred while logging in"
+            return -2
+
+        
+    def logout_employee(session_id):
+        query = '''
+                update emp_session set status = 0 where session_id = %s and status = 1;
+                '''
+        cursor.execute(query, (session_id,))
+        connection.commit()

@@ -8,7 +8,7 @@ class View:
             "message": message,
         }
         if user_id:
-            r["emp_id"] = user_id
+            r["user_id"] = user_id
         return r
 
     @staticmethod

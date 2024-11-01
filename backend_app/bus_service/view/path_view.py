@@ -1,4 +1,5 @@
-from bus_service.service.service import *
+
+from flask import render_template
 class path_view:
     def render_path(paths):
         for path in paths:
@@ -11,6 +12,7 @@ class path_view:
                 stops_count = len(sub_path['stop_list'])
                 total_stops += stops_count
                 current_fare_stage = sub_path['stop_list'][0]["Fare_stage"]
+                sub_path['bus_no'] = sub_path['stop_list'][0]["bus_no"]
                 # Initial fare stages for each sub-path
                 total_ac_fare += 10  # Base fare for AC
                 total_non_ac_fare += 5  # Base fare for non-AC
@@ -25,10 +27,9 @@ class path_view:
                     current_fare_stage = fare_stage
             # Append summary data to the path
             path.append({
-                "changes": changes,
+                "changes": changes-1,
                 "total_stops": total_stops,
                 "total_ac_fare": total_ac_fare,
                 "total_non_ac_fare": total_non_ac_fare
             })
-        
-        return paths
+        return render_template('bus_paths.html', paths=paths)

@@ -22,6 +22,9 @@ def create_employee():
 @user_employee_route.route('/employee/login', methods=['POST'])
 def login_employee():
     return employee_controller.login_employee()
+@user_employee_route.route('/employee/logout', methods=['POST'])
+def logout_employee():
+    return employee_controller.logout_employee()
 
 
     

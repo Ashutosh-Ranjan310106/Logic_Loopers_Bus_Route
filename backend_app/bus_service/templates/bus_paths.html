@@ -71,7 +71,9 @@
                 <ul>
                     {% for sub_path in path[:-1] %}
                         <li class="sub-path">
-                            <p><strong>Route:</strong> {{ sub_path.route[0] }} ({{ sub_path.route[1] }})</p>
+                            <p><strong>Bus Number:</strong> {{ sub_path.bus_no }} </p>
+                            <p><strong>direction :- </strong> {{ sub_path.direction[0] }}
+                                <strong>toward :- </strong> {{ sub_path.direction[1] }}</p>
                             <p>Stops:</p>
                             <ul>
                                 {% for stop in sub_path.stop_list %}

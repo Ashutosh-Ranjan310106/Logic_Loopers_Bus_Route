@@ -1,6 +1,7 @@
-from db_utils.utils import cursor, connection  
+from db_utils.utils import get_cursor, get_connection  
 from werkzeug.security import generate_password_hash, check_password_hash
-
+cursor = get_cursor()
+connection = get_connection()
 class user_service: 
     def create_user(name, email, gender, phone_number, password):
         hash_password = generate_password_hash(password)
