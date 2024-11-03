@@ -74,6 +74,7 @@
                             <p><strong>Bus Number:</strong> {{ sub_path.bus_no }} </p>
                             <p><strong>direction :- </strong> {{ sub_path.direction[0] }}
                                 <strong>toward :- </strong> {{ sub_path.direction[1] }}</p>
+                            <p><strong>recent bus timings:- </strong> {{ sub_path.bus_timings}}</p>
                             <p>Stops:</p>
                             <ul>
                                 {% for stop in sub_path.stop_list %}

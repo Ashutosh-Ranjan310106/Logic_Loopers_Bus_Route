@@ -309,7 +309,7 @@ VALUES
 ( '13:50:00', 3, 8),
 ( '13:54:00', 2, 8),
 ( '13:58:00', 1, 8);
-desc tickets;
+
 select * from schedule join buses on schedule.bus_id = buses.bus_id join bus_type on bus_type.bus_type_id = buses.bus_type_id;
 INSERT INTO Tickets (price, route_id, gender, ticket_type, date_of_tickets, category) VALUES
 (20, 1, 'Male', 'offline', '2024-10-06', 'red'),
@@ -491,3 +491,13 @@ INSERT INTO Users (email, phone_number, password)
 select sir.*, sir2.route_id other_route_id, sir2.route_stop_number other_route_stop_number from 
 Stops_In_Route sir
 join Stops_In_Route sir2 on sir.stop_id = sir2.stop_id;
+
+
+SELECT st.stop_name, bsrt.time bus_time, bus_no
+            FROM bus_stop_reach_time bsrt
+            JOIN schedule sch ON sch.schedule_id = bsrt.schedule_id
+            JOIN stops_in_route sir ON bsrt.node_number = sir.route_stop_number and sch.route_id = sir.route_id
+            JOIN routes rt ON rt.route_id = sir.route_id
+            JOIN stops st ON sir.stop_id = st.stop_id
+            where bsrt.time > '00:00:00'
+            ORDER BY bsrt.time;

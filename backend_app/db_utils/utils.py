@@ -21,3 +21,9 @@ def get_connection():
 
 def get_cursor():
     return cursor
+
+def close_connection():
+    connection.close()
+
+def close_cursor():
+    cursor.close()

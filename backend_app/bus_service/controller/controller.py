@@ -5,14 +5,24 @@ from flask import request
 class bus_controller:
     def get_bus_routes():
         bus_number = request.args.get('bus_number')
-        route = bus_service.get_bus_route(bus_number)
+        route = BusService.get_bus_route(bus_number)
 
         if route:
-            return bus_view.render_route(route)
-        return bus_view.render_error("no route found")
+            return BusView.render_route(route)
+        return BusView.render_error("no route found")
 
     def get_all_routes():
-        all_routes = bus_service.get_all_route_map()
+        all_routes = BusService.get_all_route_map()
         if all_routes:
-            return bus_view.render_all_routes(all_routes)
-        return bus_view.render_error("no route found")
+            return BusView.render_all_routes(all_routes)
+        return BusView.render_error("no route found")
+    
+    def get_recent_buses():
+        stop_name = request.args.get('stop_name')
+        stop_id = request.args.get('stop_id')
+        if not stop_id and not stop_name:
+            return BusView.render_error('incompleate query one parameter is required') 
+        recent_buses = BusService.get_recent_buses([stop_id], [stop_name])
+        if recent_buses:
+            return BusView.render_recent_buses(recent_buses)
+        return BusView.render_error("no recent buses")

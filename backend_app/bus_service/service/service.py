@@ -1,8 +1,9 @@
 from db_utils.utils import get_cursor, get_connection 
+from datetime import datetime
 cursor = get_cursor()
 connection = get_connection()
 
-class bus_service: 
+class BusService: 
     def get_all_stops():
         query = f'''
             select * from 
@@ -65,5 +66,39 @@ class bus_service:
         cursor.execute(query)
         route = cursor.fetchall()
         return route
+    def get_recent_buses(stop_ids=None, stop_names=None, bus_number=None, after_time=None):
+        if not after_time:
+            after_time = datetime.now().time()
+        if stop_ids[0]:
+            parameter = 'st.stop_id IN (%s)' % ','.join(['%s'] * len(stop_ids))
+            value = stop_ids
+        elif stop_names[0]:
+            parameter = 'st.stop_name IN (%s)' % ','.join(['%s'] * len(stop_names))
+            value = stop_names
+        if bus_number:
+            parameter += 'add bus_no = %s'
+            value.append(bus_number)
+        recent_bus_query = f'''
+            SELECT  stop_name, bsrt.time bus_time, bus_no, st.stop_id, sch.route direction
+            FROM bus_stop_reach_time bsrt
+            JOIN schedule sch ON sch.schedule_id = bsrt.schedule_id
+            JOIN stops_in_route sir ON  bsrt.node_number = sir.route_stop_number and sch.route_id = sir.route_id
+            JOIN routes rt ON rt.route_id = sch.route_id
+            JOIN stops st ON sir.stop_id = st.stop_id
+            where bsrt.time > %s  and {parameter}
+            ORDER BY bsrt.time;
+            '''
+        cursor.execute(recent_bus_query, ['12:00:00']+value)
+        recent_buses = cursor.fetchall()
+        bus_timing_map = {}
+        for timing in recent_buses:
+            stop_name = timing['stop_name']
+            bus_time = timing['bus_time']
+            bus_number = timing['bus_no']
+            direction = timing['direction']
+            if stop_name not in bus_timing_map:
+                bus_timing_map[stop_name] = []
+            bus_timing_map[stop_name].append([bus_time, bus_number, direction])
+        return bus_timing_map
     
     
