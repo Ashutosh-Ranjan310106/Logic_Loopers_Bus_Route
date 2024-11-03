@@ -1,0 +1,353 @@
+feature of backend
+
+# User Management
+- User Creation:            POST /user/create
+- User Login:              POST /user/login
+- Book Ticket:             POST /user/ticket
+- Calculate Fare:          GET /user/fare
+
+# Employee Management
+- Employee Creation:       POST /employee/create
+- Employee Login:          POST /employee/login
+- Employee Logout:         POST /employee/logout
+
+# Bus Management
+- Retrieve All Bus Routes: GET /buses
+- Retrieve Bus Routes by Number: GET /buses/routes
+- Find Path Between Stops: GET /buses/path
+
+# Database Operations
+## Stop Management
+- Add Stops:               POST /database/stop/add
+- Get Stops:               GET /database/stop/get
+
+## Route Management
+- Add Routes:              POST /database/route/add
+- Add Stops to Existing Route: POST /database/route/addstop
+- Delete Route:            POST /database/route/delete
+
+## Schedule Management
+- Delete Schedule:         POST /database/schedule/delete
+- Get Schedule:           POST /database/schedule/get
+
+## Ticket Management
+- Book Offline Ticket:     POST /database/ticket/add
+- Verify Ticket:           GET /database/ticket/get
+
+## Bus Management
+- Add Bus:                POST /database/bus/add
+
+## Staff Management
+- Add Staff:              POST /database/staff/add
+
+
+
+
+Brief discription of all endpoint and app stucture
+#####################################################################################################################
+user_employee http://127.0.0.1:5002
+	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	/user
+        -----------------------------------------------------------------------------------------------------
+		/user/create 
+				POST
+    			Handle user creation.
+
+    			This method extracts data from a JSON payload to create a new user.
+    			Expected fields in JSON:
+       				- name (str): User's name (default: empty string).
+       				- email (str): User's email address (required).
+       				- gender (str): User's gender (default: empty string).
+       				- phone_number (str): User's phone number.
+       				- password (str): User's account password (required).
+
+    			Returns:
+        			- A success message and user ID if user creation is successful.
+        			- An error message with status 400 if email or password is missing.
+       				- An error message if the email or phone number is already registered.
+
+    				
+        -----------------------------------------------------------------------------------------------------
+		/user/login
+			POST
+			Authenticates an existing user based on provided credentials.
+        
+        		Expected JSON Payload:
+            			- email (str): User’s email (optional).
+            			- phone_number (str): User’s phone number (optional).
+            			- password (str): User’s password (required).
+        
+       			Returns:
+            			Success message and user ID if login is successful.
+            			Error messages if credentials are incorrect or password is wrong
+				
+        -----------------------------------------------------------------------------------------------------
+		/user/ticket
+			Books an online ticket for a user on a specific route.
+			POST
+			Expected JSON Payload:
+				- user_id (int): ID of the user booking the ticket.
+				- route_id (int): ID of the route.
+				- starting_stop_number (int): Starting stop number for the trip.
+				- ending_stop_number (int): Ending stop number for the trip.
+				- gender (str): Gender of the ticket holder.
+				- category (str): Category of the bus service.
+
+			Returns:
+				- A JSON response with the ticket details if booking is successful.
+				- Error message if required parameters are missing or if any other issue arises during booking.
+			
+        -----------------------------------------------------------------------------------------------------
+		/user/fare
+			GET
+			Calculates the fare for a specified bus route and stop range.
+        
+			Query Parameters:
+				- bus_number (str): The bus number for which fare is being calculated.
+				- starting_stop_number (str): Stop number where the journey begins.
+				- ending_stop_number (str): Stop number where the journey ends.
+				- category (str): Category of bus service (e.g., AC, non-AC).
+
+			Returns:
+				- A JSON response with fare details if the route and stops are valid.
+				- Error message if required parameters are missing or the route/stops are invalid.
+	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	/employee
+        -----------------------------------------------------------------------------------------------------
+		/employee/create
+			POST
+			Registers a new employee with provided details.
+        
+			Expected JSON Payload:
+				- user_name (str): Employee’s username (optional).
+				- official_email (str): Employee’s official email (required).
+				- password (str): Employee’s password (required).
+				- phone_number (str): Employee’s phone number (optional).
+				- access_level_id (str): Access level of the employee.
+				- salary (float): Employee’s salary.
+			
+			Returns:
+				Success message and employee ID if creation is successful.
+				Error message if creation fails.
+        -----------------------------------------------------------------------------------------------------
+		/employee/login
+			POST
+			Authenticates an employee.
+			Expected JSON Payload:
+				- official_email (str): Employee’s official email (required).
+				- password (str): Employee’s password (required).
+			
+			Returns:
+				Success message and session ID if login is successful.
+				Error messages if email is not found, password is incorrect, or if multiple logins are attempted.
+        -----------------------------------------------------------------------------------------------------
+		/employee/logout
+			POST
+			Logs out an employee from the current session.
+			
+			Expected JSON Payload:
+				- session_id (str): Employee’s current session ID.
+			
+			Returns:
+				Success message on successful logout.
+
+#####################################################################################################################
+bus http://127.0.0.1:5001
+	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	/buses
+		GET		
+		Retrieves all available bus routes.
+		
+		Returns:
+			- A JSON response containing a list of all bus routes if successful.
+			- An error message if no routes are found.
+        -----------------------------------------------------------------------------------------------------
+		
+		/buses/routes
+
+			GET
+			Retrieves the bus routes for a specified bus number.
+		
+			Expected Query Parameters:
+				- bus_number (str): The number of the bus for which routes are being requested.
+		
+			Returns:
+				- A JSON response containing the route details if found.
+				- An error message if no route is found.
+        -----------------------------------------------------------------------------------------------------
+		
+		/buses/path
+
+			GET 
+			Finds the path between two specified bus stops.
+		
+			Expected Query Parameters:
+				- stop1 (int): The starting bus stop.
+				- stop2 (int): The destination bus stop.
+		
+			Returns:
+				- A JSON response detailing the path found between the two stops if successful.
+				- An error message if no routes are found between the specified stops.
+	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+#####################################################################################################################
+database http://127.0.0.1:5003
+	/database/stop
+        -----------------------------------------------------------------------------------------------------
+		/database/stop/add
+
+			POST /database/stop/add
+			Adds stops to the database from a provided file.
+			Expected Form Data:
+				- session_id (str): The ID of the user session.
+				- file (file): The file containing stop details to upload.
+		
+			Returns:
+				- Success message if upload is successful.
+				- Error message if upload fails or if user is not authorized.
+		-----------------------------------------------------------------------------------------------------
+		/database/stop/get
+
+			GET /database/stop/get
+			Retrieves stops from the database.
+			Expected Query Parameters:
+				- partial_name (str): Partial name of the stops to search for.
+		
+			Returns:
+				- A JSON response containing a list of stops if found.
+				- An error message if no stops are found.
+
+	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	/database/route
+        -----------------------------------------------------------------------------------------------------
+		/database/route/add
+
+			POST /database/route/add
+			Adds routes to the database from a provided file.
+		
+			Expected Form Data:
+				- session_id (str): The ID of the user session.
+				- file (file): The file containing route details to upload.
+		
+			Returns:
+				- Success message if upload is successful.
+				- Error message if upload fails or if user is not authorized.
+
+        -----------------------------------------------------------------------------------------------------
+		/database/route/addstop
+
+			POST /database/route/addstop
+			Adds stops to an existing route from a provided file.
+			Expected Form Data:
+				- session_id (str): The ID of the user session.
+				- bus_no (str): The bus number to which stops are being added.
+				- file (file): The file containing stop details to upload.
+		
+			Returns:
+				- Success message if upload is successful.
+				- Error message if upload fails or if user is not authorized.
+        -----------------------------------------------------------------------------------------------------
+		/database/route/delete
+
+			POST /database/route/delete
+			Deletes a specified bus route from the database.
+			Expected Form Data:
+				- session_id (str): The ID of the user session.
+				- bus_number (str): The bus number to delete.
+		
+			Returns:
+				- Success message if deletion is successful.
+				- Error message if deletion fails or if user is not authorized.
+
+	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	/database/schedule
+        -----------------------------------------------------------------------------------------------------
+		/database/schedule/delete
+
+			POST /database/schedule/delete
+			Deletes a specified schedule from the database.
+			Expected Form Data:
+				- session_id (str): The ID of the user session.
+				- schedule_id (str): The ID of the schedule to delete.
+		
+			Returns:
+				- Success message if deletion is successful.
+				- Error message if deletion fails or if user is not authorized.
+        -----------------------------------------------------------------------------------------------------
+		/database/schedule/get
+
+			POST /database/schedule/get
+			Retrieves the schedule for a specific bus.
+			Expected Form Data:
+				- session_id (str): The ID of the user session.
+				- bus_number (str): The bus number for which the schedule is requested.
+		
+			Returns:
+				- A JSON response containing the schedule if found.
+				- Error message if no schedule is found or if user is not authorized.
+
+	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	/database/ticket
+        -----------------------------------------------------------------------------------------------------
+		/database/ticket/add
+
+			POST /database/ticket/add
+			Books an offline ticket for a specified route.
+			Expected JSON Body:
+				- route_id (str): The ID of the route for which the ticket is booked.
+				- price (float): The price of the ticket.
+				- gender (str): The gender of the passenger.
+				- category (str): The category of the passenger.
+				- direction (str): The direction of travel.
+				- session_id (str): The ID of the user session.
+		
+			Returns:
+				- A JSON response containing ticket details if booking is successful.
+				- Error message if booking fails or if user is not authorized.
+
+        -----------------------------------------------------------------------------------------------------
+		/database/ticket/get
+
+			GET /database/ticket/get
+			Verifies the details of a specified ticket.
+			Expected Query Parameters:
+				- ticket_id (str): The ID of the ticket to verify.
+				- date_of_tickets (str): The date of the tickets.
+				- route_id (str): The ID of the route associated with the ticket.
+		
+			Returns:
+				- A JSON response containing ticket details if valid.
+				- Error message if the ticket is invalid or expired.
+
+	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	/database/bus
+        -----------------------------------------------------------------------------------------------------
+		/database/bus/add
+
+			POST /database/bus/add
+			Adds a new bus to the database.
+			Expected Form Data:
+				- session_id (str): The ID of the user session.
+		
+			Returns:
+				- Success message if upload is successful.
+				- Error message if upload fails.
+
+	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	/database/staff
+        -----------------------------------------------------------------------------------------------------
+		/database/staff/add
+
+			POST /database/staff/add
+			Adds a new staff member to the database.
+			Expected Form Data:
+				- session_id (str): The ID of the user session.
+		
+			Returns:
+				- Success message if upload is successful.
+				- Error message if upload fails.
+
+
+
+

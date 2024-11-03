@@ -1,16 +1,48 @@
-from flask import render_template
+from flask import render_template, jsonify
 
 class View:
     @staticmethod
-    def render_success(message, user_id=None):
+    def render_success(message, emp_id=None):
         r =  {
             "status": "success",
             "message": message,
         }
-        if user_id:
-            r["emp_id"] = user_id
+        if emp_id:
+            r["emp_id"] = emp_id
         return r
+    @staticmethod
+    def render_fare(fare, bus_number=None, category=None, route_id=None):
+        r =  {
+            "status": "success",
+            "fare": fare,
+        }
+        if bus_number:
+            r["bus_number"] = bus_number
+        if category:
+            r["category"] = category
+            if route_id:
+                r["route_id"] = route_id
+        return jsonify(r)
+    
 
+    @staticmethod 
+    def render_ticket(ticket_details):
+        if ticket_details:
+            ticket_info = {
+                'ticket_id': ticket_details['ticket_id'],
+                'route_id': ticket_details['route_id'],
+                'price': ticket_details['price'],
+                'gender': ticket_details['gender'],
+                'category': ticket_details['category'],
+                'ticket_type': ticket_details['ticket_type'],
+                'date_of_tickets': str(ticket_details['date_of_tickets']),
+                'starting_stop_number': ticket_details['starting_stop_number'],
+                'ending_stop_number': ticket_details['ending_stop_number'],
+                'user_id': ticket_details['user_id'],
+                'time_of_booking': str(ticket_details['time_of_booking'])
+            }
+            return ticket_info
+        
     @staticmethod
     def render_error(message):
         return {

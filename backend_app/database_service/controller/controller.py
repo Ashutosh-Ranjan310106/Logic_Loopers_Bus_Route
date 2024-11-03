@@ -2,7 +2,9 @@ from database_service.service.bus_service import BusService
 from database_service.service.stop_service import StopService
 from database_service.service.staff_service import StaffService
 from database_service.service.routes_service import RouteService
+from database_service.service.ticket_service import TicketService
 from database_service.view.view import View
+from database_service.view.ticket_view import TicketView
 from database_service.view.stop_view import StopView
 from database_service.view.schedule_view import ScheduleView
 from flask import request
@@ -95,11 +97,28 @@ class Controller:
             return View.render_success("upload successfull")
         return View.render_error("upload failed")
     
-    def get_all_stops(partiall_name):
-        stops =  StopService.get_all_stops(partiall_name)
+    def get_stops():
+        partial_name = request.args.get("partial_name")
+        stops =  StopService.get_all_stops(partial_name)
         if stops:
             return StopView.render_stops(stops)
         return View.render_error("no stops found")
+    def book_offline_ticket():
+        data = request.get_json()
+        
+        route_id = data.get('route_id')
+        price = data.get('price')
+        gender = data.get('gender')
+        category = data.get('category')
+        direction = data.get('direction')
+        session_id = request.form.get("session_id")
+
+        ticket = TicketService.book_offline_tickets(route_id, price, gender, category, direction, session_id)
+        if ticket == -1:
+            return View.render_error("you are not allowed to upload to database")
+        if ticket:
+            return TicketView.render_ticket(ticket)
+        return View.render_error('booking faild')
 
     def add_bus():
         result =  BusService.add_Bus()
@@ -112,3 +131,12 @@ class Controller:
         if result:
             return View.render_success("upload successfull")
         return View.render_error("upload failed")
+    @staticmethod
+    def verify_ticket():
+        ticket_id = request.args.get('ticket_id')
+        date_of_tickets = request.args.get('date_of_tickets')
+        route_id = request.args.get('route_id')
+        tickets = TicketService.verify_ticket(ticket_id, date_of_tickets, route_id)
+        if tickets:
+            return TicketView.render_ticket_verification(tickets)
+        return View.render_error("Invalid or expired ticket"), 404

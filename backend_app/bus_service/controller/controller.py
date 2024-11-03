@@ -1,8 +1,10 @@
 from bus_service.service.service import *
 from bus_service.view.view import *
+from flask import request
 
 class bus_controller:
-    def get_bus_routes(bus_number):
+    def get_bus_routes():
+        bus_number = request.args.get('bus_number')
         route = bus_service.get_bus_route(bus_number)
 
         if route:

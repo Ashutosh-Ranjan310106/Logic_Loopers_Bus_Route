@@ -9,13 +9,18 @@ def home():
     return user_controller.get_all_links()
 
 
-@user_employee_route.route('/users/create', methods=['POST'])
+@user_employee_route.route('/user/create', methods=['POST'])
 def create_user():
     return user_controller.create_user()
-
-@user_employee_route.route('/users/login', methods=['POST'])
+@user_employee_route.route('/user/login', methods=['POST'])
 def login_user():
     return user_controller.login_user()
+@user_employee_route.route('/user/fare', methods=['GET'])
+def getfare():
+    return user_controller.getfare()
+@user_employee_route.route('/user/ticket', methods = ['POST'])
+def book_ticket():
+    return user_controller.book_ticket()
 @user_employee_route.route('/employee/create', methods=['POST'])
 def create_employee():
     return employee_controller.create_employee()
