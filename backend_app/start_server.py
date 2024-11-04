@@ -5,12 +5,12 @@ sys.path.append(os.getcwd())
 from  db_utils.utils import python_executable
 
 def run_bus_service():
-    subprocess.Popen([python_executable, "bus_service/app.py"])
+    subprocess.Popen([python_executable, "bus_app/app.py"])
 
 def run_user_emloyee_service():
-    subprocess.Popen([python_executable, "user_employee_service/app.py"])
+    subprocess.Popen([python_executable, "user_employee_app/app.py"])
 def run_database_sevice():
-    subprocess.Popen([python_executable, "database_service/app.py"])
+    subprocess.Popen([python_executable, "database_app/app.py"])
 
 
 if __name__ == '__main__':
