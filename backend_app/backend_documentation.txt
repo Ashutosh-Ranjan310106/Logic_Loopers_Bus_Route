@@ -41,6 +41,65 @@ feature of backend
 - Add Staff:              POST /database/staff/add
 
 
+route structure
+
+/user_employee                    # Main User and Employee Management Module
+│
+├── /user                         # User-related endpoints
+│   ├── /create                   # User creation (POST)
+│   ├── /login                    # User login (POST)
+│   ├── /ticket                   # Book a ticket (POST)
+│   ├── /fare                     # Calculate fare (GET)
+│   └── /profile                  # Retrieve or update user profile (GET/PUT)
+│
+└── /employee                     # Employee-related endpoints
+    ├── /create                   # Employee creation (POST)
+    ├── /login                    # Employee login (POST)
+    ├── /logout                   # Employee logout (POST)
+    ├── /profile                  # Retrieve or update employee profile (GET/PUT)
+    └── /access                   # Manage employee access levels (GET/POST)
+
+
+
+/buses                          # Get all bus routes (GET)
+    ├── /buses/routes             # Get routes for a specific bus (GET)
+    ├── /buses/path               # Find path between two bus stops (GET)
+    └── /buses/schedule           # Retrieve bus schedules (GET)
+
+
+
+
+/database                     # Database handling endpoints
+├── /stop                     # Stop management
+│   ├── /add                  # Add stops (POST)
+│   ├── /get                  # Retrieve stops (GET)
+│   └── /update                # Update stop details (PUT)
+│
+├── /route                    # Route management
+│   ├── /add                  # Add routes (POST)
+│   ├── /addstop              # Add stops to a route (POST)
+│   ├── /delete               # Delete a route (POST)
+│   └── /get                  # Get route details (GET)
+│
+├── /schedule                 # Schedule management
+│   ├── /add                  # Add a bus schedule (POST)
+│   ├── /delete               # Delete a schedule (POST)
+│   └── /get                  # Get schedules for a specific bus (GET)
+│
+├── /ticket                   # Ticket management
+│   ├── /add                  # Book an offline ticket (POST)
+│   ├── /get                  # Verify ticket details (GET)
+│   └── /cancel               # Cancel a booked ticket (POST)
+│
+├── /bus                      # Bus management
+│   └── /add                  # Add a new bus (POST)
+│
+└── /staff                    # Staff management
+    ├── /add                  # Add a new staff member (POST)
+    ├── /get                  # Retrieve staff details (GET)
+    └── /delete               # Delete a staff member (POST)
+
+
 
 
 Brief discription of all endpoint and app stucture
@@ -80,22 +139,24 @@ user_employee http://127.0.0.1:5002
        			Returns:
             			Success message and user ID if login is successful.
             			Error messages if credentials are incorrect or password is wrong
-				
-        -----------------------------------------------------------------------------------------------------
-		/user/ticket
-			Books an online ticket for a user on a specific route.
-			POST
+		-----------------------------------------------------------------------------------------------------
+		/buses/recent_bus
+			GET
+			Fetches recent buses arriving at a specified stop based on either the stop name or stop ID.
+		
 			Expected JSON Payload:
-				- user_id (int): ID of the user booking the ticket.
-				- route_id (int): ID of the route.
-				- starting_stop_number (int): Starting stop number for the trip.
-				- ending_stop_number (int): Ending stop number for the trip.
-				- gender (str): Gender of the ticket holder.
-				- category (str): Category of the bus service.
+			    stop_name (str, optional): The name of the bus stop. If provided, it will be used to filter recent buses.
+			    stop_id (str, optional): The ID of the bus stop. If provided, it will be used to filter recent buses.
 
 			Returns:
-				- A JSON response with the ticket details if booking is successful.
-				- Error message if required parameters are missing or if any other issue arises during booking.
+			Response: Returns a JSON response containing recent bus information or an error message.
+				- Success: 
+				- JSON object with key recent_buses containing a list of recent bus data.
+				- HTTP Status Code: 200 OK
+				- Error: 
+				- JSON object with key error containing an error message.
+				- HTTP Status Code: 400 Bad Request if no parameters are provided or no recent buses are found.
+
 			
         -----------------------------------------------------------------------------------------------------
 		/user/fare
@@ -174,6 +235,22 @@ bus http://127.0.0.1:5001
 			Returns:
 				- A JSON response containing the route details if found.
 				- An error message if no route is found.
+		
+		-----------------------------------------------------------------------------------------------------
+		/user/ticket
+			Books an online ticket for a user on a specific route.
+			POST
+			Expected Query Parameters:
+				- user_id (int): ID of the user booking the ticket.
+				- route_id (int): ID of the route.
+				- starting_stop_number (int): Starting stop number for the trip.
+				- ending_stop_number (int): Ending stop number for the trip.
+				- gender (str): Gender of the ticket holder.
+				- category (str): Category of the bus service.
+
+			Returns:
+				- A JSON response with the ticket details if booking is successful.
+				- Error message if required parameters are missing or if any other issue arises during booking.
         -----------------------------------------------------------------------------------------------------
 		
 		/buses/path

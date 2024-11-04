@@ -163,5 +163,37 @@
     <button type="submit">Book Ticket</button>
 </form>
 
+
+<script>
+    async function createUser(event) {
+        event.preventDefault(); // Prevent default form submission
+    
+        // Gather form data
+        const form = document.getElementById('userCreateForm');
+        const formData = new FormData(form);
+    
+        // Convert form data to JSON
+        const data = {};
+        formData.forEach((value, key) => (data[key] = value));
+    
+        // Send JSON data with fetch
+        const response = await fetch("http://127.0.0.1:5002/user/create", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+    
+        const result = await response.json();
+        if (response.ok) {
+            alert(result.message); // Success
+        } else {
+            alert(result.message); // Error
+        }
+    }
+</script>
+
+
 </body>
 </html>

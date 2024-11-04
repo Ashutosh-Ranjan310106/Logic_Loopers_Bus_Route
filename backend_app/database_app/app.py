@@ -2,7 +2,7 @@ import sys, os
 import json
 
 sys.path.append(os.getcwd())
-from database_service.routes.routes import database_route
+from database_app.routes.routes import database_route
 from  db_utils.utils import *
 from flask import Flask, jsonify
 app = Flask(__name__)

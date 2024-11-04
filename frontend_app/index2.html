@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        form {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Bus Management System</h1>
+    <div class="container">
+
+        <!-- User Login Form -->
+        <form id="userLoginForm">
+            <h2>User Login</h2>
+            <input type="email" id="userEmail" placeholder="Email" required>
+            <input type="password" id="userPassword" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+
+        <!-- Employee Login Form -->
+        <form id="employeeLoginForm">
+            <h2>Employee Login</h2>
+            <input type="email" id="employeeEmail" placeholder="Official Email" required>
+            <input type="password" id="employeePassword" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+
+        <!-- Ticket Booking Form -->
+        <form id="ticketBookingForm" style="display:none;">
+            <h2>Book Ticket</h2>
+            <input type="hidden" id="userId" placeholder="User ID" required>
+            <input type="number" id="routeId" placeholder="Route ID" required>
+            <input type="number" id="startingStop" placeholder="Starting Stop Number" required>
+            <input type="number" id="endingStop" placeholder="Ending Stop Number" required>
+            <input type="text" id="gender" placeholder="Gender" required>
+            <select id="category" required>
+                <option value="">Select Bus Category</option>
+                <option value="red">Red</option>
+                <option value="green">Green</option>
+                <option value="orange">Orange</option>
+                <option value="blue">Blue</option>
+            </select>
+            <button type="submit">Book Ticket</button>
+        </form>
+
+        <!-- Get Path Between Stops Form -->
+        <form id="getPathForm" style="display:none;">
+            <h2>Find Path Between Stops</h2>
+            <input type="number" id="stop1" placeholder="Starting Stop ID" required>
+            <input type="number" id="stop2" placeholder="Destination Stop ID" required>
+            <button type="submit">Get Path</button>
+        </form>
+    </div>
+
+    <script>
+        // Simulating session storage
+        let userSession = {};
+        let employeeSession = {};
+        let loggedInUserId = null; // Variable to store user ID
+
+        // User Login Handling
+        document.getElementById('userLoginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const email = document.getElementById('userEmail').value;
+            const password = document.getElementById('userPassword').value;
+
+            // Simulate API call
+            if (email && password) {
+                loggedInUserId = 1; // Mock user ID
+                userSession = { userId: loggedInUserId, sessionId: 'user123' }; // Mock user session
+                document.getElementById('userId').value = loggedInUserId; // Store user ID in hidden input
+                alert('User logged in successfully!');
+                document.getElementById('ticketBookingForm').style.display = 'block'; // Show ticket booking form
+                document.getElementById('userLoginForm').reset();
+            }
+        });
+
+        // Employee Login Handling
+        document.getElementById('employeeLoginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const email = document.getElementById('employeeEmail').value;
+            const password = document.getElementById('employeePassword').value;
+
+            // Simulate API call
+            if (email && password) {
+                employeeSession = { employeeId: 1, sessionId: 'emp123' }; // Mock employee session
+                alert('Employee logged in successfully!');
+                document.getElementById('getPathForm').style.display = 'block'; // Show path finding form
+                document.getElementById('employeeLoginForm').reset();
+            }
+        });
+
+        // Ticket Booking Handling
+        document.getElementById('ticketBookingForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const ticketDetails = {
+                userId: loggedInUserId, // Use stored user ID
+                routeId: document.getElementById('routeId').value,
+                startingStop: document.getElementById('startingStop').value,
+                endingStop: document.getElementById('endingStop').value,
+                gender: document.getElementById('gender').value,
+                category: document.getElementById('category').value
+            };
+
+            // Simulate ticket booking API call
+            console.log('Ticket booked with details:', ticketDetails);
+            alert('Ticket booked successfully!');
+            document.getElementById('ticketBookingForm').reset();
+        });
+
+        // Path Finding Handling
+        document.getElementById('getPathForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const stop1 = document.getElementById('stop1').value;
+            const stop2 = document.getElementById('stop2').value;
+
+            // Simulate path finding API call
+            console.log(`Finding path between stop ${stop1} and stop ${stop2}`);
+            alert(`Path found between stop ${stop1} and stop ${stop2}`);
+            document.getElementById('getPathForm').reset();
+        });
+    </script>
+</body>
+</html>

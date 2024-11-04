@@ -8,21 +8,21 @@ class BusController:
         route = BusService.get_bus_route(bus_number)
 
         if route:
-            return BusView.render_route(route)
-        return BusView.render_error("no route found")
+            return BusView.render_route(route), 200
+        return BusView.render_error("no route found"), 404
 
     def get_all_routes():
         all_routes = BusService.get_all_route_map()
         if all_routes:
-            return BusView.render_all_routes(all_routes)
-        return BusView.render_error("no route found")
+            return BusView.render_all_routes(all_routes), 200
+        return BusView.render_error("no route found"), 404
     
     def get_recent_buses():
         stop_name = request.args.get('stop_name')
         stop_id = request.args.get('stop_id')
         if not stop_id and not stop_name:
-            return BusView.render_error('incompleate query one parameter is required') 
+            return BusView.render_error('incompleate query one parameter is required'), 400
         recent_buses = BusService.get_recent_buses([stop_id], [stop_name])
         if recent_buses:
-            return BusView.render_recent_buses(recent_buses)
-        return BusView.render_error("no recent buses")
+            return BusView.render_recent_buses(recent_buses), 200
+        return BusView.render_error("no recent buses"), 404

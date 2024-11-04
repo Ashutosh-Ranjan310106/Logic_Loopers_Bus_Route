@@ -88,7 +88,7 @@ class BusService:
             where bsrt.time > %s  and {parameter}
             ORDER BY bsrt.time;
             '''
-        cursor.execute(recent_bus_query, ['12:00:00']+value)
+        cursor.execute(recent_bus_query, [after_time]+value)
         recent_buses = cursor.fetchall()
         bus_timing_map = {}
         for timing in recent_buses:

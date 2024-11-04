@@ -17,8 +17,8 @@ class EmployeeController:
         salary = data.get("salary")
         user_id = EmployeeService.create_employee(user_name, official_email, password, phone_number, access_level_id,  first_name, last_name, salary)
         if user_id:
-            return View.render_success("create successfull", user_id)
-        return View.render_error("faild")
+            return View.render_success("create successfull", user_id), 201
+        return View.render_error("faild"), 200
 
     def login_employee():
         data = request.get_json()
@@ -30,7 +30,7 @@ class EmployeeController:
         session_id = EmployeeService.login_employee(official_email, password)
 
         if session_id == -1:
-            return View.render_error("email not found")
+            return View.render_error("employee not found"), 404
         elif session_id == -2:
             return View.render_error("wrong password"), 401
         elif session_id == -3:

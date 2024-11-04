@@ -19,10 +19,10 @@ class Controller:
             return View.render_error("No selected file"), 400
         result =  StopService.add_stop(file, session_id)
         if result == -1:
-            return View.render_error("you are not allowed to upload to database")
+            return View.render_error("you are not allowed to upload to database"), 403
         if result == 1:
-            return View.render_success("upload successfull")
-        return View.render_error("upload failed")
+            return View.render_success("upload successfull"), 201
+        return View.render_error("upload failed"), 500
     
     def add_routes():
         if 'file' not in request.files:
@@ -34,10 +34,10 @@ class Controller:
             return View.render_error("No selected file"), 400
         result =  RouteService.add_route(file, session_id)
         if result == -1:
-            return View.render_error("you are not allowed to upload to database")
+            return View.render_error("you are not allowed to upload to database"), 403
         if result == 1:
-            return View.render_success("upload successfull")
-        return View.render_error("upload failed")
+            return View.render_success("upload successfull"), 201
+        return View.render_error("upload failed"), 500
     
     def delete_route():
         
@@ -46,10 +46,10 @@ class Controller:
         
         result =  RouteService.delete_route(bus_number, session_id)
         if result == -1:
-            return View.render_error("you are not allowed to edit database")
+            return View.render_error("you are not allowed to edit database"), 403
         if result == 1:
-            return View.render_success("edit successfull")
-        return View.render_error("edit failed")
+            return View.render_success("edit successfull"), 201
+        return View.render_error("edit failed"), 500
     def delete_schedule():
         
         schedule_id = request.form.get("schedule_id")
@@ -57,10 +57,10 @@ class Controller:
         
         result =  BusService.delete_schedule(session_id, schedule_id,)
         if result == -1:
-            return View.render_error("you are not allowed to edit database")
+            return View.render_error("you are not allowed to edit database"), 403
         if result == 1:
-            return View.render_success("edit successfull")
-        return View.render_error("edit failed")
+            return View.render_success("edit successfull"), 201
+        return View.render_error("edit failed"), 500
     
 
     def get_schedule():
@@ -70,12 +70,12 @@ class Controller:
         
         result =  BusService.get_route_schedule(session_id, bus_number)
         if result == -1:
-            return View.render_error("you are not allowed to view database")
+            return View.render_error("you are not allowed to view database"), 403
         if result == -2:
-            return View.render_error("no schedule found")
+            return View.render_error("no schedule found"), 404
         if result:
             return ScheduleView.render_Schedule(result)
-        return View.render_error("view failed")
+        return View.render_error("scedule view failed"), 500
     
 
 
@@ -90,19 +90,19 @@ class Controller:
             return View.render_error("No selected file"), 400
         result =  RouteService.add_stops_in_route(bus_no, file, session_id)
         if result == -1:
-            return View.render_error("you are not allowed to upload to database")
+            return View.render_error("you are not allowed to upload to database"), 403
         if result == -2:
-            return View.render_error("no route found")
+            return View.render_error("no route found"), 404
         if result == 1:
-            return View.render_success("upload successfull")
-        return View.render_error("upload failed")
+            return View.render_success("upload successfull"), 201
+        return View.render_error("upload failed"), 500
     
     def get_stops():
         partial_name = request.args.get("partial_name")
         stops =  StopService.get_all_stops(partial_name)
         if stops:
-            return StopView.render_stops(stops)
-        return View.render_error("no stops found")
+            return StopView.render_stops(stops), 200
+        return View.render_error("no stops found"), 404
     def book_offline_ticket():
         data = request.get_json()
         
@@ -115,22 +115,22 @@ class Controller:
 
         ticket = TicketService.book_offline_tickets(route_id, price, gender, category, direction, session_id)
         if ticket == -1:
-            return View.render_error("you are not allowed to upload to database")
+            return View.render_error("you are not allowed to upload to database"), 403
         if ticket:
-            return TicketView.render_ticket(ticket)
-        return View.render_error('booking faild')
+            return TicketView.render_ticket(ticket), 201
+        return View.render_error('booking faild'), 500
 
     def add_bus():
         result =  BusService.add_Bus()
         if result:
-            return View.render_success("upload successfull")
-        return View.render_error("upload failed")
+            return View.render_success("upload successfull"), 201
+        return View.render_error("upload failed"), 500
 
     def add_staff():
         result =  StaffService.add_staff()
         if result:
-            return View.render_success("upload successfull")
-        return View.render_error("upload failed")
+            return View.render_success("upload successfull"), 201
+        return View.render_error("upload failed"), 500
     @staticmethod
     def verify_ticket():
         ticket_id = request.args.get('ticket_id')
@@ -138,5 +138,5 @@ class Controller:
         route_id = request.args.get('route_id')
         tickets = TicketService.verify_ticket(ticket_id, date_of_tickets, route_id)
         if tickets:
-            return TicketView.render_ticket_verification(tickets)
+            return TicketView.render_ticket_verification(tickets), 200
         return View.render_error("Invalid or expired ticket"), 404

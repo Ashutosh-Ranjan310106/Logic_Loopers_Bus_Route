@@ -32,13 +32,14 @@ class PathView:
 
             bus_timings = BusService.get_recent_buses(stop_ids=starting_stops_list)
             for index, sub_path in enumerate(path):
-                sub_path['bus_timings']=[]
-                print(sub_path.keys())
-                for timing in bus_timings[sub_path['stop_list'][0]['stop_name']]:
-                    if timing[2] == sub_path['direction'][0]:
-                        sub_path['bus_timings'].append(str(timing[0]))
-                if not sub_path['bus_timings']:
-                    sub_path['bus_timings'].append('no buses are avlable now ')
+                if sub_path['stop_list'][0]['stop_name']  not in  bus_timings:
+                    sub_path['bus_timings'] = 'no buses are avlable now '
+                else:
+                    sub_path['bus_timings']=[]
+                    for timing in bus_timings[sub_path['stop_list'][0]['stop_name']]:
+                        if timing[2] == sub_path['direction'][0]:
+                            sub_path['bus_timings'].append(str(timing[0]))
+
             path.append({
                 "changes": changes-1,
                 "total_stops": total_stops,
