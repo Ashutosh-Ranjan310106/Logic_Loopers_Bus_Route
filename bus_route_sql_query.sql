@@ -1,6 +1,6 @@
-DROP DATABASE us_Route;
-CREATE DATABASE us_Route;
-USE us_Route;
+DROP DATABASE Bus_Route;
+CREATE DATABASE Bus_Route;
+USE Bus_Route;
 
 CREATE TABLE Bus_Type_Description (
     category VARCHAR(10) PRIMARY KEY,
