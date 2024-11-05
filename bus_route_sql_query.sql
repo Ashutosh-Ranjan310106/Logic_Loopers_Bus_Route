@@ -1,6 +1,6 @@
-DROP DATABASE Bus_Route;
-CREATE DATABASE Bus_Route;
-USE Bus_Route;
+DROP DATABASE us_Route;
+CREATE DATABASE us_Route;
+USE us_Route;
 
 CREATE TABLE Bus_Type_Description (
     category VARCHAR(10) PRIMARY KEY,
@@ -51,14 +51,12 @@ CREATE TABLE Emp_session(
 );
 CREATE TABLE Stops (
     stop_id INT PRIMARY KEY auto_increment,
-    stop_name VARCHAR(50) NOT NULL unique,
+    stop_name VARCHAR(200) NOT NULL unique,
     location_coordinate VARCHAR(100)
 );
-ALTER TABLE Stops
-MODIFY COLUMN stop_name VARCHAR(200);
+
 CREATE INDEX idx_stop_name ON stops(stop_name);
 
-EXPLAIN SELECT * FROM stops WHERE stop_name LIKE 'vocation%';
 
 CREATE TABLE Routes (
     route_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -264,7 +262,7 @@ INSERT INTO Stops_in_route (node_id, Stop_id, Fare_stage, Route_id, route_stop_n
 (15, 7, 3, 3, 4),
 (16, 6, 3, 3, 5);
 
-INSERT INTO Schedule (Schedule_id, Schedule_date, route, time, route_id, start_node_number, stop_node_number, Bus_id, conductor_id, driver_id) VALUES
+INSERT INTO Schedule (Schedule_id, Schedule_date, route, time, route_id, start_stop_number, stop_stop_number, Bus_id, conductor_id, driver_id) VALUES
 (1, '2024-10-06', 'up', '08:00:00', 1, 3, 6, 1, 4, 3),
 (2, '2024-10-06', 'down', '10:30:00', 1, 6, 3, 1, 4, 3),
 (3, '2024-10-06', 'up', '16:00:00', 1, 1, 6, 1, 4, 3),
@@ -432,7 +430,7 @@ order by rt.route_id, route_stop_number;
 
 
 -- driver and Conductor  name for each schedule 
-select Schedule_id, route, Time, start_node_number, stop_node_number, Bus_id, sch.driver_id, Stfd.name
+select Schedule_id, route, Time, start_stop_number, stop_stop_number, Bus_id, sch.driver_id, Stfd.name
 driver_name, stfd.Gender, stfd.Salary, sch.conductor_id , stfc.name conductor_name, stfc.Gender, stfc.Salary
 from schedule sch
 join Staff stfc ON stfc.staff_id = sch.driver_id
@@ -447,21 +445,20 @@ group by tk.ticket_type;
 -- online tickets booked for each stops
 select  count(*) total__online_tickets,sum(price) total__online_fair, st.stop_id, st.stop_name
 from online_tickets ont
-join stops_in_route sir on sir.node_id = ont.ending_node_id
+join stops_in_route sir on sir.node_id = ont.ending_stop_number
 join stops st on sir.stop_id = st.stop_id 
 join tickets tk ON tk.ticket_id = ont.ticket_id
 group by st.stop_id;
 
 
 -- all bus stop reach times with stop name
-SELECT sch.route_id, rt.bus_no, brt.route, sch.schedule_date , brt.time, brt.node_number, brt.schedule_id,
- st.Stop_Name, st.location_coordinate
-FROM bus_stop_reach_time brt
-JOIN schedule sch ON brt.schedule_id = sch.Schedule_id
-JOIN stops_in_route sir ON brt.node_number = sir.route_stop_number and sch.route_id = sir.route_id
-JOIN stops st ON sir.Stop_id = st.Stop_id
-JOIN routes rt ON sch.route_id = rt.route_id
-ORDER BY sch.schedule_date, sch.route_id, sch.schedule_id, brt.time;
+SELECT  stop_name, bsrt.time bus_time, bus_no, st.stop_id, sch.route direction
+FROM bus_stop_reach_time bsrt
+JOIN schedule sch ON sch.schedule_id = bsrt.schedule_id
+JOIN stops_in_route sir ON  bsrt.node_number = sir.route_stop_number and sch.route_id = sir.route_id
+JOIN routes rt ON rt.route_id = sch.route_id
+JOIN stops st ON sir.stop_id = st.stop_id
+ORDER BY bsrt.time;
 
 -- first and last bus time on each stop
 SELECT st.stop_name, MIN(bsrt.time) first_bus_time, MAX(bsrt.time) last_bus_time
@@ -493,11 +490,13 @@ Stops_In_Route sir
 join Stops_In_Route sir2 on sir.stop_id = sir2.stop_id;
 
 
-SELECT st.stop_name, bsrt.time bus_time, bus_no
+SELECT  stop_name, bsrt.time bus_time, bus_no
             FROM bus_stop_reach_time bsrt
             JOIN schedule sch ON sch.schedule_id = bsrt.schedule_id
-            JOIN stops_in_route sir ON bsrt.node_number = sir.route_stop_number and sch.route_id = sir.route_id
-            JOIN routes rt ON rt.route_id = sir.route_id
+            JOIN stops_in_route sir ON  bsrt.node_number = sir.route_stop_number and sch.route_id = sir.route_id
+            JOIN routes rt ON rt.route_id = sch.route_id
             JOIN stops st ON sir.stop_id = st.stop_id
-            where bsrt.time > '00:00:00'
+            where stop_name = 'd' and bsrt.time > CURRENT_TIME()
             ORDER BY bsrt.time;
+            
+            
