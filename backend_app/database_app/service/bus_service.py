@@ -3,6 +3,8 @@ cursor = get_cursor()
 connection = get_connection()
 
 class BusService:
+
+    @staticmethod
     def delete_schedule(session_id, schedule_id):
         query = '''
                 select acl.access_level_id acid from 
@@ -21,6 +23,7 @@ class BusService:
             connection.commit()
             return 1
         return -1
+    @staticmethod
     def get_route_schedule(session_id, bus_number):
         query = '''
                 select acl.access_level_id acid from 

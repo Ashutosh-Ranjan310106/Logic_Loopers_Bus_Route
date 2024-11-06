@@ -3,6 +3,7 @@ from bus_app.view.view import *
 from flask import request
 
 class BusController:
+    @staticmethod
     def get_bus_routes():
         bus_number = request.args.get('bus_number')
         route = BusService.get_bus_route(bus_number)
@@ -10,13 +11,13 @@ class BusController:
         if route:
             return BusView.render_route(route), 200
         return BusView.render_error("no route found"), 404
-
+    @staticmethod
     def get_all_routes():
         all_routes = BusService.get_all_route_map()
         if all_routes:
             return BusView.render_all_routes(all_routes), 200
         return BusView.render_error("no route found"), 404
-    
+    @staticmethod
     def get_recent_buses():
         stop_name = request.args.get('stop_name')
         stop_id = request.args.get('stop_id')

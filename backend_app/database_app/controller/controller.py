@@ -10,6 +10,7 @@ from database_app.view.stop_view import StopView
 from database_app.view.schedule_view import ScheduleView
 from flask import request
 class Controller:
+    @staticmethod
     def add_stops():
         if 'file' not in request.files:
             return View.render_error("No file part"), 400
@@ -24,7 +25,7 @@ class Controller:
         if result == 1:
             return View.render_success("upload successfull"), 201
         return View.render_error("upload failed"), 500
-    
+    @staticmethod
     def add_routes():
         if 'file' not in request.files:
             return View.render_error("No file part"), 400
@@ -39,7 +40,7 @@ class Controller:
         if result == 1:
             return View.render_success("upload successfull"), 201
         return View.render_error("upload failed"), 500
-    
+    @staticmethod
     def delete_route():
         
         bus_number = request.form.get("bus_number")
@@ -51,6 +52,8 @@ class Controller:
         if result == 1:
             return View.render_success("edit successfull"), 201
         return View.render_error("edit failed"), 500
+    
+    @staticmethod
     def delete_schedule():
         
         schedule_id = request.form.get("schedule_id")
@@ -63,7 +66,7 @@ class Controller:
             return View.render_success("edit successfull"), 201
         return View.render_error("edit failed"), 500
     
-
+    @staticmethod
     def get_schedule():
         
         bus_number = request.form.get("bus_number")
@@ -79,7 +82,7 @@ class Controller:
         return View.render_error("scedule view failed"), 500
     
 
-
+    @staticmethod
     def add_stops_in_route():
         if 'file' not in request.files:
             return View.render_error("No file part"), 400
@@ -98,12 +101,16 @@ class Controller:
             return View.render_success("upload successfull"), 201
         return View.render_error("upload failed"), 500
     
+
+    @staticmethod
     def get_stops():
         partial_name = request.args.get("partial_name")
         stops =  StopService.get_all_stops(partial_name)
         if stops:
             return StopView.render_stops(stops), 200
         return View.render_error("no stops found"), 404
+    
+    @staticmethod
     def book_offline_ticket():
         data = request.get_json()
         
@@ -120,28 +127,40 @@ class Controller:
         if ticket:
             return TicketView.render_ticket(ticket), 201
         return View.render_error('booking faild'), 500
+    
 
+    @staticmethod
     def add_bus():
         result =  BusService.add_Bus()
         if result:
             return View.render_success("upload successfull"), 201
         return View.render_error("upload failed"), 500
+    
 
+    @staticmethod
     def add_staff():
         result =  StaffService.add_staff()
         if result:
             return View.render_success("upload successfull"), 201
         return View.render_error("upload failed"), 500
+    
+
+    @staticmethod
     def get_staff():
         result =  StaffService.get_staff()
         if result:
             return View.render_success("upload successfull"), 201
         return View.render_error("upload failed"), 500
+    
+
+    @staticmethod
     def add_bus_stop_reach_time():
         result =  TimeService.add_bus_stop_reach_time()
         if result:
             return View.render_success("upload successfull"), 201
         return View.render_error("upload failed"), 500
+    
+    
     @staticmethod
     def verify_ticket():
         ticket_id = request.args.get('ticket_id')

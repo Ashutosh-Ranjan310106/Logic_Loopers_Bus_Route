@@ -3,6 +3,7 @@ import pandas as pd
 cursor = get_cursor()
 connection = get_connection()
 class StopService:
+    @staticmethod
     def add_stop(file, session_id):
         query = '''
                 select acl.access_level_id acid from 
@@ -36,7 +37,7 @@ class StopService:
             connection.commit()
             return 1
         return -1
-    
+    @staticmethod
     def get_all_stops(partiall_name):
         if partiall_name:
             query = f"SELECT stop_name, stop_id FROM Stops where stop_name like \"{partiall_name}%\";"

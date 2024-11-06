@@ -4,6 +4,7 @@ cursor = get_cursor()
 connection = get_connection()
 
 class BusService: 
+    @staticmethod
     def get_all_stops():
         query = f'''
             select * from 
@@ -15,7 +16,9 @@ class BusService:
         for stop in stops:
             stops_dic[stop["stop_id"]] = stop
         return stops_dic
+    
 
+    @staticmethod
     def get_all_routes():
         query = f'''
             select * from routes;
@@ -26,6 +29,8 @@ class BusService:
         all_routes = {}
         for route in routes: all_routes["Route_id"] = route
         return all_routes
+    
+    @staticmethod
     def get_all_route_map():
         query = f'''
             select sir.*,st.*, rt.* from 
@@ -44,6 +49,8 @@ class BusService:
                 all_routes[stop["Route_id"]] = []
                 all_routes[stop["Route_id"]].append(stop)
         return all_routes
+    
+    @staticmethod
     def get_bus_route(bus_number):
         query = f'''
             select * from 
@@ -56,6 +63,8 @@ class BusService:
         cursor.execute(query)
         bus_route = cursor.fetchall()
         return bus_route
+    
+    @staticmethod
     def get_stops_in_routes(route_id):
         query = f'''
             select * from 
@@ -66,6 +75,9 @@ class BusService:
         cursor.execute(query)
         route = cursor.fetchall()
         return route
+    
+    
+    @staticmethod
     def get_recent_buses(stop_ids=None, stop_names=None, bus_number=None, after_time=None):
         if not after_time:
             after_time = datetime.now().time()

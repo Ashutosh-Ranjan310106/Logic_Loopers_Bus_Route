@@ -5,6 +5,8 @@ import datetime
 cursor = get_cursor()
 connection = get_connection()
 class UserService: 
+
+    @staticmethod
     def create_user(name, email, gender, phone_number, password):
         hash_password = generate_password_hash(password)
         coulmn =''
@@ -29,7 +31,7 @@ class UserService:
             print("Error inserting user:", e)
             connection.rollback()
     
-
+    @staticmethod
     def login_user(email, phone_number, password):
         query = '''
                 select * from users
@@ -42,6 +44,9 @@ class UserService:
                 return user
             else:
                 return -1
+            
+
+    @staticmethod
     def getfare(starting_stop_number, ending_stop_number, category, route_id=None, bus_number=None):
         print('hello')
         if bus_number:
@@ -69,6 +74,9 @@ class UserService:
             fsd = - fsd
         fare = stops_list[0]['base_fare'] + 5 * fsd
         return fare, stops_list[0]['Route_id']
+    
+
+    @staticmethod
     def book_online_tickets(user_id, route_id, starting_stop_number, ending_stop_number, price, gender, category):
         insert_ticket_query = '''
         INSERT INTO Tickets (route_id, price, gender, category, ticket_type, date_of_tickets)

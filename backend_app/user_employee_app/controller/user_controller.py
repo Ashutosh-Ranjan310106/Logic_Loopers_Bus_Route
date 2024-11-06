@@ -2,8 +2,12 @@ from user_employee_app.service.user_service import UserService
 from user_employee_app.view.view import View
 from flask import render_template, request, jsonify
 class UserController:
+
+    @staticmethod
     def get_all_links():
         return View.render_links()
+    
+    @staticmethod
     def create_user():
         data = request.get_json()
         name = data.get("name",'')
@@ -17,7 +21,8 @@ class UserController:
         if user_id:
             return View.render_success("user created successful", user_id), 201
         return View.render_error("email or phone number is alredy used"), 409
-
+    
+    @staticmethod
     def login_user():
         data = request.get_json()
         email = data.get("email",'')
@@ -29,6 +34,8 @@ class UserController:
         if user == -1:
             return View.render_error("incorrect password"), 401
         return View.render_success("user logined", user["user_id"]), 200
+    
+    @staticmethod
     def getfare():
         bus_number  = request.args.get('bus_number')
         starting_stop_number = request.args.get('starting_stop_number')
@@ -46,7 +53,7 @@ class UserController:
         except Exception as e:
             return View.render_error(str(e)), 500
         
-
+    @staticmethod
     def book_ticket():
         data = request.get_json()
         user_id = data.get('user_id')

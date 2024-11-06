@@ -3,6 +3,7 @@ import pandas as pd
 cursor = get_cursor()
 connection = get_connection()
 class RouteService:
+    @staticmethod
     def add_route(file, session_id):
         query = '''
                 select acl.access_level_id acid from 
@@ -42,7 +43,7 @@ class RouteService:
             return 1
         return -1
     
-
+    @staticmethod
     def delete_route(bus_number, session_id):
         query = '''
                 select acl.access_level_id acid from 
@@ -62,7 +63,7 @@ class RouteService:
             return 1
         return -1
     
-
+    @staticmethod
     def add_stops_in_route(bus_no,file, session_id):
         query = '''
                 select acl.access_level_id acid from 

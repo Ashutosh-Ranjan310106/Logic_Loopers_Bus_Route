@@ -73,7 +73,7 @@ class EmployeeService:
                 return -1
             return -2
 
-        
+    @staticmethod
     def logout_employee(session_id):
         query = '''
                 update emp_session set status = 0 where session_id = %s and status = 1;

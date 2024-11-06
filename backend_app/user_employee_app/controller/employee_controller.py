@@ -2,6 +2,7 @@ from user_employee_app.service.employee_service import EmployeeService
 from user_employee_app.view.view import *
 from flask import render_template, request
 class EmployeeController:
+    @staticmethod
     def create_employee():
         data = request.get_json()
         if not data:
@@ -19,7 +20,9 @@ class EmployeeController:
         if user_id:
             return View.render_success("create successfull", user_id), 201
         return View.render_error("faild"), 200
+    
 
+    @staticmethod
     def login_employee():
         data = request.get_json()
         official_email = data.get("official_email")
@@ -37,6 +40,8 @@ class EmployeeController:
             return View.render_error("Already logged in. Only one active session allowed."), 409
 
         return View.render_success("login succesfull", session_id), 200
+    
+    @staticmethod
     def logout_employee():
         data = request.get_json()
         session_id = data.get("session_id")
