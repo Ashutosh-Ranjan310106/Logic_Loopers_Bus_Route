@@ -4,6 +4,7 @@ from database_app.service.staff_service import StaffService
 from database_app.service.routes_service import RouteService
 from database_app.service.ticket_service import TicketService
 from database_app.service.time_service import TimeService
+from database_app.service.schedule_service import ScheduleService
 from database_app.view.view import View
 from database_app.view.ticket_view import TicketView
 from database_app.view.stop_view import StopView
@@ -22,6 +23,8 @@ class Controller:
         result =  StopService.add_stop(file, session_id)
         if result == -1:
             return View.render_error("you are not allowed to upload to database"), 403
+        elif result == -2:
+            return View.render_error("incorrect table formate"), 400
         if result == 1:
             return View.render_success("upload successfull"), 201
         return View.render_error("upload failed"), 500
@@ -37,6 +40,8 @@ class Controller:
         result =  RouteService.add_route(file, session_id)
         if result == -1:
             return View.render_error("you are not allowed to upload to database"), 403
+        elif result == -2:
+            return View.render_error("incorrect table formate"), 400
         if result == 1:
             return View.render_success("upload successfull"), 201
         return View.render_error("upload failed"), 500
@@ -53,6 +58,26 @@ class Controller:
             return View.render_success("edit successfull"), 201
         return View.render_error("edit failed"), 500
     
+    @staticmethod
+    def add_schedule():
+        if 'file' not in request.files:
+            return View.render_error("No file part"), 400
+
+        file = request.files['file']
+
+        if file.filename == '':
+            return View.render_error("No selected file"), 400
+        session_id = request.form.get("session_id")
+        result =  ScheduleService.add_schedule(file, session_id)
+        if result == -1:
+            return View.render_error("you are not allowed to upload to database"), 403
+        if result == -2:
+            return View.render_error("no route found"), 404
+        if result == 1:
+            return View.render_success("upload successfull"), 201
+        return View.render_error("upload failed"), 500
+    
+
     @staticmethod
     def delete_schedule():
         
@@ -155,8 +180,19 @@ class Controller:
 
     @staticmethod
     def add_bus_stop_reach_time():
-        result =  TimeService.add_bus_stop_reach_time()
-        if result:
+        if 'file' not in request.files:
+            return View.render_error("No file part"), 400
+        session_id = request.form.get("session_id")
+        file = request.files['file']
+
+        if file.filename == '':
+            return View.render_error("No selected file"), 400
+        result =  TimeService.add_bus_stop_reach_time(file, session_id)
+        if result == -1:
+            return View.render_error("you are not allowed to upload to database"), 403
+        elif result == -2:
+            return View.render_error("incorrect table formate"), 400
+        elif result == 1:
             return View.render_success("upload successfull"), 201
         return View.render_error("upload failed"), 500
     
