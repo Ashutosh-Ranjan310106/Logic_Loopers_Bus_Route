@@ -62,9 +62,9 @@ route structure
 
 
 /buses                          # Get all bus routes (GET)
-    ├── /buses/routes             # Get routes for a specific bus (GET)
-    ├── /buses/path               # Find path between two bus stops (GET)
-    └── /buses/schedule           # Retrieve bus schedules (GET)
+├── /buses/routes             # Get routes for a specific bus (GET)
+├── /buses/path               # Find path between two bus stops (GET)
+└── /buses/schedule           # Retrieve bus schedules (GET)
 
 
 
@@ -93,13 +93,16 @@ route structure
 │
 ├── /bus                      # Bus management
 │   └── /add                  # Add a new bus (POST)
-│
+|   └── /get                  # Retrieve bus details (GET)
+|
+|
 ├── /staff                    # Staff management
 |   ├── /add                  # Add a new staff member (POST)
 |   └── /get                  # Retrieve staff details (GET)
 |
-└── /time                    # bus reach time on each stop management
-    └── /add                 # Add a reach time for stop in a route)
+└── /time                     # bus reach time on each stop management
+    ├── /add                  # Add a reach time for stop in a route
+    └── /get                  # Retrieve bus reach time details (GET)
  
 
 

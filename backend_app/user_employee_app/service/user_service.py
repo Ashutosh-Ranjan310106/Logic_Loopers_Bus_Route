@@ -48,7 +48,6 @@ class UserService:
 
     @staticmethod
     def getfare(starting_stop_number, ending_stop_number, category, route_id=None, bus_number=None):
-        print('hello')
         if bus_number:
             query = '''
                     select * from stops_in_route sir

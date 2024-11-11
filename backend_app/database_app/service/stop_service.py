@@ -19,23 +19,26 @@ class StopService:
             df = pd.read_csv(file)
             parameter = ''
             values = []
-            for index, row in df.iterrows():
-                stop_name = row.get('stop_name')
-                location_coordinate = row.get('location_coordinate')
-                if pd.isna(stop_name): 
-                    stop_name = None
-                if pd.isna(location_coordinate): 
-                    location_coordinate = None
-                parameter += '(%s, %s), '
-                values.extend([stop_name, location_coordinate])
-            parameter = parameter.rstrip(', ')
-            query = f'''
-                INSERT INTO Stops (stop_name, location_coordinate) VALUES 
-                {parameter} ;
-            '''
-            cursor.execute(query, values)
-            connection.commit()
-            return 1
+            try:
+                for index, row in df.iterrows():
+                    stop_name = row.get('stop_name')
+                    location_coordinate = row.get('location_coordinate')
+                    if pd.isna(stop_name): 
+                        stop_name = None
+                    if pd.isna(location_coordinate): 
+                        location_coordinate = None
+                    parameter += '(%s, %s), '
+                    values.extend([stop_name, location_coordinate])
+                parameter = parameter.rstrip(', ')
+                query = f'''
+                    INSERT INTO Stops (stop_name, location_coordinate) VALUES 
+                    {parameter} ;
+                '''
+                cursor.execute(query, values)
+                connection.commit()
+                return 1
+            except :
+                return -2
         return -1
     @staticmethod
     def get_all_stops(partiall_name):

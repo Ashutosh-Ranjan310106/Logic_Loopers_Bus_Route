@@ -17,6 +17,9 @@ def add_routes():
 @database_route.route('/database/route/delete', methods=['POST'])
 def delete_route():
     return Controller.delete_route()
+@database_route.route('/database/schedule/add', methods=['POST'])
+def add_schedule():
+    return Controller.add_schedule()
 @database_route.route('/database/schedule/delete', methods=['POST'])
 def delete_schedule():
     return Controller.delete_schedule()
