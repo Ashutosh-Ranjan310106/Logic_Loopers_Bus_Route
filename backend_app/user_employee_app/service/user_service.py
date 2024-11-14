@@ -1,4 +1,4 @@
-from db_utils.utils import get_cursor, get_connection  
+from db_utils.utils import get_cursor, get_connection , log_error
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime 
 
@@ -21,15 +21,16 @@ class UserService:
                     INSERT INTO Users ({coulmn}email, phone_number, password) 
                     VALUES ({'%s,'*len(values)} %s, %s, %s);
                 '''
-        print(query) 
+
         try:
             cursor.execute(query, values+[email, phone_number, hash_password])
             user_id = cursor.lastrowid
             connection.commit()
             return user_id
         except Exception as e:
-            print("Error inserting user:", e)
             connection.rollback()
+            return "Error inserting user:"+ e
+
     
     @staticmethod
     def login_user(email, phone_number, password):
@@ -99,8 +100,12 @@ class UserService:
         JOIN  Online_Tickets ot ON t.ticket_id = ot.ticket_id
         WHERE t.ticket_id = %s;
         '''
-        cursor.execute(get_ticket_query, (ticket_id,))
-        ticket_details = cursor.fetchone()
+        try:
+            cursor.execute(get_ticket_query, (ticket_id,))
+            ticket_details = cursor.fetchone()
+        except Exception as e:
+            log_error('book onine ticket', e)
+            return None
         
         return ticket_details
     

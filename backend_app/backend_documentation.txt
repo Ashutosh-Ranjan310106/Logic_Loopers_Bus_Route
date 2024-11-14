@@ -1,22 +1,22 @@
 feature of backend
 
-# User Management
-- User Creation:            POST /user/create
+# User Management port(5002)
+- User Creation:           POST /user/create
 - User Login:              POST /user/login
 - Book Ticket:             POST /user/ticket
 - Calculate Fare:          GET /user/fare
 
-# Employee Management
+# Employee Management port(5002)
 - Employee Creation:       POST /employee/create
 - Employee Login:          POST /employee/login
 - Employee Logout:         POST /employee/logout
 
-# Bus Management
-- Retrieve All Bus Routes: GET /buses
-- Retrieve Bus Routes by Number: GET /buses/routes
-- Find Path Between Stops: GET /buses/path
+# Bus Management port(5001)
+- Retrieve All Bus Routes:			 GET /buses
+- Retrieve Bus Routes by Number: 	 GET /buses/routes
+- Find Path Between Stops: 			 GET /buses/path
 
-# Database Operations
+# Database Operations port(5003)
 ## Stop Management
 - Add Stops:               POST /database/stop/add
 - Get Stops:               GET /database/stop/get
@@ -71,38 +71,38 @@ route structure
 
 /database                     # Database handling endpoints
 ├── /stop                     # Stop management
-│   ├── /add                  # Add stops (POST)
-│   ├── /get                  # Retrieve stops (GET)
-│   └── /update                # Update stop details (PUT)
+│   			       		  # Add stops (POST)
+│   			              # Retrieve stops (GET)
+│   		                  # Update stop details (DELETE)
 │
 ├── /route                    # Route management
-│   ├── /add                  # Add routes (POST)
-│   ├── /addstop              # Add stops to a route (POST)
-│   ├── /delete               # Delete a route (POST)
-│   └── /get                  # Get route details (GET)
+│   			              # Add routes (POST)
+│   			              # Add stops to a route (POST)
+│   			              # Delete a route (POST)
+│   			              # Get route details (GET)
 │
 ├── /schedule                 # Schedule management
-│   ├── /add                  # Add a bus schedule (POST)
-│   ├── /delete               # Delete a schedule (POST)
-│   └── /get                  # Get schedules for a specific bus (GET)
+│   			              # Add a bus schedule (POST)
+│   			              # Delete a schedule (POST)
+│   			              # Get schedules for a specific bus (GET)
 │
 ├── /ticket                   # Ticket management
-│   ├── /add                  # Book an offline ticket (POST)
-│   ├── /get                  # Verify ticket details (GET)
-│   └── /cancel               # Cancel a booked ticket (POST)
+│   			              # Book an offline ticket (POST)
+│   			              # Verify ticket details (GET)
+│   			              # Cancel a booked ticket (POST)
 │
 ├── /bus                      # Bus management
-│   └── /add                  # Add a new bus (POST)
-|   └── /get                  # Retrieve bus details (GET)
+│   		                  # Add a new bus (POST)
+|   		                  # Retrieve bus details (GET)
 |
 |
 ├── /staff                    # Staff management
-|   ├── /add                  # Add a new staff member (POST)
-|   └── /get                  # Retrieve staff details (GET)
+|   		                  # Add a new staff member (POST)
+|   		                  # Retrieve staff details (GET)
 |
 └── /time                     # bus reach time on each stop management
-    ├── /add                  # Add a reach time for stop in a route
-    └── /get                  # Retrieve bus reach time details (GET)
+    		                  # Add a reach time for stop in a route
+    		                  # Retrieve bus reach time details (GET)
  
 
 
@@ -111,10 +111,10 @@ Brief discription of all endpoint and app stucture
 #####################################################################################################################
 user_employee http://127.0.0.1:5002
 	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	/user
+	/user (diplay all endpoint in user)
         -----------------------------------------------------------------------------------------------------
-		/user/create 
-				POST
+		POST /user/create 
+
     			Handle user creation.
 
     			This method extracts data from a JSON payload to create a new user.
@@ -132,8 +132,7 @@ user_employee http://127.0.0.1:5002
 
     				
         -----------------------------------------------------------------------------------------------------
-		/user/login
-			POST
+		POST /user/login
 			Authenticates an existing user based on provided credentials.
         
         		Expected JSON Payload:
@@ -145,8 +144,8 @@ user_employee http://127.0.0.1:5002
             			Success message and user ID if login is successful.
             			Error messages if credentials are incorrect or password is wrong
 		-----------------------------------------------------------------------------------------------------
-		/buses/recent_bus
-			GET
+		GET /buses/recent_bus
+
 			Fetches recent buses arriving at a specified stop based on either the stop name or stop ID.
 		
 			Expected JSON Payload:
@@ -164,8 +163,8 @@ user_employee http://127.0.0.1:5002
 
 			
         -----------------------------------------------------------------------------------------------------
-		/user/fare
-			GET
+		GET /user/fare
+
 			Calculates the fare for a specified bus route and stop range.
         
 			Query Parameters:
@@ -177,11 +176,26 @@ user_employee http://127.0.0.1:5002
 			Returns:
 				- A JSON response with fare details if the route and stops are valid.
 				- Error message if required parameters are missing or the route/stops are invalid.
+		-----------------------------------------------------------------------------------------------------
+		POST  /user/ticket
+			Books an online ticket for a user on a specific route.
+
+			Expected Query Parameters:
+				- user_id (int): ID of the user booking the ticket.
+				- route_id (int): ID of the route.
+				- starting_stop_number (int): Starting stop number for the trip.
+				- ending_stop_number (int): Ending stop number for the trip.
+				- gender (str): Gender of the ticket holder.
+				- category (str): Category of the bus service.
+
+			Returns:
+				- A JSON response with the ticket details if booking is successful.
+				- Error message if required parameters are missing or if any other issue arises during booking.
 	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	/employee
+	/employee  (diplay all endpoint in employee)
         -----------------------------------------------------------------------------------------------------
-		/employee/create
-			POST
+		POST /employee/create
+
 			Registers a new employee with provided details.
         
 			Expected JSON Payload:
@@ -196,8 +210,8 @@ user_employee http://127.0.0.1:5002
 				Success message and employee ID if creation is successful.
 				Error message if creation fails.
         -----------------------------------------------------------------------------------------------------
-		/employee/login
-			POST
+		POST /employee/login
+
 			Authenticates an employee.
 			Expected JSON Payload:
 				- official_email (str): Employee’s official email (required).
@@ -207,8 +221,8 @@ user_employee http://127.0.0.1:5002
 				Success message and session ID if login is successful.
 				Error messages if email is not found, password is incorrect, or if multiple logins are attempted.
         -----------------------------------------------------------------------------------------------------
-		/employee/logout
-			POST
+		POST /employee/logout
+
 			Logs out an employee from the current session.
 			
 			Expected JSON Payload:
@@ -220,8 +234,8 @@ user_employee http://127.0.0.1:5002
 #####################################################################################################################
 bus http://127.0.0.1:5001
 	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	/buses
-		GET		
+	GET /buses
+				
 		Retrieves all available bus routes.
 		
 		Returns:
@@ -229,9 +243,8 @@ bus http://127.0.0.1:5001
 			- An error message if no routes are found.
         -----------------------------------------------------------------------------------------------------
 		
-		/buses/routes
+		GET /buses/routes
 
-			GET
 			Retrieves the bus routes for a specified bus number.
 		
 			Expected Query Parameters:
@@ -241,26 +254,12 @@ bus http://127.0.0.1:5001
 				- A JSON response containing the route details if found.
 				- An error message if no route is found.
 		
-		-----------------------------------------------------------------------------------------------------
-		/user/ticket
-			Books an online ticket for a user on a specific route.
-			POST
-			Expected Query Parameters:
-				- user_id (int): ID of the user booking the ticket.
-				- route_id (int): ID of the route.
-				- starting_stop_number (int): Starting stop number for the trip.
-				- ending_stop_number (int): Ending stop number for the trip.
-				- gender (str): Gender of the ticket holder.
-				- category (str): Category of the bus service.
 
-			Returns:
-				- A JSON response with the ticket details if booking is successful.
-				- Error message if required parameters are missing or if any other issue arises during booking.
         -----------------------------------------------------------------------------------------------------
 		
-		/buses/path
+		GET /buses/path
 
-			GET 
+
 			Finds the path between two specified bus stops.
 		
 			Expected Query Parameters:
@@ -275,11 +274,10 @@ bus http://127.0.0.1:5001
 
 #####################################################################################################################
 database http://127.0.0.1:5003
+/database
 	/database/stop
         -----------------------------------------------------------------------------------------------------
-		/database/stop/add
-
-			POST /database/stop/add
+		POST /database/stop
 			Adds stops to the database from a provided file.
 			Expected Form Data:
 				- session_id (str): The ID of the user session.
@@ -289,9 +287,7 @@ database http://127.0.0.1:5003
 				- Success message if upload is successful.
 				- Error message if upload fails or if user is not authorized.
 		-----------------------------------------------------------------------------------------------------
-		/database/stop/get
-
-			GET /database/stop/get
+		GET /database/stop
 			Retrieves stops from the database.
 			Expected Query Parameters:
 				- partial_name (str): Partial name of the stops to search for.
@@ -303,9 +299,7 @@ database http://127.0.0.1:5003
 	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	/database/route
         -----------------------------------------------------------------------------------------------------
-		/database/route/add
-
-			POST /database/route/add
+		POST /database/route
 			Adds routes to the database from a provided file.
 		
 			Expected Form Data:
@@ -317,9 +311,7 @@ database http://127.0.0.1:5003
 				- Error message if upload fails or if user is not authorized.
 
         -----------------------------------------------------------------------------------------------------
-		/database/route/addstop
-
-			POST /database/route/addstop
+		POST /database/route/addstop
 			Adds stops to an existing route from a provided file.
 			Expected Form Data:
 				- session_id (str): The ID of the user session.
@@ -330,10 +322,8 @@ database http://127.0.0.1:5003
 				- Success message if upload is successful.
 				- Error message if upload fails or if user is not authorized.
         -----------------------------------------------------------------------------------------------------
-		/database/route/delete
-
-			POST /database/route/delete
-			Deletes a specified bus route from the database.
+		DELETE /database/route
+			Deletes a specified route from the database.
 			Expected Form Data:
 				- session_id (str): The ID of the user session.
 				- bus_number (str): The bus number to delete.
@@ -345,9 +335,17 @@ database http://127.0.0.1:5003
 	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	/database/schedule
         -----------------------------------------------------------------------------------------------------
-		/database/schedule/delete
+		POST /database/schedule
+			Adds a schedule to the database from a provided file.
+			Expected Form Data:
+				- session_id (str): The ID of the user session.
+				- file (file): The file containing schedule details to upload.
 
-			POST /database/schedule/delete
+			Returns:
+				- Success message if upload is successful.
+				- Error message if upload fails or if user is not authorized.
+        -----------------------------------------------------------------------------------------------------
+		PUT /database/schedule
 			Deletes a specified schedule from the database.
 			Expected Form Data:
 				- session_id (str): The ID of the user session.
@@ -357,11 +355,9 @@ database http://127.0.0.1:5003
 				- Success message if deletion is successful.
 				- Error message if deletion fails or if user is not authorized.
         -----------------------------------------------------------------------------------------------------
-		/database/schedule/get
-
-			POST /database/schedule/get
+		GET /database/schedule
 			Retrieves the schedule for a specific bus.
-			Expected Form Data:
+			Expected Query Parameters:
 				- session_id (str): The ID of the user session.
 				- bus_number (str): The bus number for which the schedule is requested.
 		
@@ -372,9 +368,7 @@ database http://127.0.0.1:5003
 	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	/database/ticket
         -----------------------------------------------------------------------------------------------------
-		/database/ticket/add
-
-			POST /database/ticket/add
+		POST /database/ticket
 			Books an offline ticket for a specified route.
 			Expected JSON Body:
 				- route_id (str): The ID of the route for which the ticket is booked.
@@ -389,9 +383,7 @@ database http://127.0.0.1:5003
 				- Error message if booking fails or if user is not authorized.
 
         -----------------------------------------------------------------------------------------------------
-		/database/ticket/get
-
-			GET /database/ticket/get
+		GET /database/ticket
 			Verifies the details of a specified ticket.
 			Expected Query Parameters:
 				- ticket_id (str): The ID of the ticket to verify.
@@ -405,9 +397,7 @@ database http://127.0.0.1:5003
 	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	/database/bus
         -----------------------------------------------------------------------------------------------------
-		/database/bus/add
-
-			POST /database/bus/add
+		POST /database/bus
 			Adds a new bus to the database.
 			Expected Form Data:
 				- session_id (str): The ID of the user session.
@@ -419,9 +409,7 @@ database http://127.0.0.1:5003
 	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	/database/staff
         -----------------------------------------------------------------------------------------------------
-		/database/staff/add
-
-			POST /database/staff/add
+		POST /database/staff
 			Adds a new staff member to the database.
 			Expected Form Data:
 				- session_id (str): The ID of the user session.
@@ -430,31 +418,26 @@ database http://127.0.0.1:5003
 				- Success message if upload is successful.
 				- Error message if upload fails.
 		-----------------------------------------------------------------------------------------------------
-		/database/staff/get
+		GET /database/staff
 
-			get /database/staff/get
-
-			get all staff member from database.
-			Expected Form Data:
+			GET /database/staff
+			Retrieves all staff members from the database.
+			Expected Query Parameters:
 				- None
 			Returns:
-				- Success message if found data. and return all staff data
-				- Error message if get fails.
+				- A JSON response containing a list of staff members if found.
+				- Error message if retrieval fails.
 
 	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-		/database/time
+	/database/reachtime
 			-----------------------------------------------------------------------------------------------------
-			/database/time/add
+			POST /database/reachtime
 
-			post /database/time/add
-
-			post time for each stops in a route
+			Adds reach time for each stop in a route.
 			Expected Form Data:
-				- file of reach time and session key
+				- file (file): File containing reach time details.
+				- session_id (str): The ID of the user session.
+
 			Returns:
-				- Success message if data upload.
-				- Error message if route not fuond or session id is invalid 
-
-
-
-
+				- Success message if upload is successful.
+				- Error message if route is not found or session ID is invalid.

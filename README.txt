@@ -90,5 +90,5 @@ Route 2:
 Route 3:
 [Stop c] -> [Stop i] -> [Stop k] -> [Stop g] -> [Stop f]
 
-more stops can be added
+
 

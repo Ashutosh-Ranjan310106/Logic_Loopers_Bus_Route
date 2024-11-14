@@ -29,6 +29,19 @@ class Controller:
             return View.render_success("upload successfull"), 201
         return View.render_error("upload failed"), 500
     @staticmethod
+    def delete_stops():
+        session_id = request.form.get("session_id")
+        stop_ids = request.form.get['stop_ids']
+
+        result =  StopService.delete_stops(session_id, stop_ids)
+        if result == -1:
+            return View.render_error("you are not allowed to upload to database"), 403
+        elif result == -2:
+            return View.render_error("incorrect table formate"), 400
+        if result == 1:
+            return View.render_success("upload successfull"), 201
+        return View.render_error("upload failed"), 500
+    @staticmethod
     def add_routes():
         if 'file' not in request.files:
             return View.render_error("No file part"), 400
@@ -130,7 +143,7 @@ class Controller:
     @staticmethod
     def get_stops():
         partial_name = request.args.get("partial_name")
-        stops =  StopService.get_all_stops(partial_name)
+        stops =  StopService.get_stops(partial_name)
         if stops:
             return StopView.render_stops(stops), 200
         return View.render_error("no stops found"), 404

@@ -1,4 +1,4 @@
-from db_utils.utils import get_connection, get_cursor
+from db_utils.utils import get_connection, get_cursor, log_error
 import pandas as pd
 cursor = get_cursor()
 connection = get_connection()
@@ -38,9 +38,13 @@ class RouteService:
                 INSERT INTO Routes (bus_no, avg_Duration, number_of_stops) VALUES 
                 {parameter} ;
             '''
-            cursor.execute(query, values)
-            connection.commit()
-            return 1
+            try:
+                cursor.execute(query, values)
+                connection.commit()
+                return 1
+            except Exception as e:
+                log_error('add routes', e)
+                return e
         return -1
     
     @staticmethod
@@ -58,8 +62,12 @@ class RouteService:
             query = f'''
                 DELETE FROM Routes where bus_no = %s;
             '''
-            cursor.execute(query, (bus_number,))
-            connection.commit()
+            try:
+                cursor.execute(query, (bus_number,))
+                connection.commit()
+            except Exception as e:
+                log_error('delete routes', e)
+                return e
             return 1
         return -1
     
@@ -118,8 +126,11 @@ class RouteService:
                 INSERT INTO stops_in_route (stop_id, route_stop_number, fare_stage, route_id) VALUES 
                 {parameter} ;
             '''
-            cursor.execute(query, values)
-            connection.commit()
-
-            return 1
+            try:
+                cursor.execute(query, values)
+                connection.commit()
+                return 1
+            except Exception as e:
+                log_error('add stops in routes', e)
+                return e
         return -1

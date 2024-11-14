@@ -1,4 +1,4 @@
-from db_utils.utils import get_cursor, get_connection  
+from db_utils.utils import get_cursor, get_connection, log_error
 from werkzeug.security import generate_password_hash, check_password_hash
 import hashlib
 import time
@@ -38,10 +38,11 @@ class EmployeeService:
         try:
             cursor.execute(query,values+[user_name, official_email, hashed_password, phone_number, access_level_id])
             connection.commit()
-            user_id = cursor.lastrowid
-            return user_id
+            emp_id = cursor.lastrowid
+            return emp_id
         except Exception as e:
-            print(f"Error: {e}")
+            connection.rollback()
+            log_error("create employee",e)
             return None
     @staticmethod
     def login_employee(official_email, password):
@@ -66,7 +67,8 @@ class EmployeeService:
                 connection.commit()
                 return session_id
             except Exception as e:
-                print(f"Error: {e}")
+                connection.rollback()
+                log_error('login employee',e)
                 return -4
         else:
             if not emp:
@@ -78,5 +80,9 @@ class EmployeeService:
         query = '''
                 update emp_session set status = 0 where session_id = %s and status = 1;
                 '''
-        cursor.execute(query, (session_id,))
-        connection.commit()
+        try:
+            cursor.execute(query, (session_id,))
+            connection.commit()
+        except Exception as e:
+            connection.rollback()
+            log_error('logout employee', e)

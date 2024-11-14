@@ -1,4 +1,4 @@
-from db_utils.utils import get_connection, get_cursor
+from db_utils.utils import get_connection, get_cursor, log_error
 import datetime
 import pandas as pd
 cursor = get_cursor()
@@ -44,8 +44,14 @@ class TicketService:
                 JOIN Offline_Tickets ot ON t.ticket_id = ot.ticket_id
                 WHERE t.ticket_id = %s;
             '''
-            cursor.execute(get_ticket_query, (ticket_id,))
-            ticket = cursor.fetchone()
+            try:
+                cursor.execute(get_ticket_query, (ticket_id,))
+                connection.commit()
+                ticket = cursor.fetchone()
+            except Exception as e:
+                connection.rollback()
+                log_error('delete stops', e)
+                return e
             return ticket
         return -1
     

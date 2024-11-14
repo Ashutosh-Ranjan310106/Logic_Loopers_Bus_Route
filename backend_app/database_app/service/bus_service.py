@@ -1,4 +1,4 @@
-from db_utils.utils import get_connection, get_cursor
+from db_utils.utils import get_connection, get_cursor, log_error
 cursor = get_cursor()
 connection = get_connection()
 
@@ -19,9 +19,14 @@ class BusService:
             query = f'''
                 DELETE FROM Schedule where schedule_id = %s;
             '''
-            cursor.execute(query, (schedule_id,))
-            connection.commit()
-            return 1
+            try:
+                cursor.execute(query, (schedule_id,))
+                connection.commit()
+                return 1
+            except Exception as e:
+                log_error('delete schedule', e)
+                return e
+
         return -1
     @staticmethod
     def get_route_schedule(session_id, bus_number):
