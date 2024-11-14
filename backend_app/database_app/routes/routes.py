@@ -23,7 +23,7 @@ def delete_route():
 @database_route.route('/database/schedule', methods=['POST'])
 def add_schedule():
     return Controller.add_schedule()
-@database_route.route('/database/schedule', methods=['PUT'])
+@database_route.route('/database/schedule', methods=['DELETE'])
 def delete_schedule():
     return Controller.delete_schedule()
 @database_route.route('/database/schedule', methods=['GET'])

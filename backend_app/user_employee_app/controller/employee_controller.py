@@ -4,29 +4,29 @@ from flask import render_template, request
 class EmployeeController:
     @staticmethod
     def create_employee():
-        data = request.get_json()
-        if not data:
-            return View.render_error("No data provided"), 400
 
-        user_name = data.get("user_name", "")
-        first_name = data.get("first_name", "")
-        last_name = data.get("last_name", "")
-        official_email = data.get("official_email")
-        password = data.get("password")
-        phone_number = data.get("phone_number")
-        access_level_id = data.get("access_level_id")
-        salary = data.get("salary")
-        user_id = EmployeeService.create_employee(user_name, official_email, password, phone_number, access_level_id,  first_name, last_name, salary)
-        if user_id:
+
+        user_name = request.form.get("user_name", "")
+        first_name = request.form.get("first_name", "")
+        last_name = request.form.get("last_name", "")
+        official_email = request.form.get("official_email")
+        password = request.form.get("password")
+        phone_number = request.form.get("phone_number")
+        access_level_id = request.form.get("access_level_id")
+        salary = request.form.get("salary")
+        employer_code = request.form.get("employer_code")
+        print("empcode", employer_code)
+        user_id = EmployeeService.create_employee(user_name, official_email, password, phone_number, access_level_id, employer_code, first_name, last_name, salary)
+        print("type",type(user_id) == int)
+        if type(user_id) == int:
             return View.render_success("create successfull", user_id), 201
-        return View.render_error("faild"), 200
+        return View.render_error("faild"+str(user_id)), 401
     
 
     @staticmethod
     def login_employee():
-        data = request.get_json()
-        official_email = data.get("official_email")
-        password = data.get("password")
+        official_email = request.form.get("official_email")
+        password = request.form.get("password")
         if not official_email or not password:
             return View.render_error("Email and password are required"), 400
 
@@ -43,8 +43,7 @@ class EmployeeController:
     
     @staticmethod
     def logout_employee():
-        data = request.get_json()
-        session_id = data.get("session_id")
+        session_id = request.form.get("session_id")
 
         session_id = EmployeeService.logout_employee(session_id)
         return View.render_success("logout succesfull", session_id), 200

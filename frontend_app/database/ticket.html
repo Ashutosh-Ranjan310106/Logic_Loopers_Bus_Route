@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Tickets</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        .container {
+            max-width: 700px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        .collapsible {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            text-align: center;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        .collapsible:hover, .active {
+            background-color: #45a049;
+        }
+        .content {
+            padding: 0 20px;
+            display: none;
+            overflow: hidden;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Manage Tickets</h1>
+    <a href="../db.index.html" class="button">Back to Index</a>
+
+    <!-- Book Offline Ticket -->
+    <button class="collapsible">Book Offline Ticket</button>
+    <div class="content">
+        <form action="http://127.0.0.1:5003/database/ticket/book_offline" method="POST">
+            <div class="form-group">
+                <label for="route_id">Route ID:</label>
+                <input type="text" id="route_id" name="route_id" placeholder="Route ID" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Price:</label>
+                <input type="text" id="price" name="price" placeholder="Price" required>
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender" required>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <select id="category" name="category" required>
+                    <option value="Adult">Adult</option>
+                    <option value="Child">Child</option>
+                    <option value="Senior">Senior</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="direction">Direction:</label>
+                <select id="direction" name="direction" required>
+                    <option value="Inbound">Inbound</option>
+                    <option value="Outbound">Outbound</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="session_id">Session ID:</label>
+                <input type="text" id="session_id" name="session_id" placeholder="Session ID" required>
+            </div>
+            <button type="submit" class="button">Submit</button>
+        </form>
+    </div>
+
+    <!-- Verify Ticket -->
+    <button class="collapsible">Verify Ticket</button>
+    <div class="content">
+        <form action="http://127.0.0.1:5003/database/ticket/verify" method="GET">
+            <div class="form-group">
+                <label for="ticket_id">Ticket ID:</label>
+                <input type="text" id="ticket_id" name="ticket_id" placeholder="Ticket ID">
+            </div>
+            <div class="form-group">
+                <label for="ticketdate">Ticket Date (YYYY-MM-DD):</label>
+                <input type="text" id="ticketdate" name="ticketdate" placeholder="Ticket Date">
+            </div>
+            <div class="form-group">
+                <label for="route_id_verify">Route ID:</label>
+                <input type="text" id="route_id_verify" name="route_id" placeholder="Route ID">
+            </div>
+            <button type="submit" class="button">Submit</button>
+        </form>
+    </div>
+
+</div>
+
+<script>
+    var coll = document.getElementsByClassName("collapsible");
+    for (var i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            // Close all other open contents
+            var allContents = document.getElementsByClassName("content");
+            for (var j = 0; j < allContents.length; j++) {
+                if (allContents[j] !== this.nextElementSibling) {
+                    allContents[j].style.display = "none";
+                }
+            }
+            // Toggle the current one
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

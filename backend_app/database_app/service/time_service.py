@@ -1,4 +1,4 @@
-from db_utils.utils import get_connection, get_cursor
+from db_utils.utils import get_connection, get_cursor,log_error
 import pandas as pd
 cursor = get_cursor()
 connection = get_connection()
@@ -36,9 +36,15 @@ class TimeService:
                 INSERT INTO  bus_stop_reach_time (time, node_number, schedule_id) VALUES 
                 {parameter} ;
             '''
-            cursor.execute(query, values)
-            connection.commit()
-            return 1
+            try:
+                cursor.execute(query, values)
+                connection.commit()
+                return 1
+            except Exception as e:
+                connection.rollback()
+                log_error('add bus stop reach time', e)
+                return e
+
         return -1
     @staticmethod
     def get_bus_stop_reach_time():

@@ -93,7 +93,6 @@ route structure
 │
 ├── /bus                      # Bus management
 │   		                  # Add a new bus (POST)
-|   		                  # Retrieve bus details (GET)
 |
 |
 ├── /staff                    # Staff management
@@ -102,7 +101,6 @@ route structure
 |
 └── /time                     # bus reach time on each stop management
     		                  # Add a reach time for stop in a route
-    		                  # Retrieve bus reach time details (GET)
  
 
 
@@ -198,13 +196,16 @@ user_employee http://127.0.0.1:5002
 
 			Registers a new employee with provided details.
         
-			Expected JSON Payload:
+			Expected form - data payload:
+				- first_name =Employee’s first_name (optional).
+        		- last_name = Employee’s last_name (optional).
 				- user_name (str): Employee’s username (optional).
 				- official_email (str): Employee’s official email (required).
 				- password (str): Employee’s password (required).
 				- phone_number (str): Employee’s phone number (optional).
 				- access_level_id (str): Access level of the employee.
 				- salary (float): Employee’s salary.
+				- employeer_code: autheticate employeer creation.
 			
 			Returns:
 				Success message and employee ID if creation is successful.
@@ -213,7 +214,7 @@ user_employee http://127.0.0.1:5002
 		POST /employee/login
 
 			Authenticates an employee.
-			Expected JSON Payload:
+			Expected form - data payload:
 				- official_email (str): Employee’s official email (required).
 				- password (str): Employee’s password (required).
 			
@@ -225,7 +226,7 @@ user_employee http://127.0.0.1:5002
 
 			Logs out an employee from the current session.
 			
-			Expected JSON Payload:
+			Expected form - data payload:
 				- session_id (str): Employee’s current session ID.
 			
 			Returns:
@@ -345,7 +346,7 @@ database http://127.0.0.1:5003
 				- Success message if upload is successful.
 				- Error message if upload fails or if user is not authorized.
         -----------------------------------------------------------------------------------------------------
-		PUT /database/schedule
+		DELETE /database/schedule
 			Deletes a specified schedule from the database.
 			Expected Form Data:
 				- session_id (str): The ID of the user session.
@@ -367,7 +368,8 @@ database http://127.0.0.1:5003
 
 	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	/database/ticket
-        -----------------------------------------------------------------------------------------------------
+		-----------------------------------------------------------------------------------------------------
+
 		POST /database/ticket
 			Books an offline ticket for a specified route.
 			Expected JSON Body:
@@ -377,23 +379,23 @@ database http://127.0.0.1:5003
 				- category (str): The category of the passenger.
 				- direction (str): The direction of travel.
 				- session_id (str): The ID of the user session.
-		
+
 			Returns:
 				- A JSON response containing ticket details if booking is successful.
-				- Error message if booking fails or if user is not authorized.
+				- Error message if booking fails or if the user is not authorized.
 
-        -----------------------------------------------------------------------------------------------------
+		-----------------------------------------------------------------------------------------------------
+
 		GET /database/ticket
 			Verifies the details of a specified ticket.
 			Expected Query Parameters:
 				- ticket_id (str): The ID of the ticket to verify.
 				- date_of_tickets (str): The date of the tickets.
 				- route_id (str): The ID of the route associated with the ticket.
-		
+
 			Returns:
 				- A JSON response containing ticket details if valid.
 				- Error message if the ticket is invalid or expired.
-
 	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	/database/bus
         -----------------------------------------------------------------------------------------------------

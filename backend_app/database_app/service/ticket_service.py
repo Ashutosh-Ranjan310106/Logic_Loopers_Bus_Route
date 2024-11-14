@@ -22,21 +22,26 @@ class TicketService:
                 VALUES (%s, %s, %s, %s, %s, %s);
             '''
 
-            cursor.execute(insert_ticket_query, (route_id, price, gender, category, 'offline', datetime.date.today()))
             
-
-            ticket_id = cursor.lastrowid
 
 
             insert_offline_ticket_query = '''
                 INSERT INTO Offline_Tickets (ticket_id, direction)
                 VALUES (%s, %s);
             '''
-            cursor.execute(insert_offline_ticket_query, (ticket_id, direction))
-            
+            try:
+                cursor.execute(insert_ticket_query, (route_id, price, gender, category, 'offline', datetime.date.today()))
+                
 
-            connection.commit()
-            
+                ticket_id = cursor.lastrowid
+                cursor.execute(insert_offline_ticket_query, (ticket_id, direction))
+                
+
+                connection.commit()
+            except Exception as e:
+                connection.rollback()
+                log_error('book offline tickets', e)
+                return e
 
             get_ticket_query = '''
                 SELECT t.ticket_id, t.route_id, t.price, t.gender, t.category, t.date_of_tickets, ot.direction
