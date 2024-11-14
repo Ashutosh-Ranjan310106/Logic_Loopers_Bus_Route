@@ -1,4 +1,4 @@
-DROP DATABASE Bus_Route;
+-- DROP DATABASE Bus_Route;
 CREATE DATABASE Bus_Route;
 USE Bus_Route;
 
@@ -25,7 +25,6 @@ CREATE TABLE Users (
     phone_number VARCHAR(12)  unique,
     password  VARCHAR(500) NOt NULL
 );
-
 CREATE TABLE access_level(
 	access_level_id int PRIMARY KEY,
     discription TEXT NOT NULL
