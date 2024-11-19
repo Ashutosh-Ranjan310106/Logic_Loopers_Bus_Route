@@ -188,5 +188,15 @@
         "function": "book onine ticket",
         "error": "Python type dict cannot be converted",
         "timestamp": "2024-11-19 18:35:14"
+    },
+    {
+        "function": "create employee",
+        "error": "Unread result found",
+        "timestamp": "2024-11-19 22:47:21"
+    },
+    {
+        "function": "book onine ticket",
+        "error": "Unread result found",
+        "timestamp": "2024-11-19 22:53:34"
     }
 ]

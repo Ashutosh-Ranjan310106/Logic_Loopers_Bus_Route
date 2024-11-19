@@ -1,6 +1,6 @@
-const appstate = 'local';
+const appstate = 'on_lan_';
 let config;
-if (appstate === 'production'){
+if (appstate === 'on_lan'){
     config = {
         busURL: "http://192.168.163.145:5001",
         user_employeeURL: "http://192.168.163.145:5002",

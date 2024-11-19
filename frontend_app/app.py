@@ -1,10 +1,10 @@
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
-appstate = 'himachi'
-if appstate == 'production':
+appstate = 'on_lan_'
+if appstate == 'on_lan':
     host = '192.168.163.145'
-elif appstate == 'himachi':
+elif appstate == 'hamachi':
     host = '25.24.45.37'
 else:
     host='127.0.0.1'
