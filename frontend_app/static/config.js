@@ -1,4 +1,4 @@
-const appstate = 'production';
+const appstate = 'local';
 let config;
 if (appstate === 'production'){
     config = {

@@ -1,4 +1,4 @@
-appstate = 'hamachi'
+appstate = 'local'
 if appstate == 'production':
     host = '192.168.163.145'
 elif appstate == 'hamachi':
