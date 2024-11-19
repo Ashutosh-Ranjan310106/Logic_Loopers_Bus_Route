@@ -6,35 +6,25 @@ connection = get_connection()
 
 class ScheduleService:
     @staticmethod
-    def add_schedule(file, session_id):
-        # Query to check access level
+    def add_schedule(file, emp_ip):
+
         query = '''
             SELECT acl.access_level_id AS acid 
             FROM Access_level acl
             JOIN employee emp ON emp.access_level_id = acl.access_level_id
             JOIN emp_session sesn ON sesn.emp_id = emp.emp_id
-            WHERE sesn.session_id = %s AND sesn.status = 1;
+            WHERE sesn.emp_ip = %s AND sesn.status = 1;
         '''
-        cursor.execute(query, (session_id,))
+        cursor.execute(query, (emp_ip,))
         acc_level = cursor.fetchone()
 
-        # Only proceed if access level is 2 or below
         if acc_level and acc_level['acid'] <= 2:
-            # Load the CSV file into a DataFrame
             df = pd.read_csv(file)
-
-            # Validate required columns in DataFrame
-            required_columns = {'schedule_id', 'schedule_date', 'route', 'time', 'route_id', 'start_stop_number', 'stop_stop_number', 'bus_id', 'conductor_id', 'driver_id'}
-            if not required_columns.issubset(df.columns):
-                return -2
-
-            # Prepare parameters for the SQL insert statement
             parameter = ''
             values = []
 
             for _, row in df.iterrows():
-                schedule_id = row.get('schedule_id')
-                schedule_date = row.get('schedule_date')
+                schedule_day = row.get('schedule_day')
                 route = row.get('route')
                 time = row.get('time')
                 route_id = row.get('route_id')
@@ -43,17 +33,17 @@ class ScheduleService:
                 bus_id = row.get('bus_id')
                 conductor_id = row.get('conductor_id')
                 driver_id = row.get('driver_id')
-                
-                # Build the parameter string and values list
-                parameter += '(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s), '
-                values.extend([schedule_id, schedule_date, route, time, route_id, start_stop_number, stop_stop_number, bus_id, conductor_id, driver_id])
 
-            # Remove the trailing comma and space from parameter string
+                if not (schedule_day != None and route != None and time != None and route_id != None and start_stop_number != None and stop_stop_number != None and bus_id != None and conductor_id != None and driver_id != None):
+                    return -2
+                
+                parameter += '(%s, %s, %s, %s, %s, %s, %s, %s, %s), '
+                values.extend([schedule_day, route, time, route_id, start_stop_number, stop_stop_number, bus_id, conductor_id, driver_id])
+
             parameter = parameter.rstrip(', ')
 
-            # Define the insert query
             query = f'''
-                INSERT INTO Schedule (schedule_id, schedule_date, route, time, route_id, start_stop_number, stop_stop_number, bus_id, conductor_id, driver_id) 
+                INSERT INTO Schedule (schedule_day, route, time, route_id, start_stop_number, stop_stop_number, bus_id, conductor_id, driver_id) 
                 VALUES {parameter};
             '''
             try:
@@ -64,5 +54,60 @@ class ScheduleService:
                 connection.rollback()
                 log_error('add schedule', e)
                 return e
-        return -1  # Unauthorized access
+        return -1
+    @staticmethod
+    def delete_schedule(emp_ip, schedule_id):
+        query = '''
+            SELECT acl.access_level_id AS acid 
+            FROM Access_level acl
+            JOIN employee emp ON emp.access_level_id = acl.access_level_id
+            JOIN emp_session sesn ON sesn.emp_id = emp.emp_id
+            WHERE sesn.emp_ip = %s AND sesn.status = 1;
+        '''
+        cursor.execute(query, (emp_ip,))
+        acc_level = cursor.fetchone()
+        if acc_level and acc_level['acid'] <= 2:
+            query = '''
+                DELETE FROM Schedule 
+                WHERE schedule_id = %s;
+            '''
+            try:
+                cursor.execute(query, (schedule_id,))
+                connection.commit()
+                if cursor.rowcount > 0:
+                    return 1
+                return -2
+            except Exception as e:
+                connection.rollback()
+                log_error('delete schedule', e)
+                return e 
+        return -1
+
+    @staticmethod
+    def get_schedule(bus_number ,emp_ip):
+        query = '''
+            SELECT acl.access_level_id AS acid 
+            FROM Access_level acl
+            JOIN employee emp ON emp.access_level_id = acl.access_level_id
+            JOIN emp_session sesn ON sesn.emp_id = emp.emp_id
+            WHERE sesn.emp_ip = %s AND sesn.status = 1;
+        '''
+        cursor.execute(query, (emp_ip,))
+        acc_level = cursor.fetchone()
+
+        if acc_level and acc_level['acid'] <= 2:
+
+            
+
+            query = f'''
+                    select * from schedule
+                    join routes ON schedule.route_id = routes.route_id
+                    where bus_no = %s;
+                '''
+            cursor.execute(query, (bus_number,))
+            schedule_data = cursor.fetchall()
+            if not schedule_data:
+                return -2
+            return schedule_data
+        return -1
     

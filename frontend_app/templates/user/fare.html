@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Fare Calculator</title>
+    <script src="{{ url_for('static', filename='config.js') }}"></script>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Container for Fare Calculation */
+        .fare-container {
+            background-color: #ffffff;
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        /* Heading */
+        .fare-container h2 {
+            margin-bottom: 24px;
+            color: #333;
+        }
+
+        /* Input Fields */
+        .fare-container input[type="text"],
+        .fare-container select {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        /* Submit Button */
+        .fare-container button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 16px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .fare-container button:hover {
+            background-color: #45a049;
+        }
+
+        /* Output Section */
+        .fare-container .output {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        /* Error Message */
+        .fare-container .error {
+            color: #ff0000;
+            font-size: 16px;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .fare-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="fare-container">
+        <h2>Bus Fare Calculator</h2>
+
+        <!-- Form to calculate fare -->
+        <form id="fare-form">
+            <input type="text" id="bus_number" name="bus_number" placeholder="Bus Number" required>
+            <input type="text" id="starting_stop_number" name="starting_stop_number" placeholder="Starting Stop Number" required>
+            <input type="text" id="ending_stop_number" name="ending_stop_number" placeholder="Ending Stop Number" required>
+            <select id="category" name="category" required>
+                <option value="">Select Bus Category</option>
+                <option value="red">Red</option>
+                <option value="orange">Orange</option>
+                <option value="blue">Blue</option>
+                <option value="green">Green</option>
+            </select>
+            <button type="submit">Calculate Fare</button>
+            <div id ='fareResult' class="result"></div>
+        </form>
+    </div>
+
+    <script>
+        // JavaScript to handle form submission and fetch fare calculation
+        document.getElementById("fare-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const bus_number = document.getElementById("bus_number").value;
+            const starting_stop_number = document.getElementById("starting_stop_number").value;
+            const ending_stop_number = document.getElementById("ending_stop_number").value;
+            const category = document.getElementById("category").value;
+
+            
+
+            const apiUrl = config.user_employeeURL+`/user/fare?bus_number=${bus_number}&starting_stop_number=${starting_stop_number}&ending_stop_number=${ending_stop_number}&category=${category}`;
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const fareResult = document.getElementById("fareResult");
+                    if (data.status === 'success') {
+                        fareResult.textContent = `Fare: ${data.fare}`;
+                        fareResult.style.color = 'green';
+                    } else {
+                        fareResult.textContent = `Error: ${data.message}`;
+                        fareResult.style.color = 'red';
+                    }
+                })
+                .catch(error => {
+                    document.getElementById("fareResult").textContent = "An error occurred while calculating the fare.";
+                });
+
+        });
+    </script>
+</body>
+</html>

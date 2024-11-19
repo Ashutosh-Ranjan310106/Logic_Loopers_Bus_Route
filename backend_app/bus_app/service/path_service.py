@@ -91,12 +91,12 @@ class PathService:
                         visited_routes.add(stop['other_route_id'])
                         visited_stops.add(stop['stop_id'])
                         if len(current_path) < max_depth - 1:
-                            queue.append((stop['other_route_id'], stop['stop_id'], current_path + [{"route":path["route"],"direction":('up',all_stops[-1]["stop_name"]), "stop_list":path["stop_list"].copy()+[all_stops[i+1]]}], visited_routes.copy()))
+                            queue.append((stop['other_route_id'], stop['stop_id'], current_path + [{"route":path["route"],"direction":('up',all_stops[-1]["stop_name"]), "stop_list":path["stop_list"].copy()}], visited_routes.copy()))
             
             if not found_path:
                 path = {"route": current_route,"direction":('down',all_stops[0]["stop_name"]), "stop_list": []}
                 ch = False
-                for stop in all_stops[::-1]:
+                for i, stop in enumerate(all_stops[::-1]):
                     if stop['other_route_id'] == current_route:
                         if stop['stop_id'] == current_stop or ch:
                             ch = True
@@ -113,7 +113,7 @@ class PathService:
                             visited_routes.add(stop['other_route_id'])
                             visited_stops.add(stop['stop_id'])
                             if len(current_path) < max_depth - 1:
-                                queue.append((stop['other_route_id'], stop['stop_id'], current_path + [{"route":path["route"],"direction":('down',all_stops[0]["stop_name"]), "stop_list":path["stop_list"][::]}], visited_routes.copy()))
+                                queue.append((stop['other_route_id'], stop['stop_id'], current_path + [{"route":path["route"],"direction":('down',all_stops[0]["stop_name"]), "stop_list":path["stop_list"][::]+[all_stops[i+1]]}], visited_routes.copy()))
 
             
             

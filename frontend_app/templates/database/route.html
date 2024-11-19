@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='database.css') }}">
+    <script src="{{ url_for('static', filename='config.js') }}"></script>
+    <title>Manage Routes</title>
+</head>
+<body>
+<a href="{{ url_for('database_index') }}">
+    <button class="back_button">Back</button>
+</a>
+<div class="container">
+    <h1>Manage Routes</h1>
+    <details>
+        <summary>Add Route</summary>
+        <div class="form-container">
+            <form id="addRouteForm" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="file">Upload Route File:</label>
+                    <input type="file" id="file" name="file" required>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+            <div id="addRouteResult" class="result"></div>
+        </div>
+    </details>
+    
+
+    <details>
+        <summary>Add Stops to Route</summary>
+        <div class="form-container">
+            <form id="addStopsForm" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="bus_no">Bus Number:</label>
+                    <input type="text" id="bus_no" name="bus_no" required>
+                </div>
+                <div class="form-group">
+                    <label for="file">Upload Stops File:</label>
+                    <input type="file" id="file" name="file" required>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+            <div id="addStopsResult" class="result"></div>
+        </div>
+    </details>
+    
+    <details>
+        <summary>Delete Route</summary>
+        <div class="form-container">
+            <form id="deleteRouteForm">
+                <div class="form-group">
+                    <label for="bus_number">Bus Number to Delete:</label>
+                    <input type="text" id="bus_number" name="bus_number" required>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+            <div id="deleteRouteResult" class="result"></div>
+        </div>
+    </details>
+</div>
+
+<script>
+    document.getElementById('addRouteForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formData = new FormData(this);
+        document.getElementById('addRouteResult').style.display = "block"        
+        fetch(config.databaseURL+'/database/route', {
+            method: 'POST',
+            body: formData
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            showAlert(data.status, data.message)
+        })
+        .catch((error) => {
+            showAlert(error.message || "An error occurred while submitting the form.")
+        });
+    });
+
+
+    document.getElementById('addStopsForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formData = new FormData(this);
+        document.getElementById('addStopsResult').style.display = "block"
+        fetch(config.databaseURL+'/database/route/addstop', {
+            method: 'POST',
+            body: formData
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            showAlert(data.status, data.message)
+        })
+        .catch((error) => {
+            showAlert(error.message || "An error occurred while submitting the form.")
+        });
+    });
+
+    document.getElementById('deleteRouteForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formData = new FormData(this);
+        document.getElementById('deleteRouteResult').style.display = "block"
+        fetch(config.databaseURL+'/database/route', {
+            method: 'DELETE',
+            body: formData
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            showAlert(data.status, data.message)
+        })
+        .catch((error) => {
+            showAlert(error.message || "An error occurred while submitting the form.")
+        });
+    });
+</script>
+
+</body>
+</html>

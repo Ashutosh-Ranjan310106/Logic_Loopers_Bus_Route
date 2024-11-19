@@ -6,15 +6,15 @@ connection = get_connection()
 
 class TicketService:
     @staticmethod
-    def book_offline_tickets(route_id, price, gender, category, direction, session_id):
+    def book_offline_tickets(route_id, price, gender, category, direction, emp_ip):
         query = '''
                 select acl.access_level_id acid from 
                 Access_level acl
                 join employee emp ON emp.access_level_id = acl.access_level_id
                 join emp_session sesn ON sesn.emp_id = emp.emp_id
-                where sesn.session_id = %s and sesn.status = 1; 
+                where sesn.emp_ip = %s and sesn.status = 1; 
                 '''
-        cursor.execute(query, (session_id,))
+        cursor.execute(query, (emp_ip,))
         acc_level = cursor.fetchone()
         if acc_level and acc_level['acid'] <= 2:
             insert_ticket_query = '''
@@ -43,21 +43,8 @@ class TicketService:
                 log_error('book offline tickets', e)
                 return e
 
-            get_ticket_query = '''
-                SELECT t.ticket_id, t.route_id, t.price, t.gender, t.category, t.date_of_tickets, ot.direction
-                FROM Tickets t
-                JOIN Offline_Tickets ot ON t.ticket_id = ot.ticket_id
-                WHERE t.ticket_id = %s;
-            '''
-            try:
-                cursor.execute(get_ticket_query, (ticket_id,))
-                connection.commit()
-                ticket = cursor.fetchone()
-            except Exception as e:
-                connection.rollback()
-                log_error('delete stops', e)
-                return e
-            return ticket
+            
+            return ticket_id
         return -1
     
     @staticmethod
@@ -68,6 +55,7 @@ class TicketService:
         '''
         condition = []
         params = []
+        print(ticketdate)
         if ticket_id:
             condition.append('ticket_id = %s and date_of_tickets = %s')
             params.extend([ticket_id, datetime.date.today()])
@@ -78,8 +66,8 @@ class TicketService:
         if route_id:
             condition.append('route_id = %s')
             params.append(route_id)
-
-        verify_ticket_query += 'WHERE ' + 'AND'.join(condition) + ';'
+        if params:
+            verify_ticket_query += 'WHERE ' + ' AND '.join(condition) + ';'
         cursor.execute(verify_ticket_query, params)
         ticket = cursor.fetchall()
         

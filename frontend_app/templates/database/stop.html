@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Stops</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='database.css') }}">
+    <script src="{{ url_for('static', filename='config.js') }}"></script>
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
+
+</head>
+<body>
+    <a href="{{ url_for('database_index') }}">
+        <button class="back_button">Back</button>
+    </a>
+
+
+    <div class="container">
+        <h1>Manage Stops</h1>
+
+
+        <details>
+            <summary>Add Stop</summary>
+            <div class="form-container">
+                <form id="addStopsForm" method="post">
+                    <div class="form-group">
+                        <label for="file">Upload Stop File:</label>
+                        <input type="file" id="file" name="file" required>
+                    </div>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </details>
+
+        <details>
+            <summary>Get Stops</summary>
+            <div class="form-container">
+                <form id="stopSearchForm">
+                    <div class="form-group">
+                        <label for="partial_name">Partial Name of Stop:</label>
+                        <input type="text" id="partial_name" name="partial_name" required>
+                    </div>
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+
+            <div class="stop-list" id="stopResults">
+            </div>
+
+        </details>
+    </div>
+
+
+    <script>
+        document.getElementById("addStopsForm").addEventListener("submit", function (event) {
+            event.preventDefault(); 
+
+            const form = event.target;
+            const formData = new FormData(form);
+
+            fetch(config.databaseURL+"/database/stop", {
+                method: "POST",
+                body: formData,
+            })
+            .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            showAlert(data.status, data.message)
+        })
+        .catch((error) => {
+            showAlert(error.message || "An error occurred while submitting the form.")
+            });
+        });
+
+
+
+        document.getElementById('stopSearchForm').addEventListener('submit', function (event) {
+            event.preventDefault(); 
+
+            const partialName = document.getElementById('partial_name').value;
+            fetch(config.databaseURL+`/database/stop?partial_name=${partialName}`, {
+                method: "GET",
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const stopResults = document.getElementById('stopResults');
+                    stopResults.innerHTML = ''; 
+                    if (data.length > 0) {
+                        data.forEach(stop => {
+                            const stopItem = document.createElement('div');
+                            stopItem.classList.add('stop-item');
+                            stopItem.innerHTML = `
+                                <strong>Stop ID:</strong> ${stop.stop_id} <br>
+                                <strong>Stop Name:</strong> ${stop.stop_name}
+                            `;
+                            stopResults.appendChild(stopItem);
+                        });
+                    } else {
+                        stopResults.innerHTML = '<p>No stops found.</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching stops:', error);
+                    document.getElementById('stopResults').innerHTML = '<p>Error fetching stops.</p>';
+                });
+        });
+    </script>
+</body>
+
+</html>

@@ -7,10 +7,10 @@ from  db_utils.utils import *
 from flask import Flask, jsonify
 from flask_cors import CORS
 app = Flask(__name__)
-
+from config import host
 app.register_blueprint(user_employee_route)
 CORS(app)
 if __name__ == '__main__':
-    app.run(debug=True, port=5002) # host = "192.168.228.145"
+    app.run(host=host, port=5002) # host = "192.168.228.145"
 
 

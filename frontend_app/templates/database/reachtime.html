@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Reach Time</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='database.css') }}">
+    <script src="{{ url_for('static', filename='config.js') }}"></script>
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
+
+</head>
+<body>
+<a href="{{ url_for('database_index') }}">
+    <button class="back_button">Back</button>
+</a>
+<div class="container">
+    <h1>Manage reach Time</h1>
+        <details>
+            <summary>Add reach time</summary>
+            <div class="form-container">
+                <form id="reachTimeForm">
+                    <div class="form-group">
+                        <label for="file">Upload Reach Time File:</label>
+                        <input type="file" id="file" name="file" accept=".csv" required>
+                    </div>
+                    <button type="submit" class="button">Upload Reach Time File</button>
+                </form>
+            </div>
+        </details>
+    </div>
+
+<script>
+document.getElementById("reachTimeForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const formData = new FormData(form);
+    fetch(config.databaseURL+"/database/reachtime", {
+        method: "POST",
+        body: formData,
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            showAlert(data.status, data.message)
+        })
+        .catch((error) => {
+            showAlert(error.message || "An error occurred while submitting the form.")
+        });
+    });
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+    <script src="{{ url_for('static', filename='config.js') }}"></script>
+  
+    <title>Ticket Booking</title>   
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <h1>BUS ROUTE FINDER</h1>
+        </div>
+        <div class="buttons">
+            <a href = "{{url_for('user_fare')}}">
+                <button data-aos="fade-up" data-aos-duration="1200" data-aos-delay="900">Calculate Path Fare</button>
+            </a>
+            <a href = "{{url_for('bus_path')}}">
+                <button data-aos="fade-up" data-aos-duration="1200" data-aos-delay="900">Get Path</button>
+            </a>
+            <a href = "{{url_for('bus_routes')}}">
+                <button data-aos="fade-up" data-aos-duration="1200" data-aos-delay="900">Get Bus Routes</button>
+            </a>
+        </div>
+        <div class="buttons">
+            <a href = "{{url_for('user_login')}}">
+                <button data-aos="fade-up" data-aos-duration="1200" data-aos-delay="800">Login</button>
+            </a>
+            <a href = "{{url_for('user_create')}}">
+                <button data-aos="fade-up" data-aos-duration="1200" data-aos-delay="900">Sign up</button>
+            </a>
+            <button id="logoutButton"data-aos="fade-up" data-aos-duration="1200" data-aos-delay="900">Log out</button>
+            <a href = "{{url_for('user_index')}}">
+                <button data-aos="fade-up" data-aos-duration="1200" data-aos-delay="900">Profile</button>
+            </a>
+        </div>
+    </nav>
+    
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        document.getElementById("logoutButton").addEventListener("click", function(event) {
+            event.preventDefault();
+            fetch(config.user_employeeURL + '/user/logout', {
+            method: "POST",
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                alert(`Logged out successfully!:- ${data.message}`);
+                } else {
+                alert(data.message || "Failed to log out.");
+                }
+            })
+            .catch(error => {
+                alert(error.message || "An error occurred while logging out.");
+            });
+        });
+
+    </script>
+</body>
+</html>

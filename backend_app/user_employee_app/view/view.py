@@ -25,12 +25,13 @@ class View:
         return r
     
 
-    @staticmethod 
-    def render_ticket(ticket_details):
-        if ticket_details:
+    @staticmethod
+    def render_tickets(tickets):
+        all_tickets = []
+        for ticket_details in tickets:
             ticket_info = {
                 'ticket_id': ticket_details['ticket_id'],
-                'route_id': ticket_details['route_id'],
+                'bus_number': ticket_details['bus_no'],
                 'price': ticket_details['price'],
                 'gender': ticket_details['gender'],
                 'category': ticket_details['category'],
@@ -38,11 +39,11 @@ class View:
                 'date_of_tickets': str(ticket_details['date_of_tickets']),
                 'starting_stop_number': ticket_details['starting_stop_number'],
                 'ending_stop_number': ticket_details['ending_stop_number'],
-                'user_id': ticket_details['user_id'],
                 'time_of_booking': str(ticket_details['time_of_booking'])
             }
-            return ticket_info
-        
+            all_tickets.append(ticket_info)
+        return all_tickets
+         
     @staticmethod
     def render_error(message):
         return {

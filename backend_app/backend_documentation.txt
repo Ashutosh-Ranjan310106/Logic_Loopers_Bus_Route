@@ -50,14 +50,12 @@ route structure
 │   ├── /login                    # User login (POST)
 │   ├── /ticket                   # Book a ticket (POST)
 │   ├── /fare                     # Calculate fare (GET)
-│   └── /profile                  # Retrieve or update user profile (GET/PUT)
 │
 └── /employee                     # Employee-related endpoints
     ├── /create                   # Employee creation (POST)
     ├── /login                    # Employee login (POST)
     ├── /logout                   # Employee logout (POST)
-    ├── /profile                  # Retrieve or update employee profile (GET/PUT)
-    └── /access                   # Manage employee access levels (GET/POST)
+
 
 
 
@@ -141,23 +139,7 @@ user_employee http://127.0.0.1:5002
        			Returns:
             			Success message and user ID if login is successful.
             			Error messages if credentials are incorrect or password is wrong
-		-----------------------------------------------------------------------------------------------------
-		GET /buses/recent_bus
 
-			Fetches recent buses arriving at a specified stop based on either the stop name or stop ID.
-		
-			Expected JSON Payload:
-			    stop_name (str, optional): The name of the bus stop. If provided, it will be used to filter recent buses.
-			    stop_id (str, optional): The ID of the bus stop. If provided, it will be used to filter recent buses.
-
-			Returns:
-			Response: Returns a JSON response containing recent bus information or an error message.
-				- Success: 
-				- JSON object with key recent_buses containing a list of recent bus data.
-				- HTTP Status Code: 200 OK
-				- Error: 
-				- JSON object with key error containing an error message.
-				- HTTP Status Code: 400 Bad Request if no parameters are provided or no recent buses are found.
 
 			
         -----------------------------------------------------------------------------------------------------
@@ -270,6 +252,23 @@ bus http://127.0.0.1:5001
 			Returns:
 				- A JSON response detailing the path found between the two stops if successful.
 				- An error message if no routes are found between the specified stops.
+				-----------------------------------------------------------------------------------------------------
+		GET /buses/recent_bus
+
+			Fetches recent buses arriving at a specified stop based on either the stop name or stop ID.
+		
+			Expected JSON Payload:
+			    stop_name (str, optional): The name of the bus stop. If provided, it will be used to filter recent buses.
+			    stop_id (str, optional): The ID of the bus stop. If provided, it will be used to filter recent buses.
+
+			Returns:
+			Response: Returns a JSON response containing recent bus information or an error message.
+				- Success: 
+				- JSON object with key recent_buses containing a list of recent bus data.
+				- HTTP Status Code: 200 OK
+				- Error: 
+				- JSON object with key error containing an error message.
+				- HTTP Status Code: 400 Bad Request if no parameters are provided or no recent buses are found.
 	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 

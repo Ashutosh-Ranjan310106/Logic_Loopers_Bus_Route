@@ -26,9 +26,6 @@ def add_schedule():
 @database_route.route('/database/schedule', methods=['DELETE'])
 def delete_schedule():
     return Controller.delete_schedule()
-@database_route.route('/database/schedule', methods=['GET'])
-def get_schedule():
-    return Controller.get_schedule()
 @database_route.route('/database/ticket', methods=['POST'])
 def book_offline_ticket():
     return Controller.book_offline_ticket()
@@ -47,7 +44,6 @@ def add_staff():
 @database_route.route('/database/staff', methods=['GET'])
 def get_staff():
     return Controller.get_staff()
-
-
-
-    
+@database_route.route('/database/schedule', methods=['GET'])
+def get_schedule():
+    return Controller.get_schedule()

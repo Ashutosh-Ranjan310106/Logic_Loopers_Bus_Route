@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Schedule</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='database.css') }}">
+    <script src="{{ url_for('static', filename='config.js') }}"></script>
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
+
+</head>
+<body>
+<a href="{{ url_for('database_index') }}">
+    <button class="back_button">Back</button>
+</a>
+<div class="container">
+    <h1>Manage Schedule</h1>
+
+    <details>
+        <summary>Add Schedule</summary>
+        <div class="form-container">
+        <form id="addScheduleForm">
+            <div class="form-group">
+                <label for="file">Upload Schedule File (CSV):</label>
+                <input type="file" id="file" name="file" accept=".csv" required>
+            </div>
+            <button type="submit" class="button">Submit</button>
+            <div id="addScheduleResult"></div>
+        </form>
+        </div>
+    </details>
+
+    <details>
+        <summary>Delete Schedule</summary>
+        <div class="form-container">
+        <form id="deleteScheduleForm">
+            <div class="form-group">
+                <label for="schedule_id">Schedule ID:</label>
+                <input type="text" id="schedule_id" name="schedule_id" placeholder="Schedule ID" required>
+            </div>
+            <button type="submit" class="button">Submit</button>
+            <div id="deleteScheduleResult"></div>
+        </form>
+        </div>
+    </details>
+
+    <details>
+        <summary>View Schedule</summary>
+        <div class="form-container">
+        <form id="viewScheduleForm">
+            <div class="form-group">
+                <label for="bus_number">Bus Number:</label>
+                <input type="text" id="bus_number" name="bus_number" placeholder="Bus Number" required>
+            </div>
+            <button type="submit" class="button">Submit</button>
+            <div id="viewScheduleResult"></div>
+        </form>
+        </div>
+    </details>
+</div>
+
+<script>
+    document.getElementById("addScheduleForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        
+        const form = event.target;
+        const formData = new FormData(form);
+        const resultContainer = document.getElementById("addScheduleResult");
+
+        fetch(config.databaseURL+"/database/schedule", {
+            method: "POST",
+            body: formData,
+        })
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            showAlert(data.status, data.message)
+        })
+        .catch(error => {
+            showAlert(error.message || "An error occurred while submitting the form.")
+        });
+    });
+
+    document.getElementById("deleteScheduleForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const form = event.target;
+        const formData = new FormData(form);
+        const resultContainer = document.getElementById("deleteScheduleResult");
+
+        fetch(config.databaseURL+"/database/schedule", {
+            method: "DELETE",
+            body: new URLSearchParams(new FormData(form))
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            showAlert(data.status, data.message)
+        })
+        .catch((error) => {
+            showAlert(error.message || "An error occurred while submitting the form.")
+        });
+    });
+
+    // Function to handle View Schedule form
+    document.getElementById("viewScheduleForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent form submission
+
+        const form = event.target;
+        const formData = new FormData(form);
+        const resultContainer = document.getElementById("viewScheduleResult");
+        let queryParameters = []
+        formData.forEach((value, key) => queryParameters.push(`${key}=${value}`));
+        const queryString = queryParameters.join('&');
+
+        fetch(config.databaseURL+`/database/schedule?${queryString}`, {
+            method: "GET",
+        })
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+                console.log(data.message)
+                if (data.status == "error"){
+                    resultContainer.textContent = data.message;
+                    resultContainer.className = "error";
+                }else if (data.status == "success"){
+                    window.location.href = "{{url_for('render_schedule')}}?schedule_data=" +JSON.stringify(data.message)
+                }
+        })
+        .catch(error => {
+            resultContainer.textContent = error.message || "An error occurred.";
+            resultContainer.className = "error";
+        });
+    });
+</script>
+
+</body>
+</html>

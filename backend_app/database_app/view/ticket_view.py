@@ -1,4 +1,4 @@
-
+from flask import render_template
 class TicketView:
     @staticmethod
     def render_ticket(ticket):
@@ -17,11 +17,10 @@ class TicketView:
         return {"status": "success", "ticket": ticket_data}, 200
     @staticmethod
     def render_ticket_verification(tickets):
-        ticket_data = []
+        ticket_data = {"message":[], "status":"success"}
 
         for ticket in tickets:
-            print(ticket)
-            ticket_data.append({
+            ticket_data["message"].append({
                 "ticket_id": ticket["ticket_id"],
                 "route_id": ticket["route_id"],
                 "price": ticket["price"],

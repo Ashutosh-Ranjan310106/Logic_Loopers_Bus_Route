@@ -1,7 +1,7 @@
 from flask import render_template
 
 class BusView:
-    def render_route(route, template = True):
+    def render_route(route, template = False):
         route_view={"Route_id":route[0]["Route_id"],"Bus_no":route[0]["bus_no"],"stop_list":[]}
         for stop in route:
             instance = {"route_stop_number":stop["route_stop_number"], "Fair_stage":stop["Fare_stage"], "Stop_Name":stop["stop_name"], "location_coordinate":stop["location_coordinate"]}
@@ -15,10 +15,10 @@ class BusView:
             all_routes.append(BusView.render_route(routes[route_id], template=False))
         return render_template('all_route.html', routes=all_routes)
     def render_error(msg, user_id=None):
-        temp = {'error':msg}
+        temp = {"status":"error",'message':msg}
         if user_id:
             temp['user_id'] = user_id
-        return render_template('error.html', error_message=temp['error'])
+        return temp
     def render_recent_buses(recent_buses):
 
         formatted_data = {}
@@ -31,3 +31,9 @@ class BusView:
                     "direction":bus_timing[2]
                 })
         return formatted_data
+    def render_success(message):
+        r =  {
+            "status": "success",
+            "message": message,
+        }
+        return r

@@ -7,15 +7,15 @@ connection = get_connection()
 class TimeService:
 
     @staticmethod
-    def add_bus_stop_reach_time(file, session_id):
+    def add_bus_stop_reach_time(file, emp_ip):
         query = '''
                 select acl.access_level_id acid from 
                 Access_level acl
                 join employee emp ON emp.access_level_id = acl.access_level_id
                 join emp_session sesn ON sesn.emp_id = emp.emp_id
-                where sesn.session_id = %s and sesn.status = 1; 
+                where sesn.emp_ip = %s and sesn.status = 1; 
                 '''
-        cursor.execute(query, (session_id,))
+        cursor.execute(query, (emp_ip,))
         acc_level = cursor.fetchone()
         if acc_level and acc_level['acid'] <= 2:
 
@@ -27,8 +27,8 @@ class TimeService:
                 time =  row.get('time')
                 node_number = row.get('node_number')
                 schedule_id = row.get('schedule_id')
-                
-                
+                if not (time and node_number and schedule_id):
+                    return -2
                 parameter += '(%s, %s, %s), '
                 values.extend([time, node_number, schedule_id])
             parameter = parameter.rstrip(', ')

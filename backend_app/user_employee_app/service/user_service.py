@@ -29,11 +29,11 @@ class UserService:
             return user_id
         except Exception as e:
             connection.rollback()
-            return "Error inserting user:"+ e
+            return -1
 
     
     @staticmethod
-    def login_user(email, phone_number, password):
+    def login_user(email, phone_number, password, user_ip):
         query = '''
                 select * from users
                 where email = %s or phone_number = %s
@@ -42,28 +42,54 @@ class UserService:
         user = cursor.fetchone()
         if user:
             if check_password_hash(user['password'], password):
-                return user
+                query = "SELECT user_log_id FROM user_log WHERE user_id = %s AND status = 1"
+                cursor.execute(query, (user['user_id'],))
+                active_session = cursor.fetchone()
+
+                if active_session:
+                    return -2 
+                query = '''
+                        insert into user_log(user_ip, user_id, status) values
+                        (%s, %s, 1)
+                        '''
+                try:
+                    cursor.execute(query, (user_ip, user['user_id']))
+                    log_id = cursor.lastrowid
+                    connection.commit()
+                    return log_id
+                except Exception as e:
+                    print(e)
+                    connection.rollback()
+                    return -3
             else:
                 return -1
+    
+
+    @staticmethod
+    def logout_user(user_ip):
+        query = '''
+                update user_log set status = 0 where user_ip = %s and status = 1
+                '''
+        try:
+            cursor.execute(query, (user_ip,))
+            connection.commit()
+            return 1
+        except Exception as e:
+            connection.rollback()
+            log_error("log out user", e)
+            return "Error logout user:"+ e
             
 
     @staticmethod
-    def getfare(starting_stop_number, ending_stop_number, category, route_id=None, bus_number=None):
-        if bus_number:
-            query = '''
-                    select * from stops_in_route sir
-                    join routes rt on  rt.route_id = sir.route_id
-                    join Bus_Type_Description
-                    where category = %s and  bus_no = %s and  (route_stop_number = %s or route_stop_number = %s)
-                    '''
-            cursor.execute(query, (category, bus_number, starting_stop_number, ending_stop_number))
-        else:
-            query = '''
-                    select * from stops_in_route sir
-                    join Bus_Type_Description
-                    where category = %s and  route_id = %s and  (route_stop_number = %s or route_stop_number = %s)
-                    '''
-            cursor.execute(query, (category, route_id, starting_stop_number, ending_stop_number))
+    def getfare(starting_stop_number, ending_stop_number, category, bus_number=None):
+        query = '''
+                select * from stops_in_route sir
+                join routes rt on  rt.route_id = sir.route_id
+                join Bus_Type_Description
+                where category = %s and  bus_no = %s and  (route_stop_number = %s or route_stop_number = %s)
+                '''
+        cursor.execute(query, (category, bus_number, starting_stop_number, ending_stop_number))
+
         stops_list = cursor.fetchall()
         if len(stops_list) != 2:
             return -1
@@ -73,39 +99,62 @@ class UserService:
         if fsd < 0:
             fsd = - fsd
         fare = stops_list[0]['base_fare'] + 5 * fsd
-        return fare, stops_list[0]['Route_id']
+        return (fare, stops_list[0]['Route_id'])
     
 
     @staticmethod
-    def book_online_tickets(user_id, route_id, starting_stop_number, ending_stop_number, price, gender, category):
+    def get_user_tickets(user_ip):
+        check_user_query = '''
+        select user_id from user_log
+        where user_ip = %s and status = 1
+        '''       
+        cursor.execute(check_user_query, (user_ip,))
+        user = cursor.fetchone()
+        user_id = user['user_id']
+        if not user_id:
+            return -1
+        
+        get_ticket_query='''
+        select * from
+        tickets tk join Online_tickets otk ON tk.ticket_id = otk.ticket_id
+        join routes rt ON tk.route_id = rt.route_id 
+        where user_id = %s
+        '''
+        cursor.execute(get_ticket_query, (user_id,))
+        tickets = cursor.fetchall()
+        return tickets
+    
+
+    @staticmethod
+    def book_online_tickets(user_ip, route_id, starting_stop_number, ending_stop_number, price, gender, category):
+        check_user_query = '''
+        select user_id from user_log
+        where user_ip = %s and status = 1
+        '''     
+        cursor.execute(check_user_query, (user_ip,))
+        user = cursor.fetchone()
+        user_id = user['user_id']
+        if not user_id:
+            return -1
         insert_ticket_query = '''
         INSERT INTO Tickets (route_id, price, gender, category, ticket_type, date_of_tickets)
         VALUES (%s, %s, %s, %s, %s, %s);
         '''
-        cursor.execute(insert_ticket_query, (route_id, price, gender, category, 'online', datetime.date.today()))
-
-        ticket_id = cursor.lastrowid
         
 
         insert_online_ticket_query = '''
             INSERT INTO Online_Tickets (ticket_id, starting_stop_number, ending_stop_number, user_id, time_of_booking)
             VALUES (%s, %s, %s, %s, %s);
         '''
-        cursor.execute(insert_online_ticket_query, (ticket_id, starting_stop_number, ending_stop_number, user_id, datetime.datetime.now().time()))
-        connection.commit()
-
-        get_ticket_query = '''
-        SELECT t.ticket_id, t.route_id, t.price, t.gender, t.category, t.ticket_type, t.date_of_tickets, ot.starting_stop_number, ot.ending_stop_number, ot.user_id, ot.time_of_booking
-        FROM  Tickets t
-        JOIN  Online_Tickets ot ON t.ticket_id = ot.ticket_id
-        WHERE t.ticket_id = %s;
-        '''
+        
+        
         try:
-            cursor.execute(get_ticket_query, (ticket_id,))
-            ticket_details = cursor.fetchone()
+            cursor.execute(insert_ticket_query, (route_id, price, gender, category, 'online', datetime.date.today()))
+            ticket_id = cursor.lastrowid
+            cursor.execute(insert_online_ticket_query, (ticket_id, starting_stop_number, ending_stop_number, user_id, datetime.datetime.now().time()))
+            connection.commit()
+            return ticket_id
         except Exception as e:
             log_error('book onine ticket', e)
-            return None
-        
-        return ticket_details
+            return -2
     

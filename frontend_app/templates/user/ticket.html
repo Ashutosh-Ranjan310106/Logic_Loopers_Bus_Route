@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="{{ url_for('static', filename='index.js') }}"></script>
+  <script src="{{ url_for('static', filename='config.js') }}"></script>
+  
+  <title>Bus Ticket Booking</title>
+  <style>
+    /* Basic Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Body Styling */
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f4f7fa;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Form Container */
+    .booking-container {
+      background-color: #ffffff;
+      padding: 40px;
+      width: 100%;
+      max-width: 500px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    /* Form Heading */
+    .booking-container h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    /* Label and Input Styling */
+    .booking-container label {
+      display: block;
+      text-align: left;
+      margin-bottom: 6px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    .booking-container input[type="number"],
+    .booking-container input[type="text"],
+    .booking-container select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 16px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    /* Submit Button */
+    .booking-container button {
+      width: 100%;
+      padding: 12px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .booking-container button:hover {
+      background-color: #45a049;
+    }
+
+    /* Additional Styling */
+    .booking-container p {
+      margin-top: 16px;
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="booking-container">
+    <h2>Bus Ticket Booking</h2>
+    <form id="bookingForm">
+
+      <label for="bus_number">Bus Number:</label>
+      <input type="text" id="bus_number" name="bus_number" placeholder="Enter Bus Number" required>
+
+
+      <label for="starting_stop_number">Starting Stop Number:</label>
+      <input type="number" id="starting_stop_number" name="starting_stop_number" placeholder="Enter starting stop number" required>
+
+
+      <label for="ending_stop_number">Ending Stop Number:</label>
+      <input type="number" id="ending_stop_number" name="ending_stop_number" placeholder="Enter ending stop number" required>
+
+
+      <label for="gender">Gender:</label>
+      <select id="gender" name="gender" required>
+        <option value="" disabled selected>Select your gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+
+
+      <label for="category">Bus Service Category:</label>
+      <select id="category" name="category" required>
+        <option value="" disabled selected>Select bus service category</option>
+        <option value="Red">Red</option>
+        <option value="Orange">Orange</option>
+        <option value="Blue">Blue</option>
+        <option value="Green">Green</option>
+      </select>
+
+      <button type="submit" id="bookTicketButton">Book Ticket</button>
+    </form>
+  </div>
+  <script>
+    document.getElementById("bookingForm").addEventListener("submit", function(event) {
+      event.preventDefault(); 
+      const bus_number = document.getElementById('bus_number').value;
+      const starting_stop_number = document.getElementById('starting_stop_number').value;
+      const ending_stop_number = document.getElementById('ending_stop_number').value;
+      const gender = document.getElementById('gender').value;
+      const category = document.getElementById('category').value;
+      console.log(config.user_employeeURL)
+      fetch(config.user_employeeURL+'/user/ticket', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          bus_number,
+          starting_stop_number,
+          ending_stop_number,
+          gender,
+          category,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          showAlert(data.status, data.message)
+        })
+        .catch((error) => {
+          alert('Failed to book ticket. Please try again later.');
+        });
+    });
+  </script>
+</body>
+</html>

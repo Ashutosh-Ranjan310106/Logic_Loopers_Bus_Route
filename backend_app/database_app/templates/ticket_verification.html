@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ticket Verification</title>
+  <style>
+    /* Basic Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Body Styling */
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f4f7fa;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Ticket Verification Container */
+    .ticket-verification-container {
+      background-color: #ffffff;
+      padding: 40px;
+      width: 100%;
+      max-width: 800px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    /* Heading */
+    .ticket-verification-container h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    /* Details */
+    .ticket-verification-container table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    .ticket-verification-container th, .ticket-verification-container td {
+      padding: 10px;
+      text-align: left;
+      border: 1px solid #ddd;
+    }
+
+    /* Back Button */
+    .ticket-verification-container a {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    .ticket-verification-container a:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ticket-verification-container">
+    <h2>Ticket Verification</h2>
+
+    <!-- Display the tickets -->
+    <table>
+      <thead>
+        <tr>
+          <th>Ticket ID</th>
+          <th>Route ID</th>
+          <th>Category</th>
+          <th>Gender</th>
+          <th>Price</th>
+          <th>Ticket Type</th>
+          <th>Date of Ticket</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for ticket in ticket_data %}
+        <tr>
+          <td>{{ ticket.ticket_id }}</td>
+          <td>{{ ticket.route_id }}</td>
+          <td>{{ ticket.category }}</td>
+          <td>{{ ticket.gender }}</td>
+          <td>{{ ticket.price }}</td>
+          <td>{{ ticket.ticket_type }}</td>
+          <td>{{ ticket.date_of_tickets }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <a href="C:\Users\rrpra\OneDrive\Documents\GitHub\Logic_Loopers_Bus_Route\frontend_app\database\ticket.html">Back to Home</a>
+  </div>
+
+</body>
+</html>

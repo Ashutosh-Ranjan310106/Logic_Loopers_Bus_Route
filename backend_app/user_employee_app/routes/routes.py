@@ -14,9 +14,15 @@ def create_user():
 @user_employee_route.route('/user/login', methods=['POST'])
 def login_user():
     return UserController.login_user()
+@user_employee_route.route('/user/logout', methods=['POST'])
+def logout_user():
+    return UserController.logout_user()
 @user_employee_route.route('/user/fare', methods=['GET'])
 def getfare():
     return UserController.getfare()
+@user_employee_route.route('/user/ticket', methods = ['GET'])
+def get_user_tickets():
+    return UserController.get_user_tickets()
 @user_employee_route.route('/user/ticket', methods = ['POST'])
 def book_ticket():
     return UserController.book_ticket()

@@ -1,0 +1,120 @@
+/* Universal styles */
+* {
+    padding: 0;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
+}
+
+/* Background styling */
+body {
+    width: 100%;
+    height: 100vh;
+    background-image: url('bus.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    overflow-x: hidden;
+}
+
+/* Navigation styles */
+nav {
+    width: 100%;
+    height: 10vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    color: white;
+}
+
+nav .logo {
+    font-size: 1.5rem;
+}
+
+nav .links {
+    display: flex;
+}
+
+nav .links .link a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    margin: 0 10px;
+}
+
+nav .links .link a:hover {
+    text-decoration: underline;
+}
+
+/* Button styles within navigation */
+nav .buttons {
+    display: flex;
+    gap: 10px;
+}
+
+nav .buttons button {
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: white;
+    background-color: rgb(7, 113, 219);
+    transition: 0.2s linear;
+    cursor: pointer;
+}
+
+nav .buttons button:hover {
+    color: rgb(7, 113, 219);
+    background-color: transparent;
+    border: 2px solid rgb(7, 113, 219);
+    box-shadow: 0 0 10px 4px rgb(7, 113, 219);
+}
+
+/* Section styles */
+section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    color: white;
+    text-align: center;
+}
+
+/* Content styles */
+.content {
+    max-width: 600px;
+}
+
+.content h1 {
+    font-size: 3rem;
+    text-shadow: 0 0 7px white;
+}
+
+.content p {
+    margin: 20px auto;
+    width: 80%;
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+.content button {
+    padding: 15px 30px;
+    border-radius: 10px;
+    background-color: rgb(7, 113, 219);
+    color: white;
+    border: none;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s linear;
+}
+
+.content button:hover {
+    transform: scale(1.1);
+    font-size: 1.3rem;
+    background-color: transparent;
+    color: rgb(7, 113, 219);
+    border: 2px solid rgb(7, 113, 219);
+    box-shadow: 0 0 10px 3px rgb(7, 113, 219);
+}

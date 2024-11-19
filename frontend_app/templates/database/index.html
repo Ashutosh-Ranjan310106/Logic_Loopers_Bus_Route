@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <script src="{{ url_for('static', filename='config.js') }}"></script>
+
+</head>
+<body>
+
+    <a href="{{ url_for('employee_index') }}">
+        <button class="back_button">Back</button>
+    </a>
+
+    <div class="container">
+        <h1>Database Management</h1>
+        
+
+        <a href="{{ url_for('database_stop') }}">
+            <button>Manage Stops</button>
+        </a>
+
+        <a href="{{ url_for('database_route') }}">
+            <button>Manage Routes</button>
+        </a>
+
+        <a href="{{ url_for('database_schedule') }}">
+            <button>Manage Schedule</button>
+        </a>
+
+        <a href="{{ url_for('database_ticket') }}">
+            <button>Manage Tickets</button>
+        </a>
+        <a href="{{ url_for('database_reach_time') }}">
+            <button>Manage Reach Times</button>
+        </a>
+
+        <!--
+        <a href="{{ url_for('database_bus') }}">
+            <button>Manage Bus</button>
+        </a>
+
+        <a href="{{ url_for('database_staff') }}">
+            <button>Manage Staff</button>
+        </a>
+        -->
+        
+
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management API</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+
+</head>
+<body>
+
+<div class="container">
+    <h1>Employee APP</h1>
+
+    <!-- Button links to subpages for each employee-related endpoint -->
+    <a href="{{url_for('employee_create')}}">
+        <button>Register New Employee</button>
+    </a>
+    <a href="{{url_for('employee_login')}}">
+        <button>Employee Login</button>
+    </a>
+    <a href="{{url_for('employee_logout')}}">
+        <button>Employee Logout</button>
+    </a>
+    <a href="{{url_for('database_index')}}">
+        <button>Manage Database</button>
+    </a>
+</div>
+
+</body>
+</html>

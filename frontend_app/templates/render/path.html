@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bus Path Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #007bff;
+        }
+        .path {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            padding: 15px;
+            transition: all 0.3s;
+        }
+        .path:hover {
+            transform: translateY(-5px);
+        }
+        .toggle-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        .toggle-button:hover {
+            background-color: #0056b3;
+        }
+        .hidden {
+            display: none;
+        }
+        .sub-path {
+            margin-left: 20px;
+            background-color: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Available Bus Paths</h1>
+    {% for path in paths %}
+        <div class="path">
+            <div class="header">
+                <h2>Path {{ loop.index }}</h2>
+                <button class="toggle-button" onclick="togglePath({{ loop.index }})">Minimize</button>
+            </div>
+            <p><strong>Changes:</strong> {{ path.summary.changes }}</p>
+            <p><strong>Total Stops:</strong> {{ path.summary.total_stops }}</p>
+            <p><strong>Total AC Fare:</strong> ₹{{ path.summary.total_ac_fare }}</p>
+            <p><strong>Total Non-AC Fare:</strong> ₹{{ path.summary.total_non_ac_fare }}</p>
+            
+            <div id="sub-paths-{{ loop.index }}" class="sub-paths">
+                <ul>
+                    {% for sub_path in path.route %}
+                        <li class="sub-path">
+                            <p><strong>Bus Number:</strong> {{ sub_path.bus_no }}</p>
+                            <p><strong>Direction:</strong> {{ sub_path.direction[0] }} 
+                               <strong>Toward:</strong> {{ sub_path.direction[1] }}</p>
+                            <p><strong>Recent Bus Timings:</strong> {{ sub_path.bus_timings | join(', ') }}</p>
+                            <p>Stops:</p>
+                            <ul>
+                                {% for stop in sub_path.stop_list %}
+                                    <li>{{ stop.stop_name }} (Fare Stage: {{ stop.Fare_stage }})</li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% endfor %}
+
+    <script>
+        function togglePath(index) {
+            const subPaths = document.getElementById(`sub-paths-${index}`);
+            const button = event.currentTarget;
+
+            if (subPaths.classList.contains('hidden')) {
+                subPaths.classList.remove('hidden');
+                button.textContent = 'Minimize';
+            } else {
+                subPaths.classList.add('hidden');
+                button.textContent = 'Expand';
+            }
+        }
+    </script>
+</body>
+</html>

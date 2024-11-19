@@ -3,6 +3,7 @@ from flask import render_template
 from bus_app.service.service import BusService
 class PathView:
     def render_path(paths):
+        processed_paths = []
         for path in paths:
             total_stops = 0
             changes = len(path)
@@ -39,12 +40,17 @@ class PathView:
                     for timing in bus_timings[sub_path['stop_list'][0]['stop_name']]:
                         if timing[2] == sub_path['direction'][0]:
                             sub_path['bus_timings'].append(str(timing[0]))
-
-            path.append({
-                "changes": changes-1,
-                "total_stops": total_stops,
-                "total_ac_fare": total_ac_fare,
-                "total_non_ac_fare": total_non_ac_fare
+            
+            
+            processed_paths.append({
+                "route": path,
+                "summary": {
+                    "changes": changes - 1,
+                    "total_stops": total_stops,
+                    "total_ac_fare": total_ac_fare,
+                    "total_non_ac_fare": total_non_ac_fare
+                }
             })
-
+        
+        return processed_paths
         return render_template('bus_paths.html', paths=paths)

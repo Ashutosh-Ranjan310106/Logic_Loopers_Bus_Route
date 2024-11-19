@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <script src="{{ url_for('static', filename='config.js') }}"></script>
+
+</head>
+<body>
+<a href="{{ url_for('employee_index') }}">
+<button class="back_button">Back</button>
+</a>
+<div class="container">
+    <h1>Employee Login</h1>
+    <!-- Form for Employee Login -->
+    <form id="loginForm">
+        <div class="form-group">
+            <label for="official_email">Employee's Official Email:</label>
+            <input type="email" id="official_email" placeholder="Enter official email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" placeholder="Enter password" required>
+        </div>
+
+        <button type="button" class="button" onclick="loginEmployee()">Login</button>
+    </form>
+
+
+    <div class="result" id="result"></div>
+
+    <a href="{{ url_for('database_index') }}">
+        <button id="nextButton" class="hidden_button">Next</button>
+    </a>
+    </div>
+
+<script>
+    async function loginEmployee() {
+        const official_email = document.getElementById("official_email").value;
+        const password = document.getElementById("password").value;
+
+        const loginData = { official_email, password };
+        try {
+            const response = await fetch(config.user_employeeURL+"/employee/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(loginData)
+            });
+
+            const result = await response.json();
+            const nextButton = document.getElementById("nextButton");
+            if (result.status === "success"){
+                nextButton.style.display = "inline-flex"
+                alert(`success :-${result.message}`)
+            }else{
+                alert(`failed :-${result.message}`)
+            }
+        } catch (error) {
+            alert(`An error occurred during login :-${error}`)
+        }
+    }
+</script>
+
+</body>
+</html>

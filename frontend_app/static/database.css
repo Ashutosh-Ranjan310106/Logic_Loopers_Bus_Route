@@ -1,0 +1,31 @@
+/* Styling for details and summary with matching blue theme */
+details {
+    margin-bottom: 20px;
+}
+
+summary {
+    background-color: #007bff; /* Matching blue */
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: left;
+    border: none;
+    width: 100%;
+}
+
+summary:hover {
+    background-color: #0056b3; /* Slightly darker blue */
+}
+
+.stop-list {
+    margin-top: 20px;
+}
+.stop-item {
+    background-color: #f0f0f0;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}

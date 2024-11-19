@@ -4,15 +4,15 @@ cursor = get_cursor()
 connection = get_connection()
 class StopService:
     @staticmethod
-    def add_stop(file, session_id):
+    def add_stop(file, emp_ip):
         query = '''
                 select acl.access_level_id acid from 
                 Access_level acl
                 join employee emp ON emp.access_level_id = acl.access_level_id
                 join emp_session sesn ON sesn.emp_id = emp.emp_id
-                where sesn.session_id = %s and sesn.status = 1; 
+                where sesn.emp_ip = %s and sesn.status = 1; 
                 '''
-        cursor.execute(query, (session_id,))
+        cursor.execute(query, (emp_ip,))
         acc_level = cursor.fetchone()
         if acc_level and acc_level['acid'] <= 2:
 
@@ -45,15 +45,15 @@ class StopService:
     
 
     @staticmethod
-    def delete_stops(session_id, stop_ids):
+    def delete_stops(emp_ip, stop_ids):
         query = '''
                 select acl.access_level_id acid from 
                 Access_level acl
                 join employee emp ON emp.access_level_id = acl.access_level_id
                 join emp_session sesn ON sesn.emp_id = emp.emp_id
-                where sesn.session_id = %s and sesn.status = 1; 
+                where sesn.emp_ip = %s and sesn.status = 1; 
                 '''
-        cursor.execute(query, (session_id,))
+        cursor.execute(query, (emp_ip,))
         acc_level = cursor.fetchone()
         stop_list = ','.join(['%s']*len(stop_ids))
         if acc_level and acc_level['acid'] <= 1:

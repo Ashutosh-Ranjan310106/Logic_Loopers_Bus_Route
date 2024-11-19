@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Logout</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <script src="{{ url_for('static', filename='config.js') }}"></script>
+
+</head>
+<body>
+<a href="{{ url_for('employee_index') }}">
+<button class="back_button">Back</button>
+</a>
+<div class="container">
+    <h1>Employee Logout</h1>
+
+    <form id="logoutForm">
+        <button type="button" class="button" onclick="logoutEmployee()">Logout</button>
+    </form>
+
+    <a href="{{ url_for('employee_index') }}">
+        <button id="nextButton" class="hidden_button">OK</button>
+    </a>
+</div>
+
+<script>
+    async function logoutEmployee() {
+
+
+        try {
+            const response = await fetch(config.user_employeeURL+"/employee/logout", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+            });
+
+            const result = await response.json();
+            const nextButton = document.getElementById("nextButton");
+            resultDiv.style.display = "inline-flex";
+
+            if (result.status === "success") {
+                
+                alert(`success :-${result.message}`)
+                nextButton.style.display = "inline-flex"
+            } else {
+                alert(`failed :-${result.message}`)
+            }
+        } catch (error) {
+            alert(`An error occurred during logout :-${error}`)
+        }
+    }
+</script>
+
+</body>
+</html>

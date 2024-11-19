@@ -46,12 +46,11 @@ class EmployeeService:
                 log_error("create employee",e)
                 return e
     @staticmethod
-    def login_employee(official_email, password):
+    def login_employee(official_email, password, emp_ip):
         query = "SELECT emp_id, password FROM Employee WHERE official_email = %s"
         cursor.execute(query, [official_email])
         emp = cursor.fetchone()
         if emp and check_password_hash(emp["password"], password):
-            session_id = generate_unique_key(emp["emp_id"])
             query = "SELECT session_id FROM Emp_session WHERE emp_id = %s AND status = 1"
             cursor.execute(query, [emp["emp_id"]])
             active_session = cursor.fetchone()
@@ -60,11 +59,12 @@ class EmployeeService:
                 return -3 
 
             query = '''
-                    INSERT INTO Emp_session(session_id, emp_id, session_at) Values
+                    INSERT INTO Emp_session(emp_id, emp_ip, session_at) Values
                     (%s, %s, %s)
                     '''
             try:
-                cursor.execute(query, (session_id, emp["emp_id"], datetime.now(ist)))
+                cursor.execute(query, (emp["emp_id"], emp_ip, datetime.now(ist)))
+                session_id= cursor.lastrowid
                 connection.commit()
                 return session_id
             except Exception as e:
@@ -77,13 +77,17 @@ class EmployeeService:
             return -2
 
     @staticmethod
-    def logout_employee(session_id):
+    def logout_employee(emp_ip):
+        print(emp_ip)
         query = '''
-                update emp_session set status = 0 where session_id = %s and status = 1;
-                '''
+                 update emp_session set status = 0 where emp_ip = %s and status = 1;
+                 '''
+
         try:
-            cursor.execute(query, (session_id,))
+            cursor.execute(query, (emp_ip,))
             connection.commit()
+            return 1
         except Exception as e:
             connection.rollback()
             log_error('logout employee', e)
+            return -1

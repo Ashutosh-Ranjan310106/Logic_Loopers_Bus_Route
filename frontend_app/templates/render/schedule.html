@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedules</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 20px;
+        }
+
+        .schedule-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .schedule-box {
+            background-color: #007bff; /* Blue background */
+            color: #fff; /* White text */
+            border-radius: 8px;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .schedule-box h3 {
+            margin-top: 0;
+            font-size: 1.2em;
+        }
+
+        .schedule-box p {
+            margin: 5px 0;
+        }
+
+        .schedule-box span {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Schedules</h1>
+    <div class="schedule-container">
+        {% for schedule in schedules %}
+        <div class="schedule-box">
+            <h3>Schedule ID: {{ schedule.schedule_id }}</h3>
+            <p><span>Day:</span> {{ schedule.schedule_day }}</p>
+            <p><span>Route:</span> {{ schedule.route }}</p>
+            <p><span>Time:</span> {{ schedule.time }}</p>
+            <p><span>Route ID:</span> {{ schedule.route_id }}</p>
+            <p><span>Start Stop Number:</span> {{ schedule.start_stop_number }}</p>
+            <p><span>Stop Stop Number:</span> {{ schedule.stop_stop_number }}</p>
+            <p><span>Bus ID:</span> {{ schedule.bus_id }}</p>
+            <p><span>Conductor ID:</span> {{ schedule.conductor_id }}</p>
+            <p><span>Driver ID:</span> {{ schedule.driver_id }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

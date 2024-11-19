@@ -1,0 +1,192 @@
+[
+    {
+        "function": "create employee",
+        "error": "1062 (23000): Duplicate entry 'test23' for key 'employee.user_name'",
+        "timestamp": "2024-11-16 15:08:07"
+    },
+    {
+        "function": "create employee",
+        "error": "1062 (23000): Duplicate entry 'test@gmail.com' for key 'employee.official_email'",
+        "timestamp": "2024-11-16 15:20:08"
+    },
+    {
+        "function": "add routes",
+        "error": "1062 (23000): Duplicate entry 'DTC-534' for key 'routes.bus_no'",
+        "timestamp": "2024-11-17 04:08:13"
+    },
+    {
+        "function": "add routes",
+        "error": "1062 (23000): Duplicate entry 'DTC-534' for key 'routes.bus_no'",
+        "timestamp": "2024-11-17 04:09:35"
+    },
+    {
+        "function": "add routes",
+        "error": "1062 (23000): Duplicate entry 'DTC-534' for key 'routes.bus_no'",
+        "timestamp": "2024-11-17 04:10:50"
+    },
+    {
+        "function": "add routes",
+        "error": "1062 (23000): Duplicate entry 'DTC-534' for key 'routes.bus_no'",
+        "timestamp": "2024-11-17 04:11:40"
+    },
+    {
+        "function": "add stop",
+        "error": "1062 (23000): Duplicate entry 'R.K. Puram Sector-1' for key 'stops.stop_name'",
+        "timestamp": "2024-11-17 16:54:45"
+    },
+    {
+        "function": "add stop",
+        "error": "1062 (23000): Duplicate entry 's2' for key 'stops.stop_name'",
+        "timestamp": "2024-11-17 16:55:25"
+    },
+    {
+        "function": "add stop",
+        "error": "1062 (23000): Duplicate entry 's2' for key 'stops.stop_name'",
+        "timestamp": "2024-11-17 16:57:26"
+    },
+    {
+        "function": "add stop",
+        "error": "1062 (23000): Duplicate entry 's2' for key 'stops.stop_name'",
+        "timestamp": "2024-11-17 17:00:15"
+    },
+    {
+        "function": "add stop",
+        "error": "1048 (23000): Column 'stop_name' cannot be null",
+        "timestamp": "2024-11-17 17:01:18"
+    },
+    {
+        "function": "add stop",
+        "error": "1048 (23000): Column 'stop_name' cannot be null",
+        "timestamp": "2024-11-17 17:02:59"
+    },
+    {
+        "function": "add stop",
+        "error": "1062 (23000): Duplicate entry 's2' for key 'stops.stop_name'",
+        "timestamp": "2024-11-17 17:04:06"
+    },
+    {
+        "function": "add stop",
+        "error": "1062 (23000): Duplicate entry 's2' for key 'stops.stop_name'",
+        "timestamp": "2024-11-17 17:05:00"
+    },
+    {
+        "function": "add stop",
+        "error": "1062 (23000): Duplicate entry 's2' for key 'stops.stop_name'",
+        "timestamp": "2024-11-17 17:06:59"
+    },
+    {
+        "function": "add stop",
+        "error": "1048 (23000): Column 'stop_name' cannot be null",
+        "timestamp": "2024-11-17 17:08:56"
+    },
+    {
+        "function": "add stop",
+        "error": "1062 (23000): Duplicate entry 's2' for key 'stops.stop_name'",
+        "timestamp": "2024-11-17 17:09:04"
+    },
+    {
+        "function": "delete stops",
+        "error": "Unread result found",
+        "timestamp": "2024-11-17 17:57:45"
+    },
+    {
+        "function": "book offline tickets",
+        "error": "1366 (HY000): Incorrect integer value: '' for column 'route_id' at row 1",
+        "timestamp": "2024-11-17 18:04:15"
+    },
+    {
+        "function": "book offline tickets",
+        "error": "1366 (HY000): Incorrect integer value: '' for column 'route_id' at row 1",
+        "timestamp": "2024-11-17 18:05:05"
+    },
+    {
+        "function": "create employee",
+        "error": "1062 (23000): Duplicate entry 'ayush' for key 'employee.user_name'",
+        "timestamp": "2024-11-17 22:49:51"
+    },
+    {
+        "function": "create employee",
+        "error": "1062 (23000): Duplicate entry 'ayush' for key 'employee.user_name'",
+        "timestamp": "2024-11-17 22:50:18"
+    },
+    {
+        "function": "add schedule",
+        "error": "1265 (01000): Data truncated for column 'schedule_day' at row 1",
+        "timestamp": "2024-11-17 23:15:48"
+    },
+    {
+        "function": "add schedule",
+        "error": "1265 (01000): Data truncated for column 'schedule_day' at row 1",
+        "timestamp": "2024-11-17 23:18:11"
+    },
+    {
+        "function": "add schedule",
+        "error": "1265 (01000): Data truncated for column 'schedule_day' at row 1",
+        "timestamp": "2024-11-17 23:19:02"
+    },
+    {
+        "function": "add schedule",
+        "error": "1265 (01000): Data truncated for column 'schedule_day' at row 1",
+        "timestamp": "2024-11-17 23:21:02"
+    },
+    {
+        "function": "add schedule",
+        "error": "1265 (01000): Data truncated for column 'schedule_day' at row 1",
+        "timestamp": "2024-11-17 23:21:52"
+    },
+    {
+        "function": "add schedule",
+        "error": "1265 (01000): Data truncated for column 'schedule_day' at row 1",
+        "timestamp": "2024-11-17 23:22:56"
+    },
+    {
+        "function": "add bus stop reach time",
+        "error": "1048 (23000): Column 'node_number' cannot be null",
+        "timestamp": "2024-11-18 00:55:35"
+    },
+    {
+        "function": "add bus stop reach time",
+        "error": "1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`bus_route`.`bus_stop_reach_time`, CONSTRAINT `bus_stop_reach_time_ibfk_1` FOREIGN KEY (`schedule_id`) REFERENCES `schedule` (`schedule_id`) ON DELETE CASCADE)",
+        "timestamp": "2024-11-18 01:15:25"
+    },
+    {
+        "function": "add bus stop reach time",
+        "error": "1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`bus_route`.`bus_stop_reach_time`, CONSTRAINT `bus_stop_reach_time_ibfk_1` FOREIGN KEY (`schedule_id`) REFERENCES `schedule` (`schedule_id`) ON DELETE CASCADE)",
+        "timestamp": "2024-11-18 01:17:19"
+    },
+    {
+        "function": "add bus stop reach time",
+        "error": "1062 (23000): Duplicate entry '1-11' for key 'bus_stop_reach_time.node_number'",
+        "timestamp": "2024-11-18 11:13:02"
+    },
+    {
+        "function": "add schedule",
+        "error": "1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`bus_route`.`schedule`, CONSTRAINT `schedule_ibfk_1` FOREIGN KEY (`route_id`) REFERENCES `routes` (`route_id`) ON DELETE CASCADE)",
+        "timestamp": "2024-11-18 11:14:37"
+    },
+    {
+        "function": "add bus stop reach time",
+        "error": "1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`bus_route`.`bus_stop_reach_time`, CONSTRAINT `bus_stop_reach_time_ibfk_1` FOREIGN KEY (`schedule_id`) REFERENCES `schedule` (`schedule_id`) ON DELETE CASCADE)",
+        "timestamp": "2024-11-18 11:15:55"
+    },
+    {
+        "function": "book onine ticket",
+        "error": "Python type dict cannot be converted",
+        "timestamp": "2024-11-19 18:31:01"
+    },
+    {
+        "function": "book onine ticket",
+        "error": "Python type dict cannot be converted",
+        "timestamp": "2024-11-19 18:33:22"
+    },
+    {
+        "function": "book onine ticket",
+        "error": "Python type dict cannot be converted",
+        "timestamp": "2024-11-19 18:33:27"
+    },
+    {
+        "function": "book onine ticket",
+        "error": "Python type dict cannot be converted",
+        "timestamp": "2024-11-19 18:35:14"
+    }
+]

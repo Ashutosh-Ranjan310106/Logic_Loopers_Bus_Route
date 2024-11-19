@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="{{ url_for('static', filename='config.js') }}"></script>
+    <title>Find Path Between stops</title>
+    <style>
+    .screen-home__location {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        font-family: Arial, sans-serif;
+        color: #333;
+    }
+
+    .label {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .label .icon {
+        margin-right: 10px;
+    }
+
+    .label .icon img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .input-wrap {
+        margin-bottom: 20px;
+    }
+
+    .inside-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .from, .to {
+        position: relative;
+    }
+
+    .inside-label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    .input {
+        width: calc(100% - 100px);
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        outline: none;
+    }
+
+    .input:focus {
+        border-color: #007BFF;
+        box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+    }
+
+    button {
+        padding: 10px 15px;
+        font-size: 14px;
+        background-color: #007BFF;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    .dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        max-height: 200px;
+        overflow-y: auto;
+        border-radius: 5px;
+        margin-top: 5px;
+    }
+
+    .dropdown div {
+        padding: 10px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .dropdown div:hover {
+        background-color: #f0f0f0;
+    }
+
+    .dropdown p {
+        padding: 10px;
+        margin: 0;
+        font-size: 14px;
+        color: #666;
+    }
+
+    #findPathBtn {
+        width: 100%;
+    }
+
+    #pathResults {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        background-color: #f8f9fa;
+        border-radius: 5px;
+    }
+    </style>
+
+
+</head>
+<body>
+    <div class="screen-home__location">
+        <div class="label">
+            <span class="text">Find Path Between stops</span>
+        </div>
+        <div class="input-wrap">
+            <div class="inside-wrap">
+                <div class="from">
+                    <span class="inside-label">From</span>
+                    <input id="fromInput" class="input" type="text" name="from_location" placeholder="Enter a location">
+                    <button id="fromSearchBtn" type="button">Search</button>
+                    <div id="fromResults" class="dropdown"></div>
+                </div>
+                <div class="to">
+                    <span class="inside-label">To</span>
+                    <input id="toInput" class="input" type="text" name="to_location" placeholder="Enter a location">
+                    <button id="toSearchBtn" type="button">Search</button>
+                    <div id="toResults" class="dropdown"></div>
+                </div>
+            </div>
+        </div>
+        <button id="findPathBtn" type="button">Find Path</button>
+        <div id="pathResults"></div>
+    </div>
+
+    
+
+
+    <script>
+
+    let selectedFromStopId = null;
+    let selectedToStopId = null;
+
+    function getStops(partialName, resultsContainerId, inputId, setIdCallback) {
+        fetch(config.databaseURL+`/database/stop?partial_name=${partialName}`, {
+            method: "GET",
+        })
+            .then(response => response.json())
+            .then(data => {
+                const stopResults = document.getElementById(resultsContainerId);
+                stopResults.innerHTML = '';
+
+                if (data.length > 0) {
+                    data.forEach(stop => {
+                        const stopItem = document.createElement('div');
+                        stopItem.classList.add('stop-item');
+                        stopItem.textContent = `${stop.stop_name} (ID: ${stop.stop_id})`;
+                        stopItem.addEventListener('click', () => {
+                            document.getElementById(inputId).value = stop.stop_name;
+                            setIdCallback(stop.stop_id);
+                            stopResults.innerHTML = '';
+                        });
+                        stopResults.appendChild(stopItem);
+                    });
+                } else {
+                    stopResults.innerHTML = '<p>No stops found.</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching stops:', error);
+                document.getElementById(resultsContainerId).innerHTML = '<p>Error fetching stops.</p>';
+            });
+    }
+
+
+    document.getElementById('fromSearchBtn').addEventListener('click', () => {
+        const fromPartialName = document.getElementById('fromInput').value;
+        getStops(fromPartialName, 'fromResults', 'fromInput', id => {
+            selectedFromStopId = id;
+        });
+    });
+
+
+    document.getElementById('toSearchBtn').addEventListener('click', () => {
+        const toPartialName = document.getElementById('toInput').value;
+        getStops(toPartialName, 'toResults', 'toInput', id => {
+            selectedToStopId = id;
+        });
+    });
+
+
+    document.getElementById('findPathBtn').addEventListener('click', () => {
+        if (!selectedFromStopId || !selectedToStopId) {
+            alert("Please select both From and To stops.");
+            return;
+        }
+
+        fetch(config.busURL+`/buses/path?stop1=${selectedFromStopId}&stop2=${selectedToStopId}`, {
+            method: "GET",
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                if (data.status === 'error'){
+                    alert(data.message)
+                }else{
+                    window.location.href = "{{url_for('render_path')}}?path_data=" +JSON.stringify(data);
+                    
+                }
+                
+            })
+            .catch(error => {
+                alert('Error fetching paths:', error);
+                
+            });
+    });
+
+
+    </script>
+
+</body>
+</html>
+
