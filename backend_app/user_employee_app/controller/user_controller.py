@@ -1,6 +1,7 @@
 from user_employee_app.service.user_service import UserService
 from user_employee_app.view.view import View
 from flask import render_template, request, jsonify
+from db_utils.utils import get_connection_and_cursor, close_connection_and_cursor
 class UserController:
 
     @staticmethod
@@ -17,8 +18,9 @@ class UserController:
         password = data.get("password")
         if not email or not password:
             return View.render_error("Email and password are required"), 400
-        
-        user_id = UserService.create_user(name, email, gender, phone_number, password)
+        connection, cursor = get_connection_and_cursor()
+        user_id = UserService.create_user(name, email, gender, phone_number, password, connection, cursor)
+        close_connection_and_cursor(connection, cursor)
         print(user_id)
         if user_id == -1:
             return View.render_error("email or phone number is alredy used"), 409
@@ -36,7 +38,9 @@ class UserController:
             user_ip = request.headers.get('X-Forwarded-For').split(',')[0]
         else:
             user_ip = request.remote_addr
-        user = UserService.login_user(email, phone_number, password, user_ip)
+        connection, cursor = get_connection_and_cursor()
+        user = UserService.login_user(email, phone_number, password, user_ip, connection, cursor)
+        close_connection_and_cursor(connection, cursor)
         if not user:
             return View.render_error("email or phone number is incorrect"), 404
         if user == -1:
@@ -52,8 +56,11 @@ class UserController:
             user_ip = request.headers.get('X-Forwarded-For').split(',')[0]
         else:
             user_ip = request.remote_addr
-        user = UserService.logout_user(user_ip)
-        print(user_ip)
+        connection, cursor = get_connection_and_cursor()
+        user = UserService.logout_user(user_ip, connection, cursor)
+        close_connection_and_cursor(connection, cursor)
+        if user == -1:
+            return View.render_error("no login found"), 409
         if user == 1:
             return View.render_success("user logout success"), 200
         else:
@@ -68,14 +75,12 @@ class UserController:
 
         if not all([bus_number, starting_stop_number, ending_stop_number, category]):
             return View.render_error("Missing required parameters"), 400
-        try:
-            result = UserService.getfare(starting_stop_number, ending_stop_number, category, bus_number=bus_number)
-
-            if result == -1:
-                return View.render_error("Invalid route or stops"), 404
-            return View.render_fare(result[0], bus_number, category, result[1]), 200
-        except Exception as e:
-            return View.render_error(str(e)), 500
+        connection, cursor = get_connection_and_cursor()
+        result = UserService.getfare(starting_stop_number, ending_stop_number, category, bus_number, connection, cursor)
+        close_connection_and_cursor(connection, cursor)
+        if result == -1:
+            return View.render_error("Invalid route or stops"), 404
+        return View.render_fare(result[0], bus_number, category, result[1]), 200
     
     @staticmethod
     def get_user_tickets():
@@ -83,7 +88,9 @@ class UserController:
             user_ip = request.headers.get('X-Forwarded-For').split(',')[0]
         else:
             user_ip = request.remote_addr
-        tickets = UserService.get_user_tickets(user_ip)
+        connection, cursor = get_connection_and_cursor()
+        tickets = UserService.get_user_tickets(user_ip, connection, cursor)
+        close_connection_and_cursor(connection, cursor)
         if tickets == -1:
             return View.render_error("you are not logined"), 409
         else:
@@ -102,14 +109,16 @@ class UserController:
             user_ip = request.headers.get('X-Forwarded-For').split(',')[0]
         else:
             user_ip = request.remote_addr
-        result = UserService.getfare(starting_stop_number, ending_stop_number, category, bus_number)
+        connection, cursor = get_connection_and_cursor()
+        result = UserService.getfare(starting_stop_number, ending_stop_number, category, bus_number, connection, cursor)
         if result == -1:
             return View.render_error("incorrect stop number")
         price, route_id = result
         if not all([user_ip, route_id, starting_stop_number, ending_stop_number, price, gender, category]):
             return View.render_error("Missing required parameters"), 400
         
-        ticket = UserService.book_online_tickets(user_ip, route_id, starting_stop_number, ending_stop_number, price, gender, category)
+        ticket = UserService.book_online_tickets(user_ip, route_id, starting_stop_number, ending_stop_number, price, gender, category, connection, cursor)
+        close_connection_and_cursor(connection, cursor)
         if ticket > 0:
             return View.render_success("ticket booked", ticket), 201
         if ticket == -1:

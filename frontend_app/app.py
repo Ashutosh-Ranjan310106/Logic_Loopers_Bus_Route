@@ -47,7 +47,7 @@ def employee_logout():
 
 
 # Buses Module
-@app.route('/buses', methods=['GET'])
+@app.route('/', methods=['GET'])
 def buses():
     return render_template('buses/index.html')
 

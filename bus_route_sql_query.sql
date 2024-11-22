@@ -25,6 +25,14 @@ CREATE TABLE Users (
     phone_number VARCHAR(12)  unique,
     password  VARCHAR(500) NOt NULL
 );
+
+CREATE TABLE User_log (
+	user_log_id int PRIMARY KEY auto_increment,
+    user_ip varchar(50) NOT NULL,
+    user_id int NOT NULL,
+    status int default 1,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
 CREATE TABLE access_level(
 	access_level_id int PRIMARY KEY,
     discription TEXT NOT NULL
@@ -41,10 +49,10 @@ CREATE TABLE Employee(
     salary int,
     FOREIGN KEY(access_level_id) REFERENCES access_level(access_level_id)    
 );
-
 CREATE TABLE Emp_session(
-	Session_id VARCHAR(100) PRIMARY KEY,
-    emp_id INT,
+	Session_id INT PRIMARY KEY AUTO_INCREMENT,
+    emp_ip varchar(50) NOT NULL,
+    emp_id INT NOT NULL,
     status bool DEFAULT 1,
 	session_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(emp_id) REFERENCES Employee(emp_id)
@@ -146,7 +154,7 @@ CREATE TABLE Online_Tickets (
 );
 CREATE TABLE Schedule (
     schedule_id INT PRIMARY KEY AUTO_INCREMENT,
-    schedule_date Date,
+    schedule_day ENUM('sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'firday', 'saturday'),
     route ENUM('up', 'down') default 'up',
 	time time,
     route_id int NOT NULL,
@@ -262,15 +270,15 @@ INSERT INTO Stops_in_route (node_id, Stop_id, Fare_stage, Route_id, route_stop_n
 (15, 7, 3, 3, 4),
 (16, 6, 3, 3, 5);
 
-INSERT INTO Schedule (Schedule_id, Schedule_date, route, time, route_id, start_stop_number, stop_stop_number, Bus_id, conductor_id, driver_id) VALUES
-(1, '2024-10-06', 'up', '08:00:00', 1, 3, 6, 1, 4, 3),
-(2, '2024-10-06', 'down', '10:30:00', 1, 6, 3, 1, 4, 3),
-(3, '2024-10-06', 'up', '16:00:00', 1, 1, 6, 1, 4, 3),
-(4, '2024-10-06', 'down', '18:00:00', 1, 6, 1, 1, 4, 3),
-(5, '2024-10-06', 'up', '09:00:00', 2, 1, 3, 2, 5, 2),
-(6, '2024-10-06', 'down', '10:00:00', 2, 3, 1, 2, 5, 2),
-(7, '2024-10-06', 'up', '12:00:00', 3, 1, 3, 3, 6, 1),
-(8, '2024-10-06', 'down', '13:45:00', 3, 3, 1, 3, 6, 1);
+INSERT INTO Schedule (Schedule_id, route, time, route_id, start_stop_number, stop_stop_number, Bus_id, conductor_id, driver_id, schedule_day) VALUES
+(1, 'up', '08:00:00', 1, 3, 6, 1, 4, 3, 'monday'),
+(2, 'down', '10:30:00', 1, 6, 3, 1, 4, 3, 'monday'),
+(3, 'up', '16:00:00', 1, 1, 6, 1, 4, 3, 'monday'),
+(4, 'down', '18:00:00', 1, 6, 1, 1, 4, 3, 'monday'),
+(5, 'up', '09:00:00', 2, 1, 3, 2, 5, 2, 'monday'),
+(6, 'down', '10:00:00', 2, 3, 1, 2, 5, 2, 'monday'),
+(7, 'up', '12:00:00', 3, 1, 3, 3, 6, 1, 'monday'),
+(8, 'down', '13:45:00', 3, 3, 1, 3, 6, 1, 'monday');
 
 
 INSERT INTO bus_stop_reach_time (time, node_number, schedule_id) 
@@ -308,7 +316,7 @@ VALUES
 ( '13:54:00', 2, 8),
 ( '13:58:00', 1, 8);
 
-select * from schedule join buses on schedule.bus_id = buses.bus_id join bus_type on bus_type.bus_type_id = buses.bus_type_id;
+
 INSERT INTO Tickets (price, route_id, gender, ticket_type, date_of_tickets, category) VALUES
 (20, 1, 'Male', 'offline', '2024-10-06', 'red'),
 (15, 2, 'Male', 'offline', '2024-10-06', 'green'),
@@ -382,11 +390,12 @@ INSERT INTO Online_Tickets (ticket_id, time_of_booking, starting_stop_number, en
 
 
 
-
+delete from emp_session where session_id = '65e753299a62658d4277ce3cceae0dc28765c6be9c5be966ea0e86fb90f51f5e';
 show tables;
 SELECT * from emp_session;
 SELECT * FROM Bus_type;
 SELECT * FROM Users;
+SELECT * FROM User_log;
 SELECT * FROM Access_level;
 SElECT * FROM Employee;
 SELECT * FROM Stops;
@@ -403,7 +412,6 @@ select * from Tickets;
 SELECT * FROM Online_tickets;
 SELECT * FROM Offline_tickets;
 SELECT * FROM bus_stop_reach_time;
-delete  FROM Stops_in_route where route_id = 7;
 
 -- all stop connectivity
 select Routes.Route_id,bus_no ,node_id, route_stop_number, fare_stage, stops_In_route.stop_id, stop_Name, location_coordinate

@@ -53,7 +53,7 @@
                 if (data.status === "success") {
                 alert(`Logged out successfully!:- ${data.message}`);
                 } else {
-                alert(data.message || "Failed to log out.");
+                alert(`Failed to log out. ${data.message}`);
                 }
             })
             .catch(error => {

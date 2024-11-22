@@ -9,26 +9,22 @@ db_config = {'host':"localhost",
     'user':"root",     
     'password':"password", 
     'database':"bus_route" }
-connection = mysql.connector.connect(**db_config)
+#connection = mysql.connector.connect(**db_config)
 
 
-if connection.is_connected():
-    print("Successfully connected to the database")
+
+
+
+def get_connection_and_cursor():
+    connection = mysql.connector.connect(**db_config)
     cursor = connection.cursor(dictionary=True)
-else:
-    print("data base connection failed")
+    return connection, cursor
 
-
-def get_connection():
-    return connection
-
-def get_cursor():
-    return cursor
-
-def close_connection():
+def close_connection_and_cursor(connection, cursor):
     connection.close()
+    cursor.close()
 
-def close_cursor():
+def close_cursor(cursor):
     cursor.close()
 
 def log_error(function, error):

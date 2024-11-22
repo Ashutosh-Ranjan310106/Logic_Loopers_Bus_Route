@@ -1,11 +1,12 @@
-from db_utils.utils import get_cursor, get_connection, log_error
+from db_utils.utils import get_connection_and_cursor, log_error
 from werkzeug.security import generate_password_hash, check_password_hash
 import hashlib
 import time
 from datetime import datetime
 import pytz
-cursor = get_cursor()
-connection = get_connection()
+#cursor = get_cursor()
+#connection = get_connection()
+connection, cursor = get_connection_and_cursor()
 ist = pytz.timezone('Asia/Kolkata')
 
 def generate_unique_key(user_id):
