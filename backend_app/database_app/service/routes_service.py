@@ -1,10 +1,9 @@
-from db_utils.utils import get_connection, get_cursor, log_error
+from db_utils.utils import log_error
 import pandas as pd
-cursor = get_cursor()
-connection = get_connection()
+
 class RouteService:
     @staticmethod
-    def add_route(file, emp_ip):
+    def add_route(file, emp_ip, connection, cursor):
         query = '''
                 select acl.access_level_id acid from 
                 Access_level acl
@@ -48,7 +47,7 @@ class RouteService:
         return -1
     
     @staticmethod
-    def delete_route(bus_number, emp_ip):
+    def delete_route(bus_number, emp_ip, connection, cursor):
         query = '''
                 select acl.access_level_id acid from 
                 Access_level acl
@@ -72,7 +71,7 @@ class RouteService:
         return -1
     
     @staticmethod
-    def add_stops_in_route(bus_no,file, emp_ip):
+    def add_stops_in_route(bus_no,file, emp_ip, connection, cursor):
         query = '''
                 select acl.access_level_id acid from 
                 Access_level acl
@@ -92,13 +91,15 @@ class RouteService:
         if not route or not route['route_id']:
             return -2
         route_id = route['route_id']
-        print(acc_level)
+
         if acc_level and acc_level['acid'] <= 2:
 
             query = "SELECT stop_name, stop_id FROM Stops;"
             cursor.execute(query)
+            
             stop_mapping = {row['stop_name'].lower(): row['stop_id'] for row in cursor.fetchall()}
-
+            
+            
             df = pd.read_csv(file)
             parameter = ''
             values = []
@@ -113,7 +114,12 @@ class RouteService:
                     prev_fare_stage = fare_stage
                 
                 parameter += '(%s, %s, %s, %s), '
-                values.extend([stop_mapping[stop_name], route_stop_number, fare_stage, route_id])
+                try:
+                    stop_id = stop_mapping[stop_name]
+                except Exception as e:
+                    log_error('add stops in routes', e)
+                    return -3
+                values.extend([stop_id, route_stop_number, fare_stage, route_id])
             
 
             query = f'''

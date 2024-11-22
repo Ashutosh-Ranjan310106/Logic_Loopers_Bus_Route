@@ -74,7 +74,12 @@
                             <p><strong>Bus Number:</strong> {{ sub_path.bus_no }}</p>
                             <p><strong>Direction:</strong> {{ sub_path.direction[0] }} 
                                <strong>Toward:</strong> {{ sub_path.direction[1] }}</p>
-                            <p><strong>Recent Bus Timings:</strong> {{ sub_path.bus_timings | join(', ') }}</p>
+                            <p><strong>Recent Bus Timings:</strong> 
+                            {% if not sub_path.bus_timings is string %}
+                                {{ sub_path.bus_timings | join(', ') }}
+                            {% else %}
+                                {{ sub_path.bus_timings }}
+                            {% endif %}
                             <p>Stops:</p>
                             <ul>
                                 {% for stop in sub_path.stop_list %}

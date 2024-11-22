@@ -3,6 +3,7 @@ from datetime import datetime
 import os
 python_executable = r"C:\Users\rrpra\OneDrive\Documents\GitHub\Logic_Loopers_Bus_Route\backend_app\venv\Scripts\python.exe"
 
+import traceback
 import mysql.connector
 
 db_config = {'host':"localhost",
@@ -29,10 +30,12 @@ def close_cursor(cursor):
 
 def log_error(function, error):
     # Prepare the error entry
+    tb = traceback.format_exc()
     file_name = os.path.join(os.path.dirname(os.getcwd()), "error_log.json")
     error_entry = {
         "function": function,
         "error": str(error),
+        "traceback":str(tb),
         "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     }
     

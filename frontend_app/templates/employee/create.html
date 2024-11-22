@@ -72,16 +72,16 @@
         })
         .then(response => response.json())
         .then(data => {
-            resultDiv.classList.remove("success", "error");
-            resultDiv.style.display="inline-flex";
             if (data.status === "success") {
-                alert(`success :-${result.message}`)
+                alert(`success :-${data.message}`)
+            }else if((data.status === "error")){
+                alert(`error :-${data.message}`)
             } else {
-                alert(`failed :-${result.message}`)
+                throw new Error();
             }
         })
         .catch(error => {
-            alert(`An error occurred during creating employee :-${error}`)
+            alert(`An error occurred during creating employee`)
         });
     });
 </script>

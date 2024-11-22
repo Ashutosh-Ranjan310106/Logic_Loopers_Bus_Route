@@ -1,10 +1,7 @@
-from db_utils.utils import get_connection, get_cursor, log_error
-cursor = get_cursor()
-connection = get_connection()
+from db_utils.utils import  log_error
 
 class BusService:
 
     @staticmethod
-    
-    def add_bus():
+    def add_bus(connection, cursor):
         return 1

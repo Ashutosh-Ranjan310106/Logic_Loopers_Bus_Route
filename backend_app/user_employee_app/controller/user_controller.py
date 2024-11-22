@@ -17,16 +17,14 @@ class UserController:
         phone_number = data.get("phone_number")
         password = data.get("password")
         if not email or not password:
-            return View.render_error("Email and password are required"), 400
+            return View.render_error("Email, phone number and password are required"), 400
         connection, cursor = get_connection_and_cursor()
         user_id = UserService.create_user(name, email, gender, phone_number, password, connection, cursor)
         close_connection_and_cursor(connection, cursor)
-        print(user_id)
         if user_id == -1:
-            return View.render_error("email or phone number is alredy used"), 409
+            return View.render_error("email or phone is alredy used"), 409
         if user_id :
             return View.render_success("user created successful", user_id), 201
-        return View.render_error("an error ocured"), 500
     
     @staticmethod
     def login_user():
@@ -64,7 +62,7 @@ class UserController:
         if user == 1:
             return View.render_success("user logout success"), 200
         else:
-            return View.render_error(str(user)), 500
+            return View.render_error("internal error"), 500
     
     @staticmethod
     def getfare():
@@ -80,6 +78,8 @@ class UserController:
         close_connection_and_cursor(connection, cursor)
         if result == -1:
             return View.render_error("Invalid route or stops"), 404
+        if result == -2:
+            return View.render_error("Internal error"), 500
         return View.render_fare(result[0], bus_number, category, result[1]), 200
     
     @staticmethod
@@ -92,9 +92,10 @@ class UserController:
         tickets = UserService.get_user_tickets(user_ip, connection, cursor)
         close_connection_and_cursor(connection, cursor)
         if tickets == -1:
-            return View.render_error("you are not logined"), 409
-        else:
-            return View.render_tickets(tickets), 200
+            return View.render_error("you are not logined"), 401
+        if tickets == -2:
+            return View.render_error("internal error"), 500
+        return View.render_tickets(tickets), 200
 
 
     @staticmethod
@@ -112,16 +113,18 @@ class UserController:
         connection, cursor = get_connection_and_cursor()
         result = UserService.getfare(starting_stop_number, ending_stop_number, category, bus_number, connection, cursor)
         if result == -1:
+            close_connection_and_cursor(connection, cursor)
             return View.render_error("incorrect stop number")
         price, route_id = result
         if not all([user_ip, route_id, starting_stop_number, ending_stop_number, price, gender, category]):
+            close_connection_and_cursor(connection, cursor)
             return View.render_error("Missing required parameters"), 400
         
         ticket = UserService.book_online_tickets(user_ip, route_id, starting_stop_number, ending_stop_number, price, gender, category, connection, cursor)
         close_connection_and_cursor(connection, cursor)
-        if ticket > 0:
-            return View.render_success("ticket booked", ticket), 201
         if ticket == -1:
             return View.render_error("you are not logined"), 409
         if ticket == -2:
             return View.render_error("server error"), 500
+
+        return View.render_success("ticket booked", ticket), 201

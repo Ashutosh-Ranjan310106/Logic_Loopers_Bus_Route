@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='database.css') }}">
     <script src="{{ url_for('static', filename='config.js') }}"></script>
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
     <title>Manage Routes</title>
 </head>
 <body>
@@ -65,8 +66,7 @@
 <script>
     document.getElementById('addRouteForm').addEventListener('submit', function(event) {
         event.preventDefault();
-        const formData = new FormData(this);
-        document.getElementById('addRouteResult').style.display = "block"        
+        const formData = new FormData(this);      
         fetch(config.databaseURL+'/database/route', {
             method: 'POST',
             body: formData
@@ -86,7 +86,6 @@
     document.getElementById('addStopsForm').addEventListener('submit', function(event) {
         event.preventDefault();
         const formData = new FormData(this);
-        document.getElementById('addStopsResult').style.display = "block"
         fetch(config.databaseURL+'/database/route/addstop', {
             method: 'POST',
             body: formData
@@ -105,7 +104,6 @@
     document.getElementById('deleteRouteForm').addEventListener('submit', function(event) {
         event.preventDefault();
         const formData = new FormData(this);
-        document.getElementById('deleteRouteResult').style.display = "block"
         fetch(config.databaseURL+'/database/route', {
             method: 'DELETE',
             body: formData

@@ -1,13 +1,11 @@
-from db_utils.utils import get_connection, get_cursor,log_error
+from db_utils.utils import log_error
 import pandas as pd
-cursor = get_cursor()
-connection = get_connection()
 
 
 class TimeService:
 
     @staticmethod
-    def add_bus_stop_reach_time(file, emp_ip):
+    def add_bus_stop_reach_time(file, emp_ip, connection, cursor):
         query = '''
                 select acl.access_level_id acid from 
                 Access_level acl
@@ -47,7 +45,7 @@ class TimeService:
 
         return -1
     @staticmethod
-    def get_bus_stop_reach_time():
+    def get_bus_stop_reach_time(connection, cursor):
         query = f'''SELECT  stop_name, bsrt.time bus_time, bus_no
             FROM bus_stop_reach_time bsrt
             JOIN schedule sch ON sch.schedule_id = bsrt.schedule_id

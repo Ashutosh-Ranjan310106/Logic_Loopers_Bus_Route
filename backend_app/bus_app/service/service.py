@@ -1,11 +1,9 @@
-from db_utils.utils import get_cursor, get_connection 
+from db_utils.utils import log_error
 from datetime import datetime
-cursor = get_cursor()
-connection = get_connection()
 
 class BusService: 
     @staticmethod
-    def get_all_stops():
+    def get_all_stops(connection, cursor):
         query = f'''
             select * from 
             stops;
@@ -19,7 +17,7 @@ class BusService:
     
 
     @staticmethod
-    def get_all_routes():
+    def get_all_routes(connection, cursor):
         query = f'''
             select * from routes;
             '''
@@ -31,7 +29,7 @@ class BusService:
         return all_routes
     
     @staticmethod
-    def get_all_route_map():
+    def get_all_route_map(connection, cursor):
         query = f'''
             select sir.*,st.*, rt.* from 
             Stops_In_Route sir
@@ -51,7 +49,7 @@ class BusService:
         return all_routes
     
     @staticmethod
-    def get_bus_route(bus_number):
+    def get_bus_route(bus_number, connection, cursor):
         query = f'''
             select * from 
             Stops_In_Route sir
@@ -65,7 +63,7 @@ class BusService:
         return bus_route
     
     @staticmethod
-    def get_stops_in_routes(route_id):
+    def get_stops_in_routes(route_id, connection, cursor):
         query = f'''
             select * from 
             Stops_In_Route sir
@@ -78,7 +76,7 @@ class BusService:
     
     
     @staticmethod
-    def get_recent_buses(stop_ids=None, stop_names=None, bus_number=None, after_time=None):
+    def get_recent_buses(connection, cursor,stop_ids=None, stop_names=None, bus_number=None, after_time=None):
         if not after_time:
             after_time = datetime.now().time()
         if stop_ids[0]:

@@ -213,5 +213,142 @@
         "function": "book onine ticket",
         "error": "Unread result found",
         "timestamp": "2024-11-22 12:36:25"
+    },
+    {
+        "function": "get fare ('1', '5', 'orange', 'DTC-123')",
+        "error": "Not all parameters were used in the SQL statement",
+        "timestamp": "2024-11-22 14:57:18"
+    },
+    {
+        "function": "get fare ('1', '5', 'orange', 'DTC-123')",
+        "error": "Not all parameters were used in the SQL statement",
+        "timestamp": "2024-11-22 14:59:06"
+    },
+    {
+        "function": "get fare ('1', '5', 'orange', 'DTC-123')",
+        "error": "Not all parameters were used in the SQL statement",
+        "timestamp": "2024-11-22 15:02:38"
+    },
+    {
+        "function": "get path of stop (10, 12)",
+        "error": "list index out of range",
+        "timestamp": "2024-11-22 15:10:07"
+    },
+    {
+        "function": "get path of stop (10, 13)",
+        "error": "list index out of range",
+        "timestamp": "2024-11-22 15:10:48"
+    },
+    {
+        "function": "get path of stop (10, 13)",
+        "error": "list index out of range",
+        "timestamp": "2024-11-22 15:13:21"
+    },
+    {
+        "function": "get path of stop (10, 13)",
+        "error": "list index out of range\nTraceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\bus_app\\service\\path_service.py\", line 112, in get_path_of_stop\n    queue.append((stop['other_route_id'], stop['stop_id'], current_path + [{\"route\":path[\"route\"],\"direction\":('down',all_stops[0][\"stop_name\"]), \"stop_list\":path[\"stop_list\"][::]+[all_stops[i+1]]}], visited_routes.copy()))\n                                                                                                                                                                                     ~~~~~~~~~^^^^^\nIndexError: list index out of range\n",
+        "timestamp": "2024-11-22 15:16:16"
+    },
+    {
+        "function": "get path of stop (10, 13)",
+        "error": "list index out of range",
+        "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\bus_app\\service\\path_service.py\", line 112, in get_path_of_stop\n    queue.append((stop['other_route_id'], stop['stop_id'], current_path + [{\"route\":path[\"route\"],\"direction\":('down',all_stops[0][\"stop_name\"]), \"stop_list\":path[\"stop_list\"][::]+[all_stops[i+1]]}], visited_routes.copy()))\n                                                                                                                                                                                     ~~~~~~~~~^^^^^\nIndexError: list index out of range\n",
+        "timestamp": "2024-11-22 15:17:31"
+    },
+    {
+        "function": "get user tickets 127.0.0.1",
+        "error": "'NoneType' object is not subscriptable",
+        "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\user_employee_app\\service\\user_service.py\", line 134, in get_user_tickets\n    user_id = user['user_id']\n              ~~~~^^^^^^^^^^^\nTypeError: 'NoneType' object is not subscriptable\n",
+        "timestamp": "2024-11-22 15:33:37"
+    },
+    {
+        "function": "get user tickets 127.0.0.1",
+        "error": "'NoneType' object is not subscriptable",
+        "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\user_employee_app\\service\\user_service.py\", line 134, in get_user_tickets\nTypeError: 'NoneType' object is not subscriptable\n",
+        "timestamp": "2024-11-22 15:36:03"
+    },
+    {
+        "function": "get user tickets 127.0.0.1",
+        "error": "'NoneType' object is not subscriptable",
+        "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\user_employee_app\\service\\user_service.py\", line 134, in get_user_tickets\nTypeError: 'NoneType' object is not subscriptable\n",
+        "timestamp": "2024-11-22 15:36:27"
+    },
+    {
+        "function": "get user tickets 127.0.0.1",
+        "error": "'NoneType' object is not subscriptable",
+        "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\user_employee_app\\service\\user_service.py\", line 134, in get_user_tickets\nTypeError: 'NoneType' object is not subscriptable\n",
+        "timestamp": "2024-11-22 15:38:06"
+    },
+    {
+        "function": "create user ('', 'Ranjan@gmail.com', 'Male', None, 'password')",
+        "error": "1062 (23000): Duplicate entry 'Ranjan@gmail.com' for key 'users.email'",
+        "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\connection_cext.py\", line 706, in cmd_query\n    self._cmysql.query(\n_mysql_connector.MySQLInterfaceError: Duplicate entry 'Ranjan@gmail.com' for key 'users.email'\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\user_employee_app\\service\\user_service.py\", line 25, in create_user\n    cursor.execute(query, values+[email, phone_number, hash_password])\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\cursor_cext.py\", line 357, in execute\n    result = self._connection.cmd_query(\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\opentelemetry\\context_propagation.py\", line 97, in wrapper\n    return method(cnx, *args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\connection_cext.py\", line 714, in cmd_query\n    raise get_mysql_exception(\nmysql.connector.errors.IntegrityError: 1062 (23000): Duplicate entry 'Ranjan@gmail.com' for key 'users.email'\n",
+        "timestamp": "2024-11-22 15:47:57"
+    },
+    {
+        "function": "create employee ('ashu', 'ayus@gmail.com', 'password', '9896959312', '1', '1234', 'Ashutosh', 'Ranjan', '1000000000')",
+        "error": "1062 (23000): Duplicate entry 'ayus@gmail.com' for key 'employee.official_email'",
+        "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\connection_cext.py\", line 706, in cmd_query\n    self._cmysql.query(\n_mysql_connector.MySQLInterfaceError: Duplicate entry 'ayus@gmail.com' for key 'employee.official_email'\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\user_employee_app\\service\\employee_service.py\", line 40, in create_employee\n    cursor.execute(query,values+[user_name, official_email, hashed_password, phone_number, access_level_id])\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\cursor_cext.py\", line 357, in execute\n    result = self._connection.cmd_query(\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\opentelemetry\\context_propagation.py\", line 97, in wrapper\n    return method(cnx, *args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\connection_cext.py\", line 714, in cmd_query\n    raise get_mysql_exception(\nmysql.connector.errors.IntegrityError: 1062 (23000): Duplicate entry 'ayus@gmail.com' for key 'employee.official_email'\n",
+        "timestamp": "2024-11-22 15:56:24"
+    },
+    {
+        "function": "create employee ('ashu', 'ayus@gmail.com', 'password', '9896959312', '1', '1234', 'Ashutosh', 'Ranjan', '1000000000')",
+        "error": "1062 (23000): Duplicate entry 'ayus@gmail.com' for key 'employee.official_email'",
+        "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\connection_cext.py\", line 706, in cmd_query\n    self._cmysql.query(\n_mysql_connector.MySQLInterfaceError: Duplicate entry 'ayus@gmail.com' for key 'employee.official_email'\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\user_employee_app\\service\\employee_service.py\", line 40, in create_employee\n    cursor.execute(query,values+[user_name, official_email, hashed_password, phone_number, access_level_id])\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\cursor_cext.py\", line 357, in execute\n    result = self._connection.cmd_query(\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\opentelemetry\\context_propagation.py\", line 97, in wrapper\n    return method(cnx, *args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\connection_cext.py\", line 714, in cmd_query\n    raise get_mysql_exception(\nmysql.connector.errors.IntegrityError: 1062 (23000): Duplicate entry 'ayus@gmail.com' for key 'employee.official_email'\n",
+        "timestamp": "2024-11-22 16:05:58"
+    },
+    {
+        "function": "create employee ('ashu', 'ayus@gmail.com', 'password', '9896959312', '1', '1234', 'Ashutosh', 'Ranjan', '1000000000')",
+        "error": "1062 (23000): Duplicate entry 'ayus@gmail.com' for key 'employee.official_email'",
+        "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\connection_cext.py\", line 706, in cmd_query\n    self._cmysql.query(\n_mysql_connector.MySQLInterfaceError: Duplicate entry 'ayus@gmail.com' for key 'employee.official_email'\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\user_employee_app\\service\\employee_service.py\", line 40, in create_employee\n    cursor.execute(query,values+[user_name, official_email, hashed_password, phone_number, access_level_id])\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\cursor_cext.py\", line 357, in execute\n    result = self._connection.cmd_query(\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\opentelemetry\\context_propagation.py\", line 97, in wrapper\n    return method(cnx, *args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\connection_cext.py\", line 714, in cmd_query\n    raise get_mysql_exception(\nmysql.connector.errors.IntegrityError: 1062 (23000): Duplicate entry 'ayus@gmail.com' for key 'employee.official_email'\n",
+        "timestamp": "2024-11-22 16:07:32"
+    },
+    {
+        "function": "create employee ('Ranjan@gmail.com', 'ayus@gmail.com', 'password', '9896959312', '1', '1234', 'Ashutosh', 'Ranjan', '1000000000')",
+        "error": "1062 (23000): Duplicate entry 'Ranjan@gmail.com' for key 'employee.user_name'",
+        "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\connection_cext.py\", line 706, in cmd_query\n    self._cmysql.query(\n_mysql_connector.MySQLInterfaceError: Duplicate entry 'Ranjan@gmail.com' for key 'employee.user_name'\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\user_employee_app\\service\\employee_service.py\", line 40, in create_employee\n    cursor.execute(query,values+[user_name, official_email, hashed_password, phone_number, access_level_id])\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\cursor_cext.py\", line 357, in execute\n    result = self._connection.cmd_query(\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\opentelemetry\\context_propagation.py\", line 97, in wrapper\n    return method(cnx, *args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\connection_cext.py\", line 714, in cmd_query\n    raise get_mysql_exception(\nmysql.connector.errors.IntegrityError: 1062 (23000): Duplicate entry 'Ranjan@gmail.com' for key 'employee.user_name'\n",
+        "timestamp": "2024-11-22 16:07:40"
+    },
+    {
+        "function": "create employee ('Ranjan@gmail.com', 'ayus@gmail.com', 'password', '9896959312', '1', '1234', 'Ashutosh', 'Ranjan', '1000000000')",
+        "error": "1062 (23000): Duplicate entry 'Ranjan@gmail.com' for key 'employee.user_name'",
+        "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\connection_cext.py\", line 706, in cmd_query\n    self._cmysql.query(\n_mysql_connector.MySQLInterfaceError: Duplicate entry 'Ranjan@gmail.com' for key 'employee.user_name'\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\user_employee_app\\service\\employee_service.py\", line 40, in create_employee\n    cursor.execute(query,values+[user_name, official_email, hashed_password, phone_number, access_level_id])\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\cursor_cext.py\", line 357, in execute\n    result = self._connection.cmd_query(\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\opentelemetry\\context_propagation.py\", line 97, in wrapper\n    return method(cnx, *args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\connection_cext.py\", line 714, in cmd_query\n    raise get_mysql_exception(\nmysql.connector.errors.IntegrityError: 1062 (23000): Duplicate entry 'Ranjan@gmail.com' for key 'employee.user_name'\n",
+        "timestamp": "2024-11-22 16:08:30"
+    },
+    {
+        "function": "create employee ('ashu', 'ayus@gmail.com', 'password', '9896959312', '1', '1234', 'Ashutosh', 'Ranjan', '1000000000')",
+        "error": "1062 (23000): Duplicate entry 'ayus@gmail.com' for key 'employee.official_email'",
+        "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\connection_cext.py\", line 706, in cmd_query\n    self._cmysql.query(\n_mysql_connector.MySQLInterfaceError: Duplicate entry 'ayus@gmail.com' for key 'employee.official_email'\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\user_employee_app\\service\\employee_service.py\", line 40, in create_employee\n    cursor.execute(query,values+[user_name, official_email, hashed_password, phone_number, access_level_id])\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\cursor_cext.py\", line 357, in execute\n    result = self._connection.cmd_query(\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\opentelemetry\\context_propagation.py\", line 97, in wrapper\n    return method(cnx, *args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\connection_cext.py\", line 714, in cmd_query\n    raise get_mysql_exception(\nmysql.connector.errors.IntegrityError: 1062 (23000): Duplicate entry 'ayus@gmail.com' for key 'employee.official_email'\n",
+        "timestamp": "2024-11-22 16:09:28"
+    },
+    {
+        "function": "create employee ('ashu', 'ayus@gmail.com', 'password', '9896959312', '1', '1234', 'Ashutosh', 'Ranjan', '1000000000')",
+        "error": "1062 (23000): Duplicate entry 'ayus@gmail.com' for key 'employee.official_email'",
+        "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\connection_cext.py\", line 706, in cmd_query\n    self._cmysql.query(\n_mysql_connector.MySQLInterfaceError: Duplicate entry 'ayus@gmail.com' for key 'employee.official_email'\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\user_employee_app\\service\\employee_service.py\", line 40, in create_employee\n    cursor.execute(query,values+[user_name, official_email, hashed_password, phone_number, access_level_id])\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\cursor_cext.py\", line 357, in execute\n    result = self._connection.cmd_query(\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\opentelemetry\\context_propagation.py\", line 97, in wrapper\n    return method(cnx, *args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\connection_cext.py\", line 714, in cmd_query\n    raise get_mysql_exception(\nmysql.connector.errors.IntegrityError: 1062 (23000): Duplicate entry 'ayus@gmail.com' for key 'employee.official_email'\n",
+        "timestamp": "2024-11-22 16:09:39"
+    },
+    {
+        "function": "create employee ('ashu', 'asqw@gmail.com', 'password', '9896959312', '1', '1234', 'Ashutosh', 'Ranjan', '1000000000')",
+        "error": "1062 (23000): Duplicate entry 'ashu' for key 'employee.user_name'",
+        "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\connection_cext.py\", line 706, in cmd_query\n    self._cmysql.query(\n_mysql_connector.MySQLInterfaceError: Duplicate entry 'ashu' for key 'employee.user_name'\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\user_employee_app\\service\\employee_service.py\", line 40, in create_employee\n    cursor.execute(query,values+[user_name, official_email, hashed_password, phone_number, access_level_id])\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\cursor_cext.py\", line 357, in execute\n    result = self._connection.cmd_query(\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\opentelemetry\\context_propagation.py\", line 97, in wrapper\n    return method(cnx, *args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\connection_cext.py\", line 714, in cmd_query\n    raise get_mysql_exception(\nmysql.connector.errors.IntegrityError: 1062 (23000): Duplicate entry 'ashu' for key 'employee.user_name'\n",
+        "timestamp": "2024-11-22 16:10:06"
+    },
+    {
+        "function": "add routes",
+        "error": "1062 (23000): Duplicate entry 'DTC-534' for key 'routes.bus_no'",
+        "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\connection_cext.py\", line 706, in cmd_query\n    self._cmysql.query(\n_mysql_connector.MySQLInterfaceError: Duplicate entry 'DTC-534' for key 'routes.bus_no'\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\database_app\\service\\routes_service.py\", line 41, in add_route\n    cursor.execute(query, values)\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\cursor_cext.py\", line 357, in execute\n    result = self._connection.cmd_query(\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\opentelemetry\\context_propagation.py\", line 97, in wrapper\n    return method(cnx, *args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\connection_cext.py\", line 714, in cmd_query\n    raise get_mysql_exception(\nmysql.connector.errors.IntegrityError: 1062 (23000): Duplicate entry 'DTC-534' for key 'routes.bus_no'\n",
+        "timestamp": "2024-11-22 16:25:51"
+    },
+    {
+        "function": "add stops in routes",
+        "error": "'r.k. puram sector-1'",
+        "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\database_app\\service\\routes_service.py\", line 118, in add_stops_in_route\n    stop_id = stop_mapping[stop_name]\n              ~~~~~~~~~~~~^^^^^^^^^^^\nKeyError: 'r.k. puram sector-1'\n",
+        "timestamp": "2024-11-22 16:33:07"
+    },
+    {
+        "function": "add bus stop reach time",
+        "error": "1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`bus_route`.`bus_stop_reach_time`, CONSTRAINT `bus_stop_reach_time_ibfk_1` FOREIGN KEY (`schedule_id`) REFERENCES `schedule` (`schedule_id`) ON DELETE CASCADE)",
+        "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\connection_cext.py\", line 706, in cmd_query\n    self._cmysql.query(\n_mysql_connector.MySQLInterfaceError: Cannot add or update a child row: a foreign key constraint fails (`bus_route`.`bus_stop_reach_time`, CONSTRAINT `bus_stop_reach_time_ibfk_1` FOREIGN KEY (`schedule_id`) REFERENCES `schedule` (`schedule_id`) ON DELETE CASCADE)\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\database_app\\service\\time_service.py\", line 38, in add_bus_stop_reach_time\n    cursor.execute(query, values)\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\cursor_cext.py\", line 357, in execute\n    result = self._connection.cmd_query(\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\opentelemetry\\context_propagation.py\", line 97, in wrapper\n    return method(cnx, *args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\venv\\Lib\\site-packages\\mysql\\connector\\connection_cext.py\", line 714, in cmd_query\n    raise get_mysql_exception(\nmysql.connector.errors.IntegrityError: 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`bus_route`.`bus_stop_reach_time`, CONSTRAINT `bus_stop_reach_time_ibfk_1` FOREIGN KEY (`schedule_id`) REFERENCES `schedule` (`schedule_id`) ON DELETE CASCADE)\n",
+        "timestamp": "2024-11-22 16:33:55"
     }
 ]

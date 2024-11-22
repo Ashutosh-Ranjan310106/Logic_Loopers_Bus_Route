@@ -154,7 +154,7 @@
                     });
 
                     ticketsLoaded = true;
-                } else if (response.status === 401) {
+                } else if (response.status === 409) {
                     const errorData = await response.json();
                     alert(`Error: ${errorData.message || 'Unauthorized access. Please log in.'}`);
                     window.location.href = "{{ url_for('user_login') }}";

@@ -1,7 +1,7 @@
 class StaffService:
     @staticmethod
-    def add_staff():
+    def add_staff(connection, cursor):
         return 1
     @staticmethod
-    def get_staff():
+    def get_staff(connection, cursor):
         return 1

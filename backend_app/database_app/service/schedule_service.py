@@ -1,12 +1,11 @@
-from db_utils.utils import get_connection, get_cursor, log_error
+from db_utils.utils import  log_error
 import pandas as pd
-cursor = get_cursor()
-connection = get_connection()
+
 
 
 class ScheduleService:
     @staticmethod
-    def add_schedule(file, emp_ip):
+    def add_schedule(file, emp_ip, connection, cursor):
 
         query = '''
             SELECT acl.access_level_id AS acid 
@@ -56,7 +55,7 @@ class ScheduleService:
                 return e
         return -1
     @staticmethod
-    def delete_schedule(emp_ip, schedule_id):
+    def delete_schedule(emp_ip, schedule_id, connection, cursor):
         query = '''
             SELECT acl.access_level_id AS acid 
             FROM Access_level acl
@@ -84,7 +83,7 @@ class ScheduleService:
         return -1
 
     @staticmethod
-    def get_schedule(bus_number ,emp_ip):
+    def get_schedule(bus_number ,emp_ip, connection, cursor):
         query = '''
             SELECT acl.access_level_id AS acid 
             FROM Access_level acl

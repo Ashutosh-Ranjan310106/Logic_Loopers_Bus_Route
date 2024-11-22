@@ -1,12 +1,10 @@
-from db_utils.utils import get_connection, get_cursor, log_error
+from db_utils.utils import log_error
 import datetime
 import pandas as pd
-cursor = get_cursor()
-connection = get_connection()
 
 class TicketService:
     @staticmethod
-    def book_offline_tickets(route_id, price, gender, category, direction, emp_ip):
+    def book_offline_tickets(route_id, price, gender, category, direction, emp_ip, connection, cursor):
         query = '''
                 select acl.access_level_id acid from 
                 Access_level acl
@@ -48,7 +46,7 @@ class TicketService:
         return -1
     
     @staticmethod
-    def verify_ticket(ticket_id, ticketdate, route_id):
+    def verify_ticket(ticket_id, ticketdate, route_id, connection, cursor):
         verify_ticket_query = '''
             SELECT ticket_id, route_id, price, gender, category, ticket_type, date_of_tickets
             FROM Tickets

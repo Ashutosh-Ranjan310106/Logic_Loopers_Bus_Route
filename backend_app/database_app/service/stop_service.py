@@ -1,10 +1,8 @@
-from db_utils.utils import get_connection, get_cursor, log_error
+from db_utils.utils import log_error
 import pandas as pd
-cursor = get_cursor()
-connection = get_connection()
 class StopService:
     @staticmethod
-    def add_stop(file, emp_ip):
+    def add_stop(file, emp_ip, connection, cursor):
         query = '''
                 select acl.access_level_id acid from 
                 Access_level acl
@@ -45,7 +43,7 @@ class StopService:
     
 
     @staticmethod
-    def delete_stops(emp_ip, stop_ids):
+    def delete_stops(emp_ip, stop_ids, connection, cursor):
         query = '''
                 select acl.access_level_id acid from 
                 Access_level acl
@@ -70,7 +68,7 @@ class StopService:
                 return e
         return -1
     @staticmethod
-    def get_stops(partiall_name):
+    def get_stops(partiall_name, connection, cursor):
         if partiall_name:
             query = f"SELECT stop_name, stop_id FROM Stops where stop_name like \"{partiall_name}%\";"
         else:
