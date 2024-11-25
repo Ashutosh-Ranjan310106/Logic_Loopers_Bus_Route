@@ -97,7 +97,7 @@
       <input type="text" id="name" name="name" placeholder="Name" required>
       <input type="email" id="email" name="email" placeholder="Email Address" required>
       <input type="text" id="gender" name="gender" placeholder="Gender" required>
-      <input type="tel" id="phone" name="phone" placeholder="Phone No." pattern="[0-9]{10}" required>
+      <input type="tel" id="phone" name="phone_number" placeholder="Phone No." pattern="[0-9]{10}" required>
       <input type="password" id="password" name="password" placeholder="Password" required>
       <button type="submit">Create Account</button>
     </form>
@@ -108,10 +108,10 @@
         event.preventDefault();
 
 
-        const fullname = document.getElementById("name").value;
+        const name = document.getElementById("name").value;
         const email = document.getElementById("email").value;
         const gender = document.getElementById("gender").value;
-        const phone = document.getElementById("phone").value;
+        const phone_number = document.getElementById("phone").value;
         const password = document.getElementById("password").value;
 
         
@@ -120,10 +120,9 @@
             name,
             email,
             gender,
-            phone,
+            phone_number,
             password,
         };
-      console.log(config.userURL)
       fetch(`${config.user_employeeURL}/user/create`, {
         method: "POST",
         headers: {

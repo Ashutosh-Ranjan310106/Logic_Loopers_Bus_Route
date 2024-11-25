@@ -7,7 +7,7 @@ if (appstate === 'on_lan'){
         databaseURL: "http://192.168.163.145:5003",
     };
 }
-if (appstate === 'himachi'){
+else if (appstate === 'himachi'){
     config = {
         busURL: "http://25.24.45.37:5001",
         user_employeeURL: "http://25.24.45.37:5002",
@@ -21,3 +21,5 @@ else{
         databaseURL: "http://127.0.0.1:5003",
     };
 }
+
+console.log(config)

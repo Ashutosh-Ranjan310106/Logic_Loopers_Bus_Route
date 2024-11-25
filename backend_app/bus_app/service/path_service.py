@@ -153,7 +153,7 @@ class PathService:
             bus_timings = BusService.get_recent_buses(stop_ids=starting_stops_list, connection=connection, cursor=cursor, after_time='00:00:00')
             for index, sub_path in enumerate(path):
                 if sub_path['stop_list'][0]['stop_name']  not in  bus_timings:
-                    sub_path['bus_timings'] = 'no timimgs are avlable now '
+                    sub_path['bus_timings'] = 'no timings are available now '
                 else:
                     sub_path['bus_timings']=[]
                     for timing in bus_timings[sub_path['stop_list'][0]['stop_name']]:

@@ -1,11 +1,13 @@
 from flask import Flask, render_template, request
-
+import json
 app = Flask(__name__)
 appstate = 'on_lan_'
 if appstate == 'on_lan':
     host = '192.168.163.145'
 elif appstate == 'hamachi':
     host = '25.24.45.37'
+elif appstate == 'du':
+    host = '10.87.95.70'
 else:
     host='127.0.0.1'
 # User and Employee Management Module
@@ -99,21 +101,23 @@ def database_reach_time():
 @app.route('/render/tickets', methods=['GET'])
 def render_tickets():
     ticket_data = eval(request.args.get('ticket_data'))
+    print(ticket_data)
     return render_template('render/tickets.html', ticket_data=ticket_data)
 @app.route('/render/schedule', methods=['GET'])
 def render_schedule():
-    schedules = eval(request.args.get('schedule_data'))
+    schedules = json.loads(request.args.get('schedule_data'))
     return render_template('render/schedule.html', schedules=schedules)
 
 @app.route('/render/routes', methods=['GET'])
 def render_route():
-    route = eval(request.args.get('route_data'))
+    route = json.loads(request.args.get('route_data'))
     return render_template('render/route.html', route=route)
 
 @app.route('/render/path', methods=['GET'])
 def render_path():
-    paths = eval(request.args.get('path_data'))
+    paths = json.loads(request.args.get('path_data'))
     return render_template('render/path.html', paths=paths)
+
 
 
 

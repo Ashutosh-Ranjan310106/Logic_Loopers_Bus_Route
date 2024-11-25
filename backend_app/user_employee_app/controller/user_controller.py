@@ -16,7 +16,7 @@ class UserController:
         gender = data.get("gender",'')
         phone_number = data.get("phone_number")
         password = data.get("password")
-        if not email or not password:
+        if not (email and password and phone_number):
             return View.render_error("Email, phone number and password are required"), 400
         connection, cursor = get_connection_and_cursor()
         user_id = UserService.create_user(name, email, gender, phone_number, password, connection, cursor)

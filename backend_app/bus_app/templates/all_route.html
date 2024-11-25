@@ -23,12 +23,14 @@
             align-items: center;
             justify-content: flex-start;
             margin-top: 20px;
-            overflow-x: auto;
+            overflow-x: scroll;
             padding: 20px;
             position: relative;
         }
         .stop-board {
+            display: inline-block;
             width: 150px;
+            height: 125px;
             border: 1px solid #007bff;
             border-radius: 8px;
             margin: 10px;
@@ -53,6 +55,7 @@
         .road-line {
             height: 5px;
             background-color: #007bff;
+            color: #333;
             margin: 0 5px;
             border-radius: 50px;
             transition: width 0.3s;
@@ -87,7 +90,7 @@
             allContents.forEach(c => c.style.display = "none");
 
             // Toggle display of selected stop
-            content.style.display = content.style.display === "none" ? "block" : "none";
+            content.style.display = content.style.display === "none" ? "inline-block" : "none";
 
             // Move bus icon
             const bus = document.getElementById(`bus-${routeId}`);
@@ -107,7 +110,7 @@
             
             {% for stop in route.stop_list %}
                 <!-- Stop board for each stop -->
-                <div class="stop-board" onclick="toggleStopContent('{{ route.Route_id }}', '{{ loop.index }}', {{ loop.index * 200 }})">
+                <div class="stop-board" onclick="toggleStopContent('{{ route.Route_id }}', '{{ loop.index }}')">
                     <strong>Stop {{ stop.route_stop_number }}</strong>
                     <p>{{ stop.Stop_Name }}</p>
                     <div class="stop-content" id="stop-content-{{ route.Route_id }}-{{ loop.index }}" data-route="{{ route.Route_id }}">
@@ -115,9 +118,7 @@
                         <p><strong>Coordinates:</strong> {{ stop.location_coordinate }}</p>
                     </div>
                 </div>
-                {% if not loop.last %}
-                    <div class="road-line"></div>
-                {% endif %}
+                <div class="road-line"></div>
             {% endfor %}
         </div>
     </div>

@@ -19,8 +19,8 @@
     /* Body Styling */
     body {
       display: flex;
-      justify-content: center;
-      align-items: center;
+      flex-direction: column; /* Stack content vertically */
+      align-items: center;    /* Center align main content */
       min-height: 100vh;
       background-color: #f4f7fa;
       font-family: Arial, sans-serif;
@@ -91,6 +91,7 @@
 <body>
   <a href="{{ url_for('user_index') }}">
     <button class="back_button">Back</button>
+
   </a>
   <div class="booking-container">
     <h2>Bus Ticket Booking</h2>

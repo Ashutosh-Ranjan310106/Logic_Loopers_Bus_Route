@@ -122,13 +122,7 @@ class RouteService:
                 values.extend([stop_id, route_stop_number, fare_stage, route_id])
             
 
-            query = f'''
-                UPDATE stops_in_route sir
-                join bus_stop_reach_time bsrt ON bsrt.route_id = sir.route_id and sir.route_stop_number=bsrt.node_number
-                SET route_stop_number =  route_stop_number + %s, node_number = node_number + %s
-                where route_stop_number >= %s and route_id = %s;
-            '''
-            cursor.execute(query, (index+1, index+1, values[1], route_id))
+            
 
 
             parameter = parameter.rstrip(', ')
