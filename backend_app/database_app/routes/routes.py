@@ -29,12 +29,18 @@ def book_offline_ticket():
 @database_route.route('/database/route/addstop', methods=['POST'])
 def add_stops_in_route():
     return Controller.add_stops_in_route()
+@database_route.route('/database/reachtime/add', methods=['POST'])
+def add_bus_stop_reach_time():
+    return Controller.add_bus_stop_reach_time()
 @database_route.route('/database/ticket/get', methods=['GET'])
 def verify_ticket():
     return Controller.verify_ticket()
 @database_route.route('/database/staff/add', methods=['POST'])
 def add_staff():
     return Controller.add_staff()
+@database_route.route('/database/staff/get', methods=['POST'])
+def get_staff():
+    return Controller.get_staff()
 
 
 

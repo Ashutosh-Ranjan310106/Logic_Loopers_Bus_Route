@@ -94,11 +94,13 @@ route structure
 ├── /bus                      # Bus management
 │   └── /add                  # Add a new bus (POST)
 │
-└── /staff                    # Staff management
-    ├── /add                  # Add a new staff member (POST)
-    ├── /get                  # Retrieve staff details (GET)
-    └── /delete               # Delete a staff member (POST)
-
+├── /staff                    # Staff management
+|   ├── /add                  # Add a new staff member (POST)
+|   └── /get                  # Retrieve staff details (GET)
+|
+└── /time                    # bus reach time on each stop management
+    └── /add                 # Add a reach time for stop in a route)
+ 
 
 
 
@@ -424,6 +426,31 @@ database http://127.0.0.1:5003
 			Returns:
 				- Success message if upload is successful.
 				- Error message if upload fails.
+		-----------------------------------------------------------------------------------------------------
+		/database/staff/get
+
+			get /database/staff/get
+
+			get all staff member from database.
+			Expected Form Data:
+				- None
+			Returns:
+				- Success message if found data. and return all staff data
+				- Error message if get fails.
+
+	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+		/database/time
+			-----------------------------------------------------------------------------------------------------
+			/database/time/add
+
+			post /database/time/add
+
+			post time for each stops in a route
+			Expected Form Data:
+				- file of reach time and session key
+			Returns:
+				- Success message if data upload.
+				- Error message if route not fuond or session id is invalid 
 
 
 

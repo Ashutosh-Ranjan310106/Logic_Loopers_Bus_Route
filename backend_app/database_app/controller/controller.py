@@ -3,6 +3,7 @@ from database_app.service.stop_service import StopService
 from database_app.service.staff_service import StaffService
 from database_app.service.routes_service import RouteService
 from database_app.service.ticket_service import TicketService
+from database_app.service.time_service import TimeService
 from database_app.view.view import View
 from database_app.view.ticket_view import TicketView
 from database_app.view.stop_view import StopView
@@ -128,6 +129,16 @@ class Controller:
 
     def add_staff():
         result =  StaffService.add_staff()
+        if result:
+            return View.render_success("upload successfull"), 201
+        return View.render_error("upload failed"), 500
+    def get_staff():
+        result =  StaffService.get_staff()
+        if result:
+            return View.render_success("upload successfull"), 201
+        return View.render_error("upload failed"), 500
+    def add_bus_stop_reach_time():
+        result =  TimeService.add_bus_stop_reach_time()
         if result:
             return View.render_success("upload successfull"), 201
         return View.render_error("upload failed"), 500
