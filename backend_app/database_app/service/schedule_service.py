@@ -45,14 +45,9 @@ class ScheduleService:
                 INSERT INTO Schedule (schedule_day, route, time, route_id, start_stop_number, stop_stop_number, bus_id, conductor_id, driver_id) 
                 VALUES {parameter};
             '''
-            try:
-                cursor.execute(query, values)
-                connection.commit()
-                return 1
-            except Exception as e:
-                connection.rollback()
-                log_error('add schedule', e)
-                return e
+            cursor.execute(query, values)
+            connection.commit()
+            return 1
         return -1
     @staticmethod
     def delete_schedule(emp_ip, schedule_id, connection, cursor):
@@ -70,16 +65,12 @@ class ScheduleService:
                 DELETE FROM Schedule 
                 WHERE schedule_id = %s;
             '''
-            try:
-                cursor.execute(query, (schedule_id,))
-                connection.commit()
-                if cursor.rowcount > 0:
-                    return 1
-                return -2
-            except Exception as e:
-                connection.rollback()
-                log_error('delete schedule', e)
-                return e 
+            
+            cursor.execute(query, (schedule_id,))
+            connection.commit()
+            if cursor.rowcount > 0:
+                return 1
+            return -2
         return -1
 
     @staticmethod

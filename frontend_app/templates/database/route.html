@@ -16,7 +16,32 @@
 <div class="container">
     <h1>Manage Routes</h1>
     <details>
-        <summary>Add Route</summary>
+        <summary>Add Single Route</summary>
+        <div class="form-container">
+            <form id="addSingleRouteForm">
+                <div class="form-group">
+                    <label for="bus_no">Bus Number:</label>
+                    <input type="text" id="bus_no" name="bus_no" required>
+                </div>
+                <div class="form-group">
+                    <label for="avg_duration">Average Duration:</label>
+                    <input type="time" id="avg_duration" name="avg_duration" required>
+                </div>
+                <div class="form-group">
+                    <label for="number_of_stops">Number of Stops:</label>
+                    <input type="number" id="number_of_stops" name="number_of_stops" required>
+                </div>
+                <div class="form-group">
+                    <label for="total_number_of_trip">Total Number of Trips:</label>
+                    <input type="number" id="total_number_of_trip" name="total_number_of_trip" required>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+            <div id="addSingleRouteResult" class="result"></div>
+        </div>
+    </details>
+    <details>
+        <summary>Add Multiple Route</summary>
         <div class="form-container">
             <form id="addRouteForm" enctype="multipart/form-data">
                 <div class="form-group">
@@ -64,6 +89,17 @@
 </div>
 
 <script>
+    document.getElementById('addSingleRouteForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formData = new FormData(this);
+        fetch(config.databaseURL + '/database/route', {
+            method: 'POST',
+            body: formData
+        })
+        .then((response) => response.json())
+        .then((data) => showAlert(data.status, data.message))
+        .catch((error) => showAlert(error.message || "An error occurred while submitting the form."));
+    });
     document.getElementById('addRouteForm').addEventListener('submit', function(event) {
         event.preventDefault();
         const formData = new FormData(this);      

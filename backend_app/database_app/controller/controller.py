@@ -10,7 +10,7 @@ from database_app.view.ticket_view import TicketView
 from database_app.view.stop_view import StopView
 from database_app.view.schedule_view import ScheduleView
 from flask import request
-from db_utils.utils import get_connection_and_cursor, close_connection_and_cursor
+from db_utils.utils import get_connection_and_cursor, close_connection_and_cursor, log_error
 class Controller:
     @staticmethod
     def add_stops():
@@ -25,7 +25,12 @@ class Controller:
         if file.filename == '':
             return View.render_error("No selected file"), 400
         connection, cursor = get_connection_and_cursor()
-        result =  StopService.add_stop(file, emp_ip, connection, cursor)
+        try:
+            result =  StopService.add_stop(file, emp_ip, connection, cursor)
+        except Exception as e:
+            connection.rollback()
+            log_error(f'add stops in routes {file, emp_ip}', e)
+            return View.render_error(f"error :{e} try again later"), 500
         close_connection_and_cursor(connection, cursor)
         if result == -1:
             return View.render_error("you are not allowed to upload to database"), 403
@@ -42,7 +47,12 @@ class Controller:
             emp_ip = request.remote_addr
         stop_ids = request.form.get['stop_ids']
         connection, cursor = get_connection_and_cursor()
-        result =  StopService.delete_stops(emp_ip, stop_ids, connection, cursor)
+        try:
+            result =  StopService.delete_stops(emp_ip, stop_ids, connection, cursor)
+        except Exception as e:
+            connection.rollback()
+            log_error(f'add stops in routes {stop_ids, emp_ip}', e)
+            return View.render_error(f"error :{e} try again later"), 500
         close_connection_and_cursor(connection, cursor)
         if result == -1:
             return View.render_error("you are not allowed to upload to database"), 403
@@ -53,18 +63,42 @@ class Controller:
         return View.render_error(str(result)), 409
     @staticmethod
     def add_routes():
-        if 'file' not in request.files:
-            return View.render_error("No file part"), 400
+
         if 'X-Forwarded-For' in request.headers:
             emp_ip = request.headers.get('X-Forwarded-For').split(',')[0]
         else:
             emp_ip = request.remote_addr
-        file = request.files['file']
+        file=route_data=None
+        if 'file' in request.files:
+            file = request.files['file']
 
-        if file.filename == '':
-            return View.render_error("No selected file"), 400
+            if file.filename == '':
+                return View.render_error("No selected file"), 400
+        else:
+            bus_no = request.form.get('bus_no')
+            avg_duration = request.form.get('avg_duration')
+            number_of_stops = int(request.form.get('number_of_stops'))
+            total_number_of_trip = int(request.form.get('total_number_of_trip'))
+
+            if not all([bus_no, number_of_stops]):
+                return View.render_error("Missing required fields for single route"), 400
+
+            route_data = {
+                'bus_no': bus_no,
+                'avg_duration': avg_duration,
+                'number_of_stops': number_of_stops,
+                'total_number_of_trip': total_number_of_trip
+            }
         connection, cursor = get_connection_and_cursor()
-        result =  RouteService.add_route(file, emp_ip, connection, cursor)
+        try:
+            result =  RouteService.add_route(file, [route_data], emp_ip, connection, cursor)
+        except Exception as e:
+            connection.rollback()
+            if file:
+                log_error(f'{file, emp_ip}', e)
+            else:
+                log_error(f'{route_data, emp_ip}', e)
+            return View.render_error(f"error :{e} try again later"), 500
         close_connection_and_cursor(connection, cursor)
         if result == -1:
             return View.render_error("you are not allowed to upload to database"), 403
@@ -82,7 +116,12 @@ class Controller:
         else:
             emp_ip = request.remote_addr
         connection, cursor = get_connection_and_cursor()
-        result =  RouteService.delete_route(bus_number, emp_ip, connection, cursor)
+        try:
+            result =  RouteService.delete_route(bus_number, emp_ip, connection, cursor)
+        except Exception as e:
+            connection.rollback()
+            log_error(f'{bus_number, emp_ip}', e)
+            return View.render_error(f"error :{e} try again later"), 500
         close_connection_and_cursor(connection, cursor)
         if result == -1:
             return View.render_error("you are not allowed to edit database"), 403
@@ -104,7 +143,12 @@ class Controller:
         else:
             emp_ip = request.remote_addr
         connection, cursor = get_connection_and_cursor()
-        result =  ScheduleService.add_schedule(file, emp_ip, connection, cursor)
+        try:
+            result =  ScheduleService.add_schedule(file, emp_ip, connection, cursor)
+        except Exception as e:
+            connection.rollback()
+            log_error(f'{file, emp_ip}', e)
+            return View.render_error(f"error :{e} try again later"), 500
         close_connection_and_cursor(connection, cursor)
         if result == -1:
             return View.render_error("you are not allowed to upload to database"), 403
@@ -124,7 +168,12 @@ class Controller:
         else:
             emp_ip = request.remote_addr
         connection, cursor = get_connection_and_cursor()
-        result =  ScheduleService.delete_schedule(emp_ip, schedule_id, connection, cursor)
+        try:
+            result =  ScheduleService.delete_schedule(emp_ip, schedule_id, connection, cursor)
+        except Exception as e:
+            connection.rollback()
+            log_error(f'{schedule_id, emp_ip}', e)
+            return View.render_error(f"error :{e} try again later"), 500
         close_connection_and_cursor(connection, cursor)
         if result == -1:
             return View.render_error("you are not allowed to edit database"), 403
@@ -143,7 +192,12 @@ class Controller:
         else:
             emp_ip = request.remote_addr
         connection, cursor = get_connection_and_cursor()
-        result =  ScheduleService.get_schedule(bus_number, emp_ip, connection, cursor)
+        try:
+            result =  ScheduleService.get_schedule(bus_number, emp_ip, connection, cursor)
+        except Exception as e:
+            connection.rollback()
+            log_error(f'{bus_number, emp_ip}', e)
+            return View.render_error(f"error :{e} try again later"), 500
         close_connection_and_cursor(connection, cursor)
         if result == -1:
             return View.render_error("you are not allowed to view database"), 403
@@ -168,14 +222,21 @@ class Controller:
         if file.filename == '':
             return View.render_error("No selected file"), 400
         connection, cursor = get_connection_and_cursor()
-        result =  RouteService.add_stops_in_route(bus_no, file, emp_ip, connection, cursor)
+        try:
+            result =  RouteService.add_stops_in_route(bus_no, file, emp_ip, connection, cursor)
+        except Exception as e:
+            connection.rollback()
+            log_error(f'add stops in routes {bus_no, file, emp_ip}', e)
+            return View.render_error(f"error :{e} try again later"), 500
         close_connection_and_cursor(connection, cursor)
         if result == -1:
             return View.render_error("you are not allowed to upload to database"), 403
         if result == -2:
-            return View.render_error("no route found"), 404
+            return View.render_error("no route found first add routes details"), 404
         if result == -3:
-            return View.render_error("incorrect details stop not found"), 404
+            return View.render_error("incorrect details stop not found or total number does not match"), 404
+        if result == -4:
+            return View.render_error("route data already exist cannot update, please delete it then upload it"), 409
         if result == 1:
             return View.render_success("upload successfull"), 201
         return View.render_error(str(result)), 409
@@ -185,7 +246,12 @@ class Controller:
     def get_stops():
         partial_name = request.args.get("partial_name")
         connection, cursor = get_connection_and_cursor()
-        stops =  StopService.get_stops(partial_name, connection, cursor)
+        try:
+            stops =  StopService.get_stops(partial_name, connection, cursor)
+        except Exception as e:
+            connection.rollback()
+            log_error(f'add stops in routes {bus_no, file, emp_ip}', e)
+            return View.render_error(f"error :{e} try again later"), 500
         close_connection_and_cursor(connection, cursor)
         if stops:
             return StopView.render_stops(stops), 200
@@ -203,7 +269,12 @@ class Controller:
         else:
             emp_ip = request.remote_addr
         connection, cursor = get_connection_and_cursor()
-        ticket = TicketService.book_offline_tickets(route_id, price, gender, category, direction, emp_ip, connection, cursor)
+        try:
+            ticket = TicketService.book_offline_tickets(route_id, price, gender, category, direction, emp_ip, connection, cursor)
+        except Exception as e:
+            connection.rollback()
+            log_error(f'{route_id, price, gender, category, direction, emp_ip}', e)
+            return View.render_error(f"error :{e} try again later"), 500
         close_connection_and_cursor(connection, cursor)
         if ticket == -1:
             return View.render_error("you are not allowed to upload to database"), 403
@@ -255,7 +326,12 @@ class Controller:
         if file.filename == '':
             return View.render_error("No selected file"), 400
         connection, cursor = get_connection_and_cursor()
-        result =  TimeService.add_bus_stop_reach_time(file, emp_ip, connection, cursor)
+        try:
+            result =  TimeService.add_bus_stop_reach_time(file, emp_ip, connection, cursor)
+        except Exception as e:
+            connection.rollback()
+            log_error(f'{file, emp_ip}', e)
+            return View.render_error(f"error :{e} try again later"), 500
         close_connection_and_cursor(connection, cursor)
         if result == -1:
             return View.render_error("you are not allowed to upload to database"), 403
@@ -272,7 +348,12 @@ class Controller:
         date_of_tickets = request.args.get('ticketdate')
         route_id = request.args.get('route_id')
         connection, cursor = get_connection_and_cursor()
-        tickets = TicketService.verify_ticket(ticket_id, date_of_tickets, route_id, connection, cursor)
+        try:
+            tickets = TicketService.verify_ticket(ticket_id, date_of_tickets, route_id, connection, cursor)
+        except Exception as e:
+            connection.rollback()
+            log_error(f'add stops in routes {ticket_id, date_of_tickets, route_id}', e)
+            return View.render_error(f"error :{e} try again later"), 500
         close_connection_and_cursor(connection, cursor)
         if tickets:
             return TicketView.render_ticket_verification(tickets), 200

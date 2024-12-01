@@ -1,11 +1,11 @@
-
+USE Bus_Route;
 INSERT INTO Access_level(access_level_id, discription) VALUES 
-(1,'edit data'),
-(2, 'update data'),
-(3, 'only View');
+(0,'add employee'),
+(1,'delete data'),
+(2, 'add data'),
+(3, 'update data');
 INSERT INTO Employee(first_name, last_name, User_name, salary, official_email, password, phone_number, access_level_id) VALUE
-('Ashutosh', 'Ranjan', 'Ashutosh_ranjan_DBA', 100000,'ashu@gmail.com', '@819', '1234567891', 1),
-('Pankaj', '', 'Pankaj_DBA', 80000,'pankaj@gmail.com', '@1234', '9868952481', 2);
+('Ashutosh', 'Ranjan', 'Ashutosh_ranjan_DBA', 100000,'ashu@gmail.com', 'scrypt:32768:8:1$ZGHfWITFqpPEZK1B$e6aeb98a8e784e807e8f47ddc443635899c3f43cf38ca934fd7f8119e6f385f40e279ae688849f9911f1c9b7972bc94f9391e54329780b0ab832fc25862da6c5', '9868952481', 0);
 INSERT INTO Bus_Type_Description (category, Base_fare, Discription) VALUES
 ('blue',10, 'AC'),
 ('red',10, 'AC'),

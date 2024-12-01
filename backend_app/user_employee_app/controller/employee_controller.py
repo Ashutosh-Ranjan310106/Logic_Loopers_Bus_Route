@@ -1,13 +1,11 @@
 from user_employee_app.service.employee_service import EmployeeService
 from user_employee_app.view.view import *
 from flask import render_template, request
-from db_utils.utils import get_connection_and_cursor, close_connection_and_cursor
+from db_utils.utils import get_connection_and_cursor, close_connection_and_cursor, log_error
 
 class EmployeeController:
     @staticmethod
     def create_employee():
-
-
         user_name = request.form.get("user_name", "")
         first_name = request.form.get("first_name", "")
         last_name = request.form.get("last_name", "")
@@ -17,10 +15,22 @@ class EmployeeController:
         access_level_id = request.form.get("access_level_id")
         salary = request.form.get("salary")
         employer_code = request.form.get("employer_code")
+        gender = request.form.get("Gender")
         connection, cursor = get_connection_and_cursor()
+        if not user_name.isalnum():
+            return View.render_error('user name can only contain a'), 400
         if not (user_name and official_email and password and phone_number and access_level_id and employer_code):
             return View.render_error('some parameters ar mising'), 400
-        emp_id = EmployeeService.create_employee(user_name, official_email, password, phone_number, access_level_id, employer_code, first_name, last_name, salary, connection, cursor)
+        if 'X-Forwarded-For' in request.headers:
+            emp_ip = request.headers.get('X-Forwarded-For').split(',')[0]
+        else:
+            emp_ip = request.remote_addr
+        try:
+            emp_id = EmployeeService.create_employee(user_name, official_email, password, phone_number, access_level_id, emp_ip, first_name, last_name, salary, gender, connection, cursor)
+        except Exception as e:
+            connection.rollback()
+            log_error(f'{user_name, official_email, password, phone_number, access_level_id, employer_code, first_name, last_name, salary}', e)
+            return View.render_error(f'an error ocurred:- {e} please try again later'), 500
         close_connection_and_cursor(connection, cursor)
         if emp_id == -1:
             return View.render_error("incorrect or duplicate employee data"), 409
@@ -42,7 +52,12 @@ class EmployeeController:
         else:
             emp_ip = request.remote_addr
         connection, cursor = get_connection_and_cursor()
-        session_id = EmployeeService.login_employee(official_email, password, emp_ip, connection, cursor)
+        try:
+            session_id = EmployeeService.login_employee(official_email, password, emp_ip, connection, cursor)
+        except Exception as e:
+            connection.rollback()
+            log_error(f'{official_email, password, emp_ip}', e)
+            return View.render_error(f'an error ocurred:- {e} please try again later'), 500
         close_connection_and_cursor(connection, cursor)
         if session_id == -1:
             return View.render_error("employee not found"), 404
@@ -60,7 +75,12 @@ class EmployeeController:
         else:
             emp_ip = request.remote_addr
         connection, cursor = get_connection_and_cursor()
-        result = EmployeeService.logout_employee(emp_ip, connection, cursor)
+        try:
+            result = EmployeeService.logout_employee(emp_ip, connection, cursor)
+        except Exception as e:
+            connection.rollback()
+            log_error(f'{emp_ip}', e)
+            return View.render_error(f'an error ocurred:- {e} please try again later'), 500
         close_connection_and_cursor(connection, cursor)
         if result == 1:
             return View.render_success("logout succesfull"), 200

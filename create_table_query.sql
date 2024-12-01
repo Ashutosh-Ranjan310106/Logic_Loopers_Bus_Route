@@ -22,7 +22,7 @@ CREATE TABLE Users (
     user_id INT PRIMARY KEY auto_increment,
     name VARCHAR(50),
     email VARCHAR(200) not null unique,
-    gender ENUM('male', 'female') default 'male',
+    gender ENUM('Male', 'Female', 'Other') default 'Male',
     phone_number VARCHAR(12)  not null unique,
     password  VARCHAR(500) NOt NULL
 );
@@ -32,6 +32,7 @@ CREATE TABLE User_log (
     user_ip varchar(50) NOT NULL,
     user_id int NOT NULL,
     status int default 1,
+    login_time DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 CREATE TABLE access_level(
@@ -48,6 +49,7 @@ CREATE TABLE Employee(
     phone_number VARCHAR(12) NOT NULL unique,
     access_level_id int NOT NULL,
     salary int,
+    gender ENUM('Male', 'Female', 'Other') default 'Male',
     FOREIGN KEY(access_level_id) REFERENCES access_level(access_level_id)    
 );
 CREATE TABLE Emp_session(
@@ -71,9 +73,10 @@ CREATE TABLE Routes (
     route_id INT PRIMARY KEY AUTO_INCREMENT,
     bus_no VARCHAR(10) unique,
     avg_Duration TIME,
-    number_of_stops INT
+    number_of_stops INT NOT NULL,
+    total_number_of_trip INT
 );
-
+alter table Routes add number_of_stops INT NOT NULL;
 
 CREATE TABLE Buses (
     bus_id INT PRIMARY KEY AUTO_INCREMENT,

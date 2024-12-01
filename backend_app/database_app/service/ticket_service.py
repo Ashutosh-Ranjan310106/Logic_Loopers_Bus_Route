@@ -27,21 +27,14 @@ class TicketService:
                 INSERT INTO Offline_Tickets (ticket_id, direction)
                 VALUES (%s, %s);
             '''
-            try:
-                cursor.execute(insert_ticket_query, (route_id, price, gender, category, 'offline', datetime.date.today()))
+            cursor.execute(insert_ticket_query, (route_id, price, gender, category, 'offline', datetime.date.today()))
                 
 
-                ticket_id = cursor.lastrowid
-                cursor.execute(insert_offline_ticket_query, (ticket_id, direction))
+            ticket_id = cursor.lastrowid
+            cursor.execute(insert_offline_ticket_query, (ticket_id, direction))
                 
 
-                connection.commit()
-            except Exception as e:
-                connection.rollback()
-                log_error('book offline tickets', e)
-                return e
-
-            
+            connection.commit()            
             return ticket_id
         return -1
     
@@ -53,7 +46,6 @@ class TicketService:
         '''
         condition = []
         params = []
-        print(ticketdate)
         if ticket_id:
             condition.append('ticket_id = %s and date_of_tickets = %s')
             params.extend([ticket_id, datetime.date.today()])

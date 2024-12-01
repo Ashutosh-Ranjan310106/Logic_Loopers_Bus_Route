@@ -6,14 +6,14 @@
     <title>Bus Fare Calculator</title>
     <script src="{{ url_for('static', filename='config.js') }}"></script>
     <style>
-        /* Basic Reset */
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* Body Styling */
+
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f7fa;
@@ -24,7 +24,7 @@
             padding: 20px;
         }
 
-        /* Container for Fare Calculation */
+
         .fare-container {
             background-color: #ffffff;
             padding: 40px;
@@ -35,13 +35,13 @@
             text-align: center;
         }
 
-        /* Heading */
+
         .fare-container h2 {
             margin-bottom: 24px;
             color: #333;
         }
 
-        /* Input Fields */
+
         .fare-container input[type="text"],
         .fare-container select {
             width: 100%;
@@ -52,7 +52,7 @@
             font-size: 16px;
         }
 
-        /* Submit Button */
+
         .fare-container button {
             width: 100%;
             padding: 12px;
@@ -70,20 +70,20 @@
             background-color: #45a049;
         }
 
-        /* Output Section */
+
         .fare-container .output {
             margin-top: 20px;
             font-size: 18px;
             color: #333;
         }
 
-        /* Error Message */
+
         .fare-container .error {
             color: #ff0000;
             font-size: 16px;
         }
 
-        /* Responsive */
+
         @media (max-width: 600px) {
             .fare-container {
                 padding: 20px;
@@ -114,7 +114,7 @@
     </div>
 
     <script>
-        // JavaScript to handle form submission and fetch fare calculation
+
         document.getElementById("fare-form").addEventListener("submit", function(event) {
             event.preventDefault();
 

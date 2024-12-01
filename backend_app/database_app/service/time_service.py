@@ -34,15 +34,9 @@ class TimeService:
                 INSERT INTO  bus_stop_reach_time (time, node_number, schedule_id) VALUES 
                 {parameter} ;
             '''
-            try:
-                cursor.execute(query, values)
-                connection.commit()
-                return 1
-            except Exception as e:
-                connection.rollback()
-                log_error('add bus stop reach time', e)
-                return e
-
+            cursor.execute(query, values)
+            connection.commit()
+            return 1
         return -1
     @staticmethod
     def get_bus_stop_reach_time(connection, cursor):

@@ -1,7 +1,7 @@
 from user_employee_app.service.user_service import UserService
 from user_employee_app.view.view import View
 from flask import render_template, request, jsonify
-from db_utils.utils import get_connection_and_cursor, close_connection_and_cursor
+from db_utils.utils import get_connection_and_cursor, close_connection_and_cursor, log_error
 class UserController:
 
     @staticmethod
@@ -19,7 +19,12 @@ class UserController:
         if not (email and password and phone_number):
             return View.render_error("Email, phone number and password are required"), 400
         connection, cursor = get_connection_and_cursor()
-        user_id = UserService.create_user(name, email, gender, phone_number, password, connection, cursor)
+        try:
+            user_id = UserService.create_user(name, email, gender, phone_number, password, connection, cursor)
+        except Exception as e:
+            connection.rollback()
+            log_error(f'{name, email, gender, phone_number, password}', e)
+            return View.render_error(f'an error ocurred:- {e} please try again later'), 500
         close_connection_and_cursor(connection, cursor)
         if user_id == -1:
             return View.render_error("email or phone is alredy used"), 409
@@ -37,7 +42,12 @@ class UserController:
         else:
             user_ip = request.remote_addr
         connection, cursor = get_connection_and_cursor()
-        user = UserService.login_user(email, phone_number, password, user_ip, connection, cursor)
+        try:
+            user = UserService.login_user(email, phone_number, password, user_ip, connection, cursor)
+        except Exception as e:
+            connection.rollback()
+            log_error(f'{email, phone_number, password, user_ip}', e)
+            return View.render_error(f'an error ocurred:- {e} please try again later'), 500
         close_connection_and_cursor(connection, cursor)
         if not user:
             return View.render_error("email or phone number is incorrect"), 404
@@ -55,7 +65,12 @@ class UserController:
         else:
             user_ip = request.remote_addr
         connection, cursor = get_connection_and_cursor()
-        user = UserService.logout_user(user_ip, connection, cursor)
+        try:
+            user = UserService.logout_user(user_ip, connection, cursor)
+        except Exception as e:
+            connection.rollback()
+            log_error(f'{user_ip}', e)
+            return View.render_error(f'an error ocurred:- {e} please try again later'), 500
         close_connection_and_cursor(connection, cursor)
         if user == -1:
             return View.render_error("no login found"), 409
@@ -74,7 +89,12 @@ class UserController:
         if not all([bus_number, starting_stop_number, ending_stop_number, category]):
             return View.render_error("Missing required parameters"), 400
         connection, cursor = get_connection_and_cursor()
-        result = UserService.getfare(starting_stop_number, ending_stop_number, category, bus_number, connection, cursor)
+        try:
+            result = UserService.getfare(starting_stop_number, ending_stop_number, category, bus_number, connection, cursor)
+        except Exception as e:
+            connection.rollback()
+            log_error(f'{starting_stop_number, ending_stop_number, category, bus_number}', e)
+            return View.render_error(f'an error ocurred:- {e} please try again later'), 500
         close_connection_and_cursor(connection, cursor)
         if result == -1:
             return View.render_error("Invalid route or stops"), 404
@@ -89,7 +109,12 @@ class UserController:
         else:
             user_ip = request.remote_addr
         connection, cursor = get_connection_and_cursor()
-        tickets = UserService.get_user_tickets(user_ip, connection, cursor)
+        try:
+            tickets = UserService.get_user_tickets(user_ip, connection, cursor)
+        except Exception as e:
+            connection.rollback()
+            log_error(f'{user_ip}', e)
+            return View.render_error(f'an error ocurred:- {e} please try again later'), 500
         close_connection_and_cursor(connection, cursor)
         if tickets == -1:
             return View.render_error("you are not logined"), 401
@@ -111,16 +136,21 @@ class UserController:
         else:
             user_ip = request.remote_addr
         connection, cursor = get_connection_and_cursor()
-        result = UserService.getfare(starting_stop_number, ending_stop_number, category, bus_number, connection, cursor)
-        if result == -1:
-            close_connection_and_cursor(connection, cursor)
-            return View.render_error("incorrect stop number")
-        price, route_id = result
-        if not all([user_ip, route_id, starting_stop_number, ending_stop_number, price, gender, category]):
-            close_connection_and_cursor(connection, cursor)
-            return View.render_error("Missing required parameters"), 400
-        
-        ticket = UserService.book_online_tickets(user_ip, route_id, starting_stop_number, ending_stop_number, price, gender, category, connection, cursor)
+        try:
+            result = UserService.getfare(starting_stop_number, ending_stop_number, category, bus_number, connection, cursor)
+            if result == -1:
+                close_connection_and_cursor(connection, cursor)
+                return View.render_error("incorrect stop number")
+            price, route_id = result
+            if not all([user_ip, route_id, starting_stop_number, ending_stop_number, price, gender, category]):
+                close_connection_and_cursor(connection, cursor)
+                return View.render_error("Missing required parameters"), 400
+            
+            ticket = UserService.book_online_tickets(user_ip, route_id, starting_stop_number, ending_stop_number, price, gender, category, connection, cursor)
+        except Exception as e:
+            connection.rollback()
+            log_error(f'{user_ip, route_id, starting_stop_number, ending_stop_number, price, gender, category}', e)
+            return View.render_error(f'an error ocurred:- {e} please try again later'), 500
         close_connection_and_cursor(connection, cursor)
         if ticket == -1:
             return View.render_error("you are not logined"), 409

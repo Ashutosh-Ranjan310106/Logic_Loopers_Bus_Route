@@ -1,4 +1,3 @@
-from db_utils.utils import log_error
 from datetime import datetime
 
 class BusService: 

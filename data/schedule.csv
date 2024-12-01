@@ -1,0 +1,2 @@
+route,time,route_id,start_stop_number,stop_stop_number,bus_id,conductor_id,driver_id,schedule_day
+down, 10:30:00, 5, 6, 3, 1, 4, 3,monday

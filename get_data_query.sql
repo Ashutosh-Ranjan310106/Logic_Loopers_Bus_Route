@@ -1,5 +1,10 @@
+use bus_route;
+
+USE Bus_Route;
 show tables;
+
 SELECT * from emp_session;
+desc employee;
 SELECT * FROM Bus_type;
 SELECT * FROM Users;
 SELECT * FROM User_log;
@@ -64,8 +69,7 @@ join stops_in_route sir on sir.node_id = ont.ending_stop_number
 join stops st on sir.stop_id = st.stop_id 
 join tickets tk ON tk.ticket_id = ont.ticket_id
 group by st.stop_id;
-
-
+use Bus_Route;
 -- all bus stop reach times with stop name
 SELECT  stop_name, bsrt.time bus_time, bus_no, st.stop_id, sch.route direction
 FROM bus_stop_reach_time bsrt

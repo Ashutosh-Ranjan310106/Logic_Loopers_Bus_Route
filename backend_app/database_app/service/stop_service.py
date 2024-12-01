@@ -31,14 +31,9 @@ class StopService:
                 INSERT INTO Stops (stop_name, location_coordinate) VALUES 
                 {parameter} ;
             '''
-            try:
-                cursor.execute(query, values)
-                connection.commit()
-                return 1
-            except Exception as e:
-                connection.rollback()
-                log_error('add stop', e)
-                return e
+            cursor.execute(query, values)
+            connection.commit()
+            return 1
         return -1
     
 
@@ -58,19 +53,14 @@ class StopService:
             query = f'''
                 delete from Stops where stop_id in  {stop_list};
             '''
-            try:
-                cursor.execute(query, stop_ids)
-                connection.commit()
-                return 1
-            except Exception as e:
-                connection.rollback()
-                log_error('delete stops', e)
-                return e
+            cursor.execute(query, stop_ids)
+            connection.commit()
+            return 1
         return -1
     @staticmethod
     def get_stops(partiall_name, connection, cursor):
         if partiall_name:
-            query = f"SELECT stop_name, stop_id FROM Stops where stop_name like \"{partiall_name}%\";"
+            query = f"SELECT stop_name, stop_id FROM Stops where stop_name like \"%{partiall_name}%\";"
         else:
             query = f"SELECT stop_name, stop_id FROM Stops;"
         cursor.execute(query)
