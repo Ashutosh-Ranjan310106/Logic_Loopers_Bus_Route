@@ -71,12 +71,11 @@ CREATE INDEX idx_stop_name ON stops(stop_name);
 
 CREATE TABLE Routes (
     route_id INT PRIMARY KEY AUTO_INCREMENT,
-    bus_no VARCHAR(10) unique,
+    bus_no VARCHAR(10) NOT NULL unique,
     avg_Duration TIME,
     number_of_stops INT NOT NULL,
     total_number_of_trip INT
 );
-alter table Routes add number_of_stops INT NOT NULL;
 
 CREATE TABLE Buses (
     bus_id INT PRIMARY KEY AUTO_INCREMENT,
