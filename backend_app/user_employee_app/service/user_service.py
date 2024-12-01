@@ -112,12 +112,27 @@ class UserService:
         if not (user):
             return -1
         user_id = user['user_id']
-        get_ticket_query='''
-        select * from
-        tickets tk join Online_tickets otk ON tk.ticket_id = otk.ticket_id
-        join routes rt ON tk.route_id = rt.route_id 
-        where user_id = %s
-        '''
+        get_ticket_query = '''
+            SELECT 
+                tk.ticket_id,
+                tk.price,
+                tk.gender,
+                tk.date_of_tickets,
+                tk.category,
+                otk.time_of_booking,
+                start_stop.stop_name AS starting_stop_name,
+                end_stop.stop_name AS ending_stop_name,
+                rt.route_id,
+                rt.bus_no
+            FROM Tickets tk
+            JOIN Online_Tickets otk ON tk.ticket_id = otk.ticket_id
+            JOIN Routes rt ON tk.route_id = rt.route_id
+            JOIN Stops_in_route start_node ON otk.starting_stop_number = start_node.route_stop_number AND rt.route_id = start_node.route_id
+            JOIN Stops_in_route end_node ON otk.ending_stop_number = end_node.route_stop_number AND rt.route_id = end_node.route_id
+            JOIN Stops start_stop ON start_node.stop_id = start_stop.stop_id
+            JOIN Stops end_stop ON end_node.stop_id = end_stop.stop_id
+            WHERE otk.user_id = %s
+            '''
         cursor.execute(get_ticket_query, (user_id,))
         tickets = cursor.fetchall()
         
