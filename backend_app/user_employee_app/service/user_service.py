@@ -24,6 +24,7 @@ class UserService:
         cursor.execute(query, values+[email, phone_number, hash_password])
         user_id = cursor.lastrowid
         connection.commit()
+        print('user created')
         return user_id
 
     
@@ -147,10 +148,9 @@ class UserService:
         '''     
         cursor.execute(check_user_query, (user_ip,))
         user = cursor.fetchone()
-        user_id = user['user_id']
-        if not user_id:
-            
+        if not (user and user['user_id']):
             return -1
+        user_id = user['user_id']
         insert_ticket_query = '''
         INSERT INTO Tickets (route_id, price, gender, category, ticket_type, date_of_tickets)
         VALUES (%s, %s, %s, %s, %s, %s);

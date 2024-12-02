@@ -54,19 +54,19 @@ a. Buses: Represents all buses in the system, including their details.
 b. Bus_stop_reach_time: Records the when buses reach stops.
 c. Bus_Type_Description: Describes different types of buses available in the fleet.
 d. Bus_type: Categorizes buses into different types based on specifications.
-e. Conductors: child entity of staff Represents bus conductors, including their details and assignments.
-f. Drivers: child entity of staff Represents bus drivers and their related information.
-g. Offline_Tickets: clild entity of tickets Records details of tickets purchased offline.
-h. Online_Tickets: clild entity of tickets Records details of tickets purchased online.
-i. Routes: Defines various bus routes available in the system.
-j. Schedule: Contains the schedules for bus departures and arrivals.
-k. Staff: Represents all staff members involved in operations geralization of conductors and drivers tables.
-l. Stops: Represents bus stops where passengers can board or alight.
-m. Stops_in_route: Links stops to specific routes.
-n. Tickets: Generalization of offline and  ticket information, including pricing and validity.
-o. Users: Represents system users, including passengers and admin staff.
+e. Offline_Tickets: clild entity of tickets Records details of tickets purchased offline.
+f. Online_Tickets: clild entity of tickets Records details of tickets purchased online.
+g. Routes: Defines various bus routes available in the system.
+h. Schedule: Contains the schedules for bus departures and arrivals.
+i. Staff: Represents all staff members involved in operations geralization of conductors and drivers tables.
+j. Stops: Represents bus stops where passengers can board or alight.
+k. Stops_in_route: Links stops to specific routes.
+l. Tickets: Generalization of offline and  ticket information, including pricing and validity.
+m. Users: Represents system users, including passengers and admin staff.
+n. User_log: login log of user 
+o. employee_session: employee login log of employee
 p. employee: it store employee data such as its salay password username etc who are working on database or software.
-q. access_level: it store how much employee have access to database. 
+q. access_level: it store how much employee have access to database or role of employee. 
 
 
 Relationships:-

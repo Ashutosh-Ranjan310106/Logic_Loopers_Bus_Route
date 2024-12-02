@@ -752,5 +752,23 @@
         "error": "'list' object has no attribute 'get'",
         "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\database_app\\controller\\controller.py\", line 95, in add_routes\n    result =  RouteService.add_route(file, [route_data], emp_ip, connection, cursor)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\database_app\\service\\routes_service.py\", line 31, in add_route\n    bus_number = row.get('bus_no')\n                 ^^^^^^^\nAttributeError: 'list' object has no attribute 'get'\n",
         "timestamp": "2024-12-02 11:12:34"
+    },
+    {
+        "function": "('127.0.0.1', 7, '1', '8', 10, 'male', 'Red')",
+        "error": "'NoneType' object is not subscriptable",
+        "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\user_employee_app\\controller\\user_controller.py\", line 149, in book_ticket\n    ticket = UserService.book_online_tickets(user_ip, route_id, starting_stop_number, ending_stop_number, price, gender, category, connection, cursor)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\user_employee_app\\service\\user_service.py\", line 150, in book_online_tickets\n    user_id = user['user_id']\n              ~~~~^^^^^^^^^^^\nTypeError: 'NoneType' object is not subscriptable\n",
+        "timestamp": "2024-12-02 11:43:44"
+    },
+    {
+        "function": "('127.0.0.1', 7, '1', '8', 10, 'male', 'Red')",
+        "error": "'NoneType' object is not subscriptable",
+        "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\user_employee_app\\controller\\user_controller.py\", line 151, in book_ticket\n    ticket = UserService.book_online_tickets(user_ip, route_id, starting_stop_number, ending_stop_number, price, gender, category, connection, cursor)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\user_employee_app\\service\\user_service.py\", line 150, in book_online_tickets\n    user_id = user['user_id']\n              ~~~~^^^^^^^^^^^\nTypeError: 'NoneType' object is not subscriptable\n",
+        "timestamp": "2024-12-02 11:46:37"
+    },
+    {
+        "function": "('127.0.0.1', 7, '1', '8', 10, 'male', 'Red')",
+        "error": "'NoneType' object is not subscriptable",
+        "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\user_employee_app\\controller\\user_controller.py\", line 151, in book_ticket\n    ticket = UserService.book_online_tickets(user_ip, route_id, starting_stop_number, ending_stop_number, price, gender, category, connection, cursor)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\rrpra\\OneDrive\\Documents\\GitHub\\Logic_Loopers_Bus_Route\\backend_app\\user_employee_app\\service\\user_service.py\", line 150, in book_online_tickets\n    if not (user and user['user_id']):\n              ^^^^^^^^^^^^^^^\nTypeError: 'NoneType' object is not subscriptable\n",
+        "timestamp": "2024-12-02 11:50:39"
     }
 ]

@@ -10,6 +10,7 @@ def home():
 
 @user_employee_route.route('/user/create', methods=['POST'])
 def create_user():
+    print('in create user')
     return UserController.create_user()
 @user_employee_route.route('/user/login', methods=['POST'])
 def login_user():

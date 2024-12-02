@@ -16,6 +16,7 @@ class UserController:
         gender = data.get("gender",'')
         phone_number = data.get("phone_number")
         password = data.get("password")
+        print(f'in controller {name,email,gender,phone_number, password}')
         if not (email and password and phone_number):
             return View.render_error("Email, phone number and password are required"), 400
         connection, cursor = get_connection_and_cursor()
@@ -135,6 +136,8 @@ class UserController:
             user_ip = request.headers.get('X-Forwarded-For').split(',')[0]
         else:
             user_ip = request.remote_addr
+        if not all([bus_number, starting_stop_number, ending_stop_number, gender, category]):
+            return View.render_error('you are not login or mising parameters'), 400
         connection, cursor = get_connection_and_cursor()
         try:
             result = UserService.getfare(starting_stop_number, ending_stop_number, category, bus_number, connection, cursor)
