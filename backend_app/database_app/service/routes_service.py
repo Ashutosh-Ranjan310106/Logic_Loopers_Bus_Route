@@ -5,46 +5,50 @@ class RouteService:
     @staticmethod
     def add_route(file, route_data, emp_ip, connection, cursor):
         query = '''
-                select acl.access_level_id acid from 
+                SELECT acl.access_level_id acid FROM 
                 Access_level acl
-                join employee emp ON emp.access_level_id = acl.access_level_id
-                join emp_session sesn ON sesn.emp_id = emp.emp_id
-                where sesn.emp_ip = %s and sesn.status = 1; 
+                JOIN employee emp ON emp.access_level_id = acl.access_level_id
+                JOIN emp_session sesn ON sesn.emp_id = emp.emp_id
+                WHERE sesn.emp_ip = %s AND sesn.status = 1; 
                 '''
         cursor.execute(query, (emp_ip,))
         acc_level = cursor.fetchone()
+
         if acc_level and acc_level['acid'] <= 2:
             if file:
-                df = pd.read_csv(file).iterrows()
+                df = pd.read_csv(file)
+                rows = df.iterrows()
             else:
-                df = pd.Series(route_data)
+                rows = [route_data]  # Convert route_data to a Series for consistent processing
+
             parameter = ''
             values = []
-            for row in df:
+
+            for row in rows:  # Iterate over rows
+                if isinstance(row, pd.Series):
+                    row = row.to_dict()  # Convert Series to dict
                 print(row)
                 bus_number = row.get('bus_no')
                 avrage_duration = row.get('avrage_duration', '')
-                number_of_stops = row.get('number_of_stops','')
-                total_number_of_trip = row.get('total_number_of_trip','')
+                number_of_stops = row.get('number_of_stops', '')
+                total_number_of_trip = row.get('total_number_of_trip', '')
 
-                parameter += '(%s, %s, %s, %s), '
+                parameter += '(%s, %s, %s), '
 
                 if pd.isna(avrage_duration): 
                     avrage_duration = None
-                if pd.isna(total_number_of_trip): 
-                    total_number_of_trip = None
 
-                    
-                values.extend([bus_number, avrage_duration, number_of_stops, total_number_of_trip])
+                values.extend([bus_number, avrage_duration, number_of_stops])
+
             parameter = parameter.rstrip(', ')
-            print(query)
             query = f'''
-                INSERT INTO Routes (bus_no, avg_Duration, number_of_stops, total_number_of_trip) VALUES 
+                INSERT INTO Routes (bus_no, avg_Duration, number_of_stops) VALUES 
                 {parameter} ;
             '''
             cursor.execute(query, values)
             connection.commit()
             return 1
+
         return -1
     
     @staticmethod
@@ -64,6 +68,7 @@ class RouteService:
             '''
             cursor.execute(query, (bus_number,))
             connection.commit()
+            return 1
         return -1
     
     @staticmethod

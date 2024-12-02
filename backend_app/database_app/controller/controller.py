@@ -89,9 +89,10 @@ class Controller:
                 'number_of_stops': number_of_stops,
                 'total_number_of_trip': total_number_of_trip
             }
+        print(route_data)
         connection, cursor = get_connection_and_cursor()
         try:
-            result =  RouteService.add_route(file, [route_data], emp_ip, connection, cursor)
+            result =  RouteService.add_route(file, route_data, emp_ip, connection, cursor)
         except Exception as e:
             connection.rollback()
             if file:

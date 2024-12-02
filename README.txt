@@ -38,15 +38,13 @@ Features of Our project
 
 2) Comprehensive Ticket Management: The system effectively manages both online and offline tickets, allowing for clear tracking of ticket sales and validity
 
-3) Staff Management: Detailed information about staff roles (drivers and conductors) allows for efficient resource management within the transportation system.
+3) Dynamic Route Management: The database facilitates dynamic handling of routes and stops, enabling real-time updates to schedules and routes.
 
-4) Dynamic Route Management: The database facilitates dynamic handling of routes and stops, enabling real-time updates to schedules and routes.
+4) Reporting and Analysis: The structure allows for the generation of various reports, such as ticket sales, staff assignments, and bus schedules, aiding decision-making processes.
 
-5) Reporting and Analysis: The structure allows for the generation of various reports, such as ticket sales, staff assignments, and bus schedules, aiding decision-making processes.
+5) User Management: Detailed user records help in tracking customer demographics and preferences, which can inform marketing and operational strategies.
 
-6) User Management: Detailed user records help in tracking customer demographics and preferences, which can inform marketing and operational strategies.
-
-7) Employee Management: employee records with there level of access to database and who can do what in database
+6) Employee Management: employee records with there level of access to database and who can do what in database
 
 Tables & their relations
 
