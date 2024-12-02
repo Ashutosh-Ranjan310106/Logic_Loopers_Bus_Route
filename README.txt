@@ -17,10 +17,14 @@ Run "create_table_query.sql" to create database
 Run "insert_data.sql" to insert data in  database
 Run "get_data_query.sql" to get sample query output
 to start server create virtual environment and activate it 
-Installation requirment.txt
+Install all module from requirment.txt
 using where python get virtual python.exe link and replace it in backend_app/db_utils/utils.py  in variable python_executable
 set you mysql password and user in backend_app/db_utils/utils
-run start_server.py using python
+go to backend_app in terminal and run 'python start_server.py' to start backend server
+go to frontend_app in terminal and run 'python app.py' to start frontend server
+
+
+
 
 
 Bus Route Database Documentation
@@ -90,6 +94,15 @@ Route 2:
 
 Route 3:
 [Stop c] -> [Stop i] -> [Stop k] -> [Stop g] -> [Stop f]
+
+
+
+further improvement:- 
+1) add qr codes to booktickets and verify tickets
+2)we can add busroute map
+3)we can add serilizibility
+4) we can proper method to manage the offline tickets
+
 
 
 
