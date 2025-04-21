@@ -5,7 +5,7 @@ INSERT INTO Access_level(access_level_id, discription) VALUES
 (2, 'add data'),
 (3, 'update data');
 INSERT INTO Employee(first_name, last_name, User_name, salary, official_email, password, phone_number, access_level_id) VALUE
-('Ashutosh', 'Ranjan', 'Ashutosh_ranjan_DBA', 100000,'ashu@gmail.com', 'scrypt:32768:8:1$ZGHfWITFqpPEZK1B$e6aeb98a8e784e807e8f47ddc443635899c3f43cf38ca934fd7f8119e6f385f40e279ae688849f9911f1c9b7972bc94f9391e54329780b0ab832fc25862da6c5', '9868952481', 0);
+('Ashutosh', 'Ranjan', 'Ashutosh_ranjan_DBA', 100000,'ashu@gmail.com', 'scrypt:32768:8:1$Yehya5bCrR8jtZ6q$3caa22d86532dc7fcdea474c87190a12bbde028e851fa0cea20a78f92c2cb452326af6f38e741757b66dbfbe7d9d13bd2dfcab4fefab316aa5ec0e6a3aad762f', '9868952481', 0);
 INSERT INTO Bus_Type_Description (category, Base_fare, Discription) VALUES
 ('blue',10, 'AC'),
 ('red',10, 'AC'),

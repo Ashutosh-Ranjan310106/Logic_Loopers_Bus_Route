@@ -12,13 +12,14 @@ class EmployeeController:
         official_email = request.form.get("official_email")
         password = request.form.get("password")
         phone_number = request.form.get("phone_number")
-        access_level_id = request.form.get("access_level_id")
+        access_level_id = request.form.get("role")
         salary = request.form.get("salary")
         employer_code = request.form.get("employer_code")
         gender = request.form.get("Gender")
         connection, cursor = get_connection_and_cursor()
         if not user_name.isalnum():
             return View.render_error('user name can only contain a'), 400
+        print(user_name , official_email , password , phone_number , access_level_id , employer_code)
         if not (user_name and official_email and password and phone_number and access_level_id and employer_code):
             return View.render_error('some parameters ar mising'), 400
         if 'X-Forwarded-For' in request.headers:

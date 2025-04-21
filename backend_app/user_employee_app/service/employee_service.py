@@ -21,7 +21,7 @@ class EmployeeService:
                 '''
         cursor.execute(query, (emp_ip,))
         acc_level = cursor.fetchone()
-        if acc_level and acc_level['acid'] == 0:
+        if acc_level and acc_level['acid'] == 1:
             hashed_password = generate_password_hash(password)
             coulmn =''
             values = []
@@ -58,6 +58,7 @@ class EmployeeService:
         query = "SELECT emp_id, password FROM Employee WHERE official_email = %s"
         cursor.execute(query, [official_email])
         emp = cursor.fetchone()
+        print(generate_password_hash(password))
         if emp and check_password_hash(emp["password"], password):
             query = "SELECT session_id FROM Emp_session WHERE (emp_ip = %s OR emp_id = %s) AND status = 1"
             cursor.execute(query, (emp_ip, emp["emp_id"]))
